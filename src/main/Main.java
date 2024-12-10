@@ -23,9 +23,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
     	Main.primaryStage = primaryStage;
         primaryStage.setTitle("Stellarfest");
-        primaryStage.setResizable(false);
-        primaryStage.setWidth(1000);
-        primaryStage.setHeight(750);
+        primaryStage.setResizable(true);
         primaryStage.show();
 
         

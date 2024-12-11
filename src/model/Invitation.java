@@ -6,7 +6,7 @@ public class Invitation {
 	private String EventID;
 	private String status;
 	private String UserRole;
-	
+
 	public Invitation(String invitationID, String userID, String eventID, String status, String userRole) {
 		super();
 		InvitationID = invitationID;
@@ -55,5 +55,5 @@ public class Invitation {
 	public void setUserRole(String userRole) {
 		UserRole = userRole;
 	}
-	
+
 }

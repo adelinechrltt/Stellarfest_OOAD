@@ -42,7 +42,7 @@ public class InvitationDetailsPage {
 		errorLbl.setStyle("-fx-text-fill: red;");
 		
 		inv = InvitationController.getInvitationByInvID(invID);
-		ev = EventController.getEventByiD(inv.getEventID());
+		ev = EventController.getEventByID(inv.getEventID());
 
 		GridPane invDetails = new GridPane();
 		invDetails.setAlignment(Pos.CENTER);

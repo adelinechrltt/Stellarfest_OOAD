@@ -36,7 +36,7 @@ public class ProductController {
 			ps.setString(2, userID);
 			ps.setString(3, name);
 			ps.setString(4, desc);
-			ps.executeQuery();
+			ps.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

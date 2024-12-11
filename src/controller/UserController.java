@@ -3,12 +3,14 @@ package controller;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javafx.scene.control.Label;
 import main.Main;
 import model.Admin;
 import model.EventOrganizer;
 import model.Guest;
+import model.User;
 import model.Vendor;
 import util.Connect;
 import view.Home;
@@ -22,8 +24,7 @@ public class UserController {
 	public UserController() {
 		super();
 	}
-
-//	registration methods
+	
 	public static String generateUserID() {
 		String UID = "U";
 		for(int i=0; i<7; i++) {
@@ -97,7 +98,7 @@ public class UserController {
 	
 	public static void register(String email, String username, String password, String role) {
 		String query = "INSERT INTO Users\n"
-				+ "(userid, email, name, password, role) VALUES (" + 
+				+ "(userID, email, name, password, role) VALUES (" + 
 				"?, ?, ?, ?, ?)";
 		
 		PreparedStatement ps;
@@ -186,13 +187,13 @@ public class UserController {
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
             	if(rs.getString("role").equals("Event Organizer")) {
-                    Main.currentUser = new EventOrganizer(rs.getString("UserID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
+                    Main.currentUser = new EventOrganizer(rs.getString("userID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
                 } else if (rs.getString("role").equals("Vendor")) {
-                    Main.currentUser = new Vendor(rs.getString("UserID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
+                    Main.currentUser = new Vendor(rs.getString("userID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
                 } else if (rs.getString("role").equals("Admin")) {
-                    Main.currentUser = new Admin(rs.getString("UserID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
+                    Main.currentUser = new Admin(rs.getString("userID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
                 } else if (rs.getString("role").equals("Guest")) {
-                    Main.currentUser = new Guest(rs.getString("UserID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
+                    Main.currentUser = new Guest(rs.getString("userID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
                 }
             }
             
@@ -307,47 +308,47 @@ public class UserController {
         }   
 	}
 	
-	public static String getNameById(String userID) {
-		String name = null;
-		String query = "SELECT name FROM users\n"
-				+ "WHERE userId = ?"; 
-	    
+	public static ArrayList<User> viewAllUsers(){
+		ArrayList<User> users = new ArrayList<>();
+		
+		// asumsi admin tidak bisa mengakses admin lain sehingga tidak bisa saling delete akun admin
+		String query = "SELECT * FROM Users\n "
+				+ "WHERE ROLE != 'Admin'";
 		PreparedStatement ps;
 		
-	    try {
-	    	ps = db.getConnection().prepareStatement(query);
-	        ps.setString(1, userID);
-	        ResultSet rs = ps.executeQuery();
-	        
-	        if (rs.next()) {
-	        	name = rs.getString("role");
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
+		try {
+			ps = db.getConnection().prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				String ID = rs.getString("UserID");
+            	String email = rs.getString("Email");
+            	String name = rs.getString("Name");
+            	String password = rs.getString("Password");
+            	String role = rs.getString("Role");
+            	
+            	if(role.equals("Event Organizer")) users.add(new EventOrganizer(ID, email, name, password));
+            	else if (role.equals("Vendor")) users.add(new Vendor(ID, email, name, password));
+            	else if (role.equals("Guest")) users.add(new Guest(ID, email, name, password));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
-		return name;
+		return users;
 	}
 	
-	public static String getRoleByID(String userID) {
-		String role = null;
-		String query = "SELECT role FROM users\n"
-				+ "WHERE userId = ?"; 
-	    
+	public static void deleteUser(String userID) {
+		String query = "DELETE FROM Users\n" +
+						"WHERE UserID = ?";
 		PreparedStatement ps;
 		
-	    try {
-	    	ps = db.getConnection().prepareStatement(query);
-	        ps.setString(1, userID);
-	        ResultSet rs = ps.executeQuery();
-	        
-	        if (rs.next()) {
-	        	role = rs.getString("role");
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-		
-		return role;
+		try {
+			ps = db.getConnection().prepareStatement(query);
+			ps.setString(1, userID);
+			ps.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

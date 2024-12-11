@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javafx.scene.control.Label;
 import main.Main;
 import model.Invitation;
+import model.User;
 import util.Connect;
 import view.ViewEventsList;
 import view.VendorAndGuestViews.ViewInvitationsPage;
@@ -28,24 +29,27 @@ public class InvitationController {
 		return InvID;
 	}
 	
-	public static void createInvitation(String eventID, String userID) {
-		String query = "INSERT INTO Invitations\n"
-				+ "(invid, eventid, userid, invstatus, invrole) VALUES (" + 
+	public static void sendInvitation(String eventID, String email) {
+		String query = "INSERT INTO Invitations"
+				+ "(invid, eventid, invstatus, invrole, userId) VALUES (" + 
 				"?, ?, ?, ?, ?)";
 		
 		PreparedStatement ps;
+		
+		User user = VendorController.getVendorByEmail(email);
+		if(user==null) user = GuestController.getGuestByEmail(email);
 
 		try {
 			ps = db.getConnection().prepareStatement(query);
 			ps.setString(1, generateInvID());
 			ps.setString(2, eventID);
-            ps.setString(3, userID);
-            ps.setString(4, "Pending");
-            ps.setString(5, UserController.getRoleByID(userID));
+            ps.setString(3, "Pending");
+            ps.setString(4, user.getRole());
+            ps.setString(5, user.getUserID());
             ps.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
-			Main.displayAlert("ERROR", "Failed to create invitation for user: " + UserController.getNameById(userID));
+			Main.displayAlert("ERROR", "Failed to create invitation for user: " + user.getName());
 			return;
 		}
 		
@@ -80,15 +84,15 @@ public class InvitationController {
 		return inv;
 	}
 	
-	public static ArrayList<Invitation> getInvitationsByUserID(String userID){
+	public static ArrayList<Invitation> getInvitationsByEmail(String email){
 		ArrayList<Invitation> invitations = new ArrayList<>();
-		String query = "SELECT * FROM invitations\n"
-				+ "WHERE UserID = ?";
+		String query = "SELECT * FROM invitations i JOIN users u ON i.UserID = u.UserID\n"
+				+ "WHERE u.Email = ?";
 		PreparedStatement ps;
-		
+				
 		try {
 			ps = db.getConnection().prepareStatement(query);
-			ps.setString(1, userID);
+			ps.setString(1, email);
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
@@ -108,15 +112,15 @@ public class InvitationController {
 		return invitations;
 	};
 	
-	public static ArrayList<Invitation> getPendingInvsByUserID(String userID){
-		ArrayList<Invitation> invitations = getInvitationsByUserID(userID);
+	public static ArrayList<Invitation> getPendingInvsByEmail(String email){
+		ArrayList<Invitation> invitations = getInvitationsByEmail(email);
 	    invitations.removeIf(invitation -> invitation.getStatus().equals("Accepted"));
 
 		return invitations;
 	};
 	
 	public static ArrayList<String> getInvitedUsersByEventID(String eventID){
-		ArrayList<String> vendorIDs = new ArrayList<>();
+		ArrayList<String> emails = new ArrayList<>();
 		String query = "SELECT UserID FROM invitations "
 				+ "WHERE EventID = ?";
 		PreparedStatement ps;
@@ -128,13 +132,57 @@ public class InvitationController {
 	        ResultSet rs = ps.executeQuery();
 	        
 	        while (rs.next()) {
-	            vendorIDs.add(rs.getString("userID"));
+	            emails.add(rs.getString("email"));
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
 
-		return vendorIDs;
+		return emails;
+	}
+	
+	public static ArrayList<String> getAttendingVendorsByEventID(String eventID){
+		ArrayList<String> emails = new ArrayList<>();
+		String query = "SELECT Email FROM Users u JOIN Invitations i ON i.UserID = u.UserID "
+				+ "WHERE i.EventID = ? AND i.InvStatus = 'Accepted' AND i.InvRole = 'Vendor'";
+		PreparedStatement ps;
+		
+	    try {
+	    	
+	    	ps = db.getConnection().prepareStatement(query);
+	        ps.setString(1, eventID);
+	        ResultSet rs = ps.executeQuery();
+	        
+	        while (rs.next()) {
+                emails.add(rs.getString("email"));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+		return emails;
+	}
+	
+	public static ArrayList<String> getAttendingGuestsByEventID(String eventID){
+		ArrayList<String> emails = new ArrayList<>();
+		String query = "SELECT UserID FROM invitations "
+				+ "WHERE EventID = ? AND InvStatus = 'Accepted' AND InvRole = 'Guest'";
+		PreparedStatement ps;
+		
+	    try {
+	    	
+	    	ps = db.getConnection().prepareStatement(query);
+	        ps.setString(1, eventID);
+	        ResultSet rs = ps.executeQuery();
+	        
+	        while (rs.next()) {
+	            emails.add(rs.getString("email"));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+		return emails;
 	}
 	
 	public static void acceptInvitation(String invID, Label errorLbl) {

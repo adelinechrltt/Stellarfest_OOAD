@@ -5,9 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import main.Main;
 import model.Event;
+import model.Guest;
+import model.Vendor;
 import util.Connect;
 import view.ViewEventsList;
 
@@ -29,7 +32,7 @@ public class EventController {
 	
 	public static void createEvent(String name, LocalDate date, String location, String description, String organizerID) {		
 		String query = "INSERT INTO Events\n"
-				+ "(eventid, name, date, location, description, organizerid) "
+				+ "(eventid, name, date, location, description, organizerID) "
 				+ "VALUES (?, ?, ?, ?, ?, ?)";
 		
 		PreparedStatement ps;
@@ -51,6 +54,34 @@ public class EventController {
 		}		
 	}
 	
+	public static ArrayList<model.Event> viewAllEvents(){
+		ArrayList<model.Event> events = new ArrayList<>();
+		String query = "SELECT * FROM Events";
+		PreparedStatement ps;
+		
+		try {
+			ps = db.getConnection().prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Event ev = null;
+				String eventID = rs.getString("eventID");
+				String name = rs.getString("name");
+	        	Date date = rs.getDate("date");
+	        	String location = rs.getString("location");
+	        	String description = rs.getString("description");
+	        	String id = rs.getString("organizerID");
+	        		        	  
+	        	ev = new model.Event(eventID, name, date, location, description, id);
+	        	events.add(ev);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return events;
+	}
+	
 	public static model.Event viewEventDetails(String eventID){
 		model.Event ev = null;
 	    String query = "SELECT * FROM Events "
@@ -67,9 +98,9 @@ public class EventController {
 	        	  Date date = rs.getDate("date");
 	        	  String location = rs.getString("location");
 	        	  String description = rs.getString("description");
-	        	  String organizerID = rs.getString("organizerid");
+	        	  String id = rs.getString("organizerID");
 	        	  	        	  
-	        	  ev = new model.Event(eventID, name, date, location, description, organizerID);
+	        	  ev = new model.Event(eventID, name, date, location, description, id);
 	        }
 	       
 	        rs.close();
@@ -80,7 +111,7 @@ public class EventController {
 	    return ev;
 	}
 	
-	public static Event getEventByiD(String evID) {
+	public static Event getEventByID(String evID) {
 		Event ev = null;
 		String query = "SELECT * FROM Events "
 				+ "WHERE eventID = ?";
@@ -129,5 +160,23 @@ public class EventController {
 		    e.printStackTrace();
 		}
 
+	}
+	
+	public static ArrayList<Vendor> getAttendingVendorsByEventId(String eventID){
+		ArrayList<String> vendorEmails = InvitationController.getAttendingVendorsByEventID(eventID);
+		ArrayList<Vendor> vendors = new ArrayList<>();
+		for (String email : vendorEmails) {
+			vendors.add(VendorController.getVendorByEmail(email));
+		}
+		return vendors;
+	}
+	
+	public static ArrayList<Guest> getAttendingGuestsByEventId(String eventID){
+		ArrayList<String> guestEmails = InvitationController.getAttendingGuestsByEventID(eventID);
+		ArrayList<Guest> guests = new ArrayList<>();
+		for (String email : guestEmails) {
+			guests.add(GuestController.getGuestByEmail(email));
+		}
+		return guests;
 	}
 }

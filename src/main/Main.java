@@ -11,7 +11,7 @@ import view.LoginPage;
 public class Main extends Application {
 	
 //	event organizer
-//	public static User currentUser = new EventOrganizer("U7494612", "caelus@gmail.com", "caelus", "1234");
+//	public static User currentUser = new EventOrganizer("U3730035", "shawn@gmail.com", "shawn", "123456");
 //	public static User currentUser = new Vendor("U7337645", "herobrine1234@gmail.com", "herobrine1234", "herobrine1234");
 	
 	public static User currentUser = null;

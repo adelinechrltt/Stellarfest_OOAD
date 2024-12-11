@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import javafx.scene.control.Label;
 import main.Main;
+import model.Event;
+import model.Invitation;
 import model.Vendor;
 import util.Connect;
 import view.VendorViews.MyProductsPage;
@@ -14,7 +16,30 @@ import view.VendorViews.MyProductsPage;
 public class VendorController {
 
 	private static Connect db = Connect.getInstance();
-
+	
+	public static Vendor getVendorByEmail(String email) {
+		Vendor vendor = null;
+		String query = "SELECT * FROM Users\n"
+				+ "WHERE email = ?";
+		PreparedStatement ps;
+		
+		try {
+			ps = db.getConnection().prepareStatement(query);
+			ps.setString(1, email);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				String userID = rs.getString("userID");
+				String name = rs.getString("name");
+				String password = rs.getString("password");
+				vendor = new Vendor(userID, email, name, password);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return vendor;
+	}
+	
 	public static ArrayList<Vendor> getAllVendors(){
 		ArrayList<Vendor> vendors = new ArrayList<>();
 		
@@ -51,7 +76,7 @@ public class VendorController {
 		return vendors;
 	}
 
-	public static boolean validateProductCreds(String name, String description, Label errorLbl) {
+	public static boolean checkManageVendorInput(String name, String description, Label errorLbl) {
 		if(name.isEmpty() || description.isEmpty()) {
 			errorLbl.setText("ERROR: All fields must be filled!");
 			errorLbl.setVisible(true);
@@ -65,8 +90,10 @@ public class VendorController {
 		return true;
 	}
 	
+	// asumsi bahwa manageVendor berupa kumpulan operasi2 CRUD
+	// dan kumpulan operasinya dinamakan createProduct, updateProduct, deleteProduct, etc.
 	public static void createProduct(String userID, String name, String description, Label errorLbl) {
-		boolean isValid = validateProductCreds(name, description, errorLbl);
+		boolean isValid = checkManageVendorInput(name, description, errorLbl);
 		if(isValid) {			
 			ProductController.createProduct(userID, name, description);
 			Main.switchScene(MyProductsPage.getScene(userID));
@@ -75,7 +102,7 @@ public class VendorController {
 	}
 	
 	public static void updateProduct(String userID, String productID, String name, String description, Label errorLbl) {
-		boolean isValid = validateProductCreds(name, description, errorLbl);
+		boolean isValid = checkManageVendorInput(name, description, errorLbl);
 		if(isValid) {
 			ProductController.updateProduct(productID, name, description);
 			Main.switchScene(MyProductsPage.getScene(userID));
@@ -92,5 +119,21 @@ public class VendorController {
 			e.printStackTrace();
 			Main.displayAlert("ERROR", "Failed to delete product!");
 		}
+	}
+	
+	public static void acceptInvitation(String eventID, Label errorLbl) {
+		InvitationController.acceptInvitation(eventID, errorLbl);
+	}
+	
+	public static ArrayList<Event> viewAcceptedEvents (String email){
+		ArrayList<Event> events = new ArrayList<>();
+		ArrayList<Invitation> invites = InvitationController.getInvitationsByEmail(email);
+		for(Invitation inv : invites) {
+			 if(inv.getStatus().equals("Accepted")) {
+				 Event ev = EventController.getEventByID(inv.getEventID());
+				 events.add(ev);
+			 }
+		 }
+		return events;
 	}
 }

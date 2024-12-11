@@ -1,17 +1,14 @@
-package view;
+package view.AdminViews;
 
 import java.sql.Date;
 import java.util.ArrayList;
 
-import controller.EventController;
-import controller.EventOrganizerController;
-import controller.GuestController;
-import controller.InvitationController;
-import controller.VendorController;
+import controller.AdminController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -24,10 +21,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.Main;
 import model.Event;
-import model.Invitation;
+import model.User;
+import view.NavBar;
+import view.ViewEventDetails;
 
-public class ViewEventsList {
-	
+public class ViewAllEventsPage {
 	public static String tempID; 
 	private static int clickCount = 0;
 	
@@ -41,27 +39,21 @@ public class ViewEventsList {
 		 Font inputFont = Font.font("Microsoft Sans Serif", FontWeight.MEDIUM, 17);
 		 
 		 Label titleLbl = new Label();
-		 titleLbl.setText("My Events");
+		 titleLbl.setText("All Events");
 		 titleLbl.setFont(titleFont);
 		 		 
 		 layout.getChildren().addAll(navbar, titleLbl);
 
 		 ArrayList<model.Event> events = new ArrayList<>();
-		 if(Main.currentUser.getRole().equals("Event Organizer")) {
-			 events = EventOrganizerController.viewOrganizedEvents(Main.currentUser.getEmail());
-		 } else {
-//			 TODO: Move this to eventscontroller
-			 if(Main.currentUser.getRole().equals("Vendor")) events = VendorController.viewAcceptedEvents(Main.currentUser.getEmail());
-			 else if(Main.currentUser.getRole().equals("Guest")) events = GuestController.viewAcceptedEvents(Main.currentUser.getEmail());
-		 }
+		 events = AdminController.viewAllEvents();
 		 
 		 if(events==null || events.isEmpty()) {
 			 Label nullDisplay = new Label();
-			 nullDisplay.setText("No events! Create a new event now.");
+			 nullDisplay.setText("No events!");
 			 layout.getChildren().add(nullDisplay);
 		 } else {			 
 			 Label subtitleLbl = new Label();
-			 subtitleLbl.setText("Double-click on an entry for more actions.");
+			 subtitleLbl.setText("Double-click on an entry for more actions.\nCtrl+Click on rows to select multiple entries.");
 			 titleLbl.setFont(inputFont);
 
 			 ObservableList<model.Event> evs = FXCollections.observableArrayList(events);
@@ -98,7 +90,25 @@ public class ViewEventsList {
 		    	 }
 		     });
 		     
-		     layout.getChildren().addAll(subtitleLbl, viewMyEvents);
+		     ArrayList<Event> toDelete = new ArrayList<>();
+		     viewMyEvents.setOnMouseClicked(event -> {
+		    	    if (event.getClickCount() == 1 && event.isControlDown()) {
+		    	        TableSelectionModel<model.Event> evModel = viewMyEvents.getSelectionModel();
+		    	        model.Event selected = evModel.getSelectedItem();
+		    	        toDelete.add(selected);
+		    	    }
+		    	});
+		     
+            Button deleteBtn = new Button();
+            deleteBtn.setText("Delete Users");
+            deleteBtn.setOnAction(event -> {
+                for (Event ev : toDelete) {
+                    evs.remove(ev);
+                    AdminController.deleteEvent(ev.getEventID());
+                }
+            });
+		     
+		     layout.getChildren().addAll(subtitleLbl, viewMyEvents, deleteBtn);
 		 }
 	     
 		 return new Scene(layout, 300, 200);	

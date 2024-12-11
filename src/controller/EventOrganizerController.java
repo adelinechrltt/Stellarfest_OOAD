@@ -21,15 +21,15 @@ public class EventOrganizerController {
 		super();
 	}
 	
-	public static ArrayList<Event> viewOrganizedEvents(String organizerID){
+	public static ArrayList<Event> viewOrganizedEvents(String email){
 		ArrayList<Event> events = new ArrayList<>();
-	    String query = "SELECT * FROM events "
-	    		+ "WHERE organizerid = ?";
+	    String query = "SELECT * FROM events e JOIN users u ON e.OrganizerID = u.UserID\n"
+	    		+ "WHERE u.Email = ?";
 	    
 	    try (Connection conn = db.getConnection();
 	    		
 	         PreparedStatement ps = conn.prepareStatement(query)) {
-	         ps.setString(1, organizerID);
+	         ps.setString(1, email);
 	         ResultSet rs = ps.executeQuery();
 
 	         while (rs.next()) {
@@ -39,7 +39,6 @@ public class EventOrganizerController {
 	             event.setDate(rs.getDate("date"));
 	             event.setLocation(rs.getString("location"));
 	             event.setDescription(rs.getString("description"));
-	             event.setOrganizerID(rs.getString("organizerId"));
 	             events.add(event);
 	         }
 	         
@@ -47,18 +46,17 @@ public class EventOrganizerController {
 	         e.printStackTrace();
 	     }
 
-		
 		return events;
 	}
 	
-	public static void viewOrganizedEventDetails(String eventID, Label name, Label date, Label loc, Label desc){
-		model.Event ev = EventController.viewEventDetails(eventID);
-		if(ev != null) {
-			name.setText(ev.getName());
-			date.setText(ev.getDate().toString());
-			loc.setText(ev.getLocation());
-			desc.setText(ev.getDescription());
-		}	
+	public static Event viewOrganizedEventDetails(String eventID){
+		model.Event ev = null;
+		try {
+			ev = EventController.viewEventDetails(eventID);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ev;
 	}
 	
 	public static boolean checkCreateEventInput(String name, LocalDate date, String location, String description, String organizerID, Label errorLbl) {
@@ -127,8 +125,8 @@ public class EventOrganizerController {
 		}
 	}
 	
-	public static void inviteToEvent(String eventID, String userID) {
-		InvitationController.createInvitation(eventID, userID);
+	public static void inviteToEvent(String eventID, String email) {
+		InvitationController.sendInvitation(eventID, email);
 	}
 	
 }

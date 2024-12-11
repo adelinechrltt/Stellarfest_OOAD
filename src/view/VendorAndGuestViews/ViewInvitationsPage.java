@@ -44,7 +44,7 @@ public class ViewInvitationsPage {
 		
 		layout.getChildren().addAll(navbar, titleLbl);
 
-		ArrayList<Invitation> invites = InvitationController.getPendingInvsByUserID(Main.currentUser.getUserID());
+		ArrayList<Invitation> invites = InvitationController.getPendingInvsByEmail(Main.currentUser.getEmail());
 		if(invites.isEmpty() || invites == null) {
 			Label nullDisplay = new Label();
 			nullDisplay.setText("No invitations found!");
@@ -66,21 +66,21 @@ public class ViewInvitationsPage {
 		    TableColumn<Invitation, String> evNameCol = new TableColumn<>("Event Name");
 		    evNameCol.setCellValueFactory(cellData -> {
 		        String evID = cellData.getValue().getEventID();
-		        String name = EventController.getEventByiD(evID).getName();
+		        String name = EventController.getEventByID(evID).getName();
 		        return new SimpleStringProperty(name);
 		    });
 
 		    TableColumn<Invitation, String> evDateCol = new TableColumn<>("Event Date");
 		    evDateCol.setCellValueFactory(cellData -> {
 		        String evID = cellData.getValue().getEventID();
-		        Date date = EventController.getEventByiD(evID).getDate();
+		        Date date = EventController.getEventByID(evID).getDate();
 		        return new SimpleStringProperty(date.toString());
 		    });
 		    
 		    TableColumn<Invitation, String> evDescCol = new TableColumn<>("Event Description");
 		    evDescCol.setCellValueFactory(cellData -> {
 		        String evID = cellData.getValue().getEventID();
-		        String desc = EventController.getEventByiD(evID).getDescription();
+		        String desc = EventController.getEventByID(evID).getDescription();
 		        return new SimpleStringProperty(desc);
 		    });
 		    

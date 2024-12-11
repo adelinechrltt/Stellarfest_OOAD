@@ -5,6 +5,8 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import main.Main;
+import view.AdminViews.ViewAllEventsPage;
+import view.AdminViews.ViewAllUsersPage;
 import view.VendorAndGuestViews.ViewInvitationsPage;
 import view.VendorViews.MyProductsPage;
 
@@ -45,6 +47,9 @@ public class NavBar {
         });
         
         UsersBtn.setText("Users");
+        UsersBtn.setOnAction(e -> {
+        	Main.switchScene(ViewAllUsersPage.getScene());
+        });
         
         ProfileBtn.setText("My Profile");
         ProfileBtn.setOnAction(e -> {
@@ -56,11 +61,16 @@ public class NavBar {
         	Main.switchScene(MyProductsPage.getScene(Main.currentUser.getUserID()));
         });
         
+        Button AllEventsBtn = new Button();
+        AllEventsBtn.setText("All Events");
+        AllEventsBtn.setOnAction(e ->{
+        	Main.switchScene(ViewAllEventsPage.getScene());
+        });
         
         if(role.equals("Event Organizer")) {
             navbar.getChildren().addAll(HomeBtn, EventsBtn, CreateEventBtn, ProfileBtn);
         } else if (role.equals("Admin")) {
-            navbar.getChildren().addAll(HomeBtn, EventsBtn, UsersBtn, ProfileBtn);
+            navbar.getChildren().addAll(HomeBtn, AllEventsBtn, UsersBtn, ProfileBtn);
         } else if (role.equals("Vendor")) {
             navbar.getChildren().addAll(HomeBtn, InvitationsBtn, ProductsBtn, EventsBtn, ProfileBtn);
         }else if (role.equals("Guest")) {

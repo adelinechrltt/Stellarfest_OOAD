@@ -60,7 +60,7 @@ public class InviteVendor {
                 Main.displayAlert("Error", "ERROR: You must select at least one vendor to invite!");
             } else {
                 for (Vendor vendor : selectedVendors) {
-                	EventOrganizerController.inviteToEvent(eventID, vendor.getUserID());
+                	EventOrganizerController.inviteToEvent(eventID, vendor.getEmail());
                 }
             }
 

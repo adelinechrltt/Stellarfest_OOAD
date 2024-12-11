@@ -13,12 +13,12 @@ public class Event {
 
 	public Event(String eventID, String name, Date date, String location, String description, String organizerID) {
 		super();
-		this.EventID = eventID;
+		EventID = eventID;
 		this.name = name;
 		this.date = date;
 		this.location = location;
 		this.description = description;
-		this.OrganizerID = organizerID;
+		OrganizerID = organizerID;
 	}
 
 	public String getEventID() {

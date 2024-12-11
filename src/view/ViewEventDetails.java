@@ -2,13 +2,19 @@ package view;
 
 import java.util.ArrayList;
 
+import controller.EventController;
 import controller.EventOrganizerController;
 import controller.GuestController;
 import controller.VendorController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,6 +22,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.Main;
 import model.Guest;
+import model.User;
 import model.Vendor;
 import view.EventOrganizerViews.InviteGuest;
 import view.EventOrganizerViews.InviteVendor;
@@ -54,68 +61,150 @@ public class ViewEventDetails {
 	     Label evDescLbl = new Label();
 	     evDescLbl.setText("Event Description: ");
 	     
-	     Label evIDVal = new Label();
-	     evIDVal.setText(eventID);
-	     Label evNameVal = new Label();
-	     Label evDateVal = new Label();
-	     Label evLocVal = new Label();
-	     Label evDescVal = new Label();
-	     EventOrganizerController.viewOrganizedEventDetails(eventID, evNameVal, evDateVal, evLocVal, evDescVal);
-	     
-	     eventDetails.add(evIDLbl, 0, 0);
-	     eventDetails.add(evIDVal, 1, 0);
-	     eventDetails.add(evNameLbl, 0, 1);
-	     eventDetails.add(evNameVal, 1, 1);
-	     eventDetails.add(evDateLbl, 0, 2);
-	     eventDetails.add(evDateVal, 1, 2);
-	     eventDetails.add(evLocLbl, 0, 3);
-	     eventDetails.add(evLocVal, 1, 3);
-	     eventDetails.add(evDescLbl, 0, 4);
-	     eventDetails.add(evDescVal, 1, 4);
-	     
-	     eventDetails.setAlignment(Pos.CENTER);
-	     
-		 layout.getChildren().addAll(navbar, manipTitle, eventDetails);
-	     
-	     
-//		 buttons field
-	     if(Main.currentUser.getRole().equals("Event Organizer")) {
-	    	 Button updateBtn = new Button(), deleteBtn = new Button(), inviteGuests = new Button(), inviteVendors = new Button();
-			 GridPane buttons = new GridPane();
-			 
-			 updateBtn.setText("Update Event Name");
-			 updateBtn.setOnAction(e -> {
-				 Main.switchScene(UpdateEventNamePage.getScene(eventID, evNameVal.getText()));
-			 });
-			 buttons.add(updateBtn, 0, 0);
-			 
-			 deleteBtn.setText("Delete Event");
-			 deleteBtn.setOnAction(e -> {
-				 EventOrganizerController.deleteEvent(eventID);
-			 });
-			 buttons.add(deleteBtn, 1, 0);
-			 
-			 inviteGuests.setText("Invite Guests");
-			 inviteGuests.setOnAction(e -> {
-				 ArrayList<Guest> guests = GuestController.getUninvitedGuests(eventID);
+	     model.Event ev = EventOrganizerController.viewOrganizedEventDetails(eventID);
+
+	     try {
+	    	 Label evIDVal = new Label();
+	    	 evIDVal.setText(eventID);
+	    	 Label evNameVal = new Label();
+	    	 evNameVal.setText(ev.getName());
+	    	 Label evDateVal = new Label();
+	    	 evDateVal.setText(ev.getDate().toString());
+	    	 Label evLocVal = new Label();
+	    	 evLocVal.setText(ev.getLocation());
+	    	 Label evDescVal = new Label();
+	    	 evDescVal.setText(ev.getDescription());
+	    	 
+	    	 eventDetails.add(evIDLbl, 0, 0);
+	    	 eventDetails.add(evIDVal, 1, 0);
+	    	 eventDetails.add(evNameLbl, 0, 1);
+	    	 eventDetails.add(evNameVal, 1, 1);
+	    	 eventDetails.add(evDateLbl, 0, 2);
+	    	 eventDetails.add(evDateVal, 1, 2);
+	    	 eventDetails.add(evLocLbl, 0, 3);
+	    	 eventDetails.add(evLocVal, 1, 3);
+	    	 eventDetails.add(evDescLbl, 0, 4);
+	    	 eventDetails.add(evDescVal, 1, 4);
+	    	 
+	    	 eventDetails.setAlignment(Pos.CENTER);
+	    	 
+	    	 layout.getChildren().addAll(navbar, manipTitle, eventDetails);
+	    	 
+	    	 if(Main.currentUser.getRole().equals("Event Organizer") || Main.currentUser.getRole().equals("Admin")) {
+		    	 
+				 Label vendorsLbl = new Label();
+				 vendorsLbl.setText("Attending Vendors: ");
 				 
-				 if(guests == null) Main.displayAlert("ERROR", "No guests left to invite for this event!");
-				 else Main.switchScene(InviteGuest.getScene(eventID));
-			 });
-			 buttons.add(inviteGuests, 2, 0);
-			 
-			 inviteVendors.setText("Invite Vendors");
-			 inviteVendors.setOnAction(e -> {
-				 ArrayList<Vendor> vendors = VendorController.getUninvitedVendors(eventID);
+				 layout.getChildren().add(vendorsLbl);
 				 
-				 if (vendors == null) Main.displayAlert("ERROR", "No vendors left to invite for this event!");
-				 else Main.switchScene(InviteVendor.getScene(eventID));
-			 });
-			 
-			 buttons.add(inviteVendors, 3, 0);
-			 
-			 buttons.setAlignment(Pos.CENTER);
-			 layout.getChildren().add(buttons);
+				 try {
+					 ObservableList<Vendor> vendorsList = FXCollections.observableArrayList(EventController.getAttendingVendorsByEventId(eventID));
+					 
+					 if (vendorsList.isEmpty() || vendorsList == null) {
+						 Label nullVendorsDisplay = new Label();
+						 nullVendorsDisplay.setText("No vendors attending this event!");
+						 layout.getChildren().add(nullVendorsDisplay);
+					 } else {
+						 TableView<Vendor> vendorsView = new TableView<>();
+					     
+						 TableColumn<Vendor, String> vendorIdCol = new TableColumn<>("Vendor ID");
+						 vendorIdCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
+
+						 TableColumn<Vendor, String> vendorNameCol = new TableColumn<>("Name");
+						 vendorNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+						
+						 TableColumn<Vendor, String> vendorEmailCol = new TableColumn<>("Email");
+						 vendorEmailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+						
+						 vendorsView.getColumns().addAll(vendorIdCol, vendorNameCol, vendorEmailCol);
+						 vendorsView.setItems(vendorsList);
+						 vendorsView.setPrefHeight(vendorsList.size() * 24 + 28);
+
+						 layout.getChildren().add(vendorsView); 
+					 }
+				 } catch (Exception e) {
+					 e.printStackTrace();
+				 }
+				 
+				 Label guestsLbl = new Label();
+				 guestsLbl.setText("Attending Guests: ");
+				 
+				 layout.getChildren().add(guestsLbl);
+				 
+				 try {
+					 ObservableList<Guest> guestsList = FXCollections.observableArrayList(EventController.getAttendingGuestsByEventId(eventID));
+					 
+					 if (guestsList.isEmpty() || guestsList == null) {
+						 Label nullGuestsDisplay = new Label();
+						 nullGuestsDisplay.setText("No guests attending this event!");
+						 layout.getChildren().add(nullGuestsDisplay);
+					 } else {
+						 TableView<Guest> guestsView = new TableView<>();
+					     
+						 TableColumn<Guest, String> guestIdCol = new TableColumn<>("Guest ID");
+						 guestIdCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
+
+						 TableColumn<Guest, String> guestNameCol = new TableColumn<>("Name");
+						 guestNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+						
+						 TableColumn<Guest, String> guestEmailCol = new TableColumn<>("Email");
+						 guestEmailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+						
+						 guestsView.getColumns().addAll(guestIdCol, guestNameCol, guestEmailCol);
+						 guestsView.setItems(guestsList);
+						 guestsView.setPrefHeight(guestsList.size() * 24 + 28);
+
+					     
+						 layout.getChildren().add(guestsView); 
+					 }
+				 } catch (Exception e) {
+					 e.printStackTrace();
+				 }
+	    	 }
+	    	 
+	    	 if(Main.currentUser.getRole().equals("Event Organizer") || Main.currentUser.getRole().equals("Admin")) {
+	    		// buttons
+		    	 Button updateBtn = new Button(), deleteBtn = new Button(), inviteGuests = new Button(), inviteVendors = new Button();
+				 HBox UDBtns = new HBox();
+				 UDBtns.setAlignment(Pos.CENTER);
+				 HBox inviteBtns = new HBox();
+				 inviteBtns.setAlignment(Pos.CENTER);
+				 
+				 updateBtn.setText("Update Event Name");
+				 updateBtn.setOnAction(e -> {
+					 Main.switchScene(UpdateEventNamePage.getScene(eventID, evNameVal.getText()));
+				 });
+				 UDBtns.getChildren().add(updateBtn);
+				 
+				 deleteBtn.setText("Delete Event");
+				 deleteBtn.setOnAction(e -> {
+					 EventOrganizerController.deleteEvent(eventID);
+				 });
+				 if(Main.currentUser.getRole().equals("Admin")) UDBtns.getChildren().add(deleteBtn);
+				 
+				 inviteGuests.setText("Invite Guests");
+				 inviteGuests.setOnAction(e -> {
+					 ArrayList<Guest> guests = GuestController.getUninvitedGuests(eventID);
+					 
+					 if(guests == null) Main.displayAlert("ERROR", "No guests left to invite for this event!");
+					 else Main.switchScene(InviteGuest.getScene(eventID));
+				 });
+				 inviteBtns.getChildren().add(inviteGuests);
+				 
+				 inviteVendors.setText("Invite Vendors");
+				 inviteVendors.setOnAction(e -> {
+					 ArrayList<Vendor> vendors = VendorController.getUninvitedVendors(eventID);
+					 
+					 if (vendors == null) Main.displayAlert("ERROR", "No vendors left to invite for this event!");
+					 else Main.switchScene(InviteVendor.getScene(eventID));
+				 });
+				 
+				 inviteBtns.getChildren().add(inviteVendors);
+				 
+				 layout.getChildren().addAll(UDBtns, inviteBtns); 
+	    	 }
+	     } catch (Exception e) {
+	    	 e.printStackTrace();
 	     }
 		 		 
 		 return new Scene(layout, 300, 200);

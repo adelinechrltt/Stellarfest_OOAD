@@ -29,7 +29,8 @@ public class EventController {
 	}
 	
 	public static void createEvent(String name, LocalDate date, String location, String description, String organizerID) {		
-		boolean successFlag = Event.createEvent(organizerID, name, date, location, description, organizerID);
+		String eventID = generateEventID();
+		boolean successFlag = Event.createEvent(eventID, name, date, location, description, organizerID);
 		if(successFlag) {
 			Main.switchScene(ViewEventsList.getScene());
 	        Main.displayAlert("Event creation succesful!", "Succesfully created a new event!");

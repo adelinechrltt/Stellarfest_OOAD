@@ -96,16 +96,21 @@ public class ViewAllEventsPage {
 		    	        TableSelectionModel<model.Event> evModel = viewMyEvents.getSelectionModel();
 		    	        model.Event selected = evModel.getSelectedItem();
 		    	        toDelete.add(selected);
+		    	        System.out.println(selected.getName());
 		    	    }
 		    	});
 		     
             Button deleteBtn = new Button();
-            deleteBtn.setText("Delete Users");
+            deleteBtn.setText("Delete Events");
             deleteBtn.setOnAction(event -> {
-                for (Event ev : toDelete) {
-                    evs.remove(ev);
-                    AdminController.deleteEvent(ev.getEventID());
-                }
+            	try {            		
+            		for (Event ev : toDelete) {
+            			evs.remove(ev);
+            			AdminController.deleteEvent(ev.getEventID());
+            		}
+            	} catch (Exception e) {
+            		e.printStackTrace();
+            	}
             });
 		     
 		     layout.getChildren().addAll(subtitleLbl, viewMyEvents, deleteBtn);

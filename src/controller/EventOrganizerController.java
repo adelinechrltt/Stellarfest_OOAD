@@ -107,7 +107,7 @@ public class EventOrganizerController {
 	
 //	karena 2 method ini tidak ada di activity diagram maka saya asumsikan
 //	bahwa 2 method ini berupa method get
-	public static void getGuests();
-	public static void getVendors();
+	public static void getGuests() {};
+	public static void getVendors() {};
 	
 }

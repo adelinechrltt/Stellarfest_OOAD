@@ -10,42 +10,18 @@ import java.util.ArrayList;
 import javafx.scene.control.Label;
 import main.Main;
 import model.Event;
+import model.EventOrganizer;
 import util.Connect;
 import view.ViewEventsList;
 
 public class EventOrganizerController {
-	
-	private static Connect db = Connect.getInstance();
-	
+		
 	public EventOrganizerController() {
 		super();
 	}
 	
 	public static ArrayList<Event> viewOrganizedEvents(String email){
-		ArrayList<Event> events = new ArrayList<>();
-	    String query = "SELECT * FROM events e JOIN users u ON e.OrganizerID = u.UserID\n"
-	    		+ "WHERE u.Email = ?";
-	    
-	    try (Connection conn = db.getConnection();
-	    		
-	         PreparedStatement ps = conn.prepareStatement(query)) {
-	         ps.setString(1, email);
-	         ResultSet rs = ps.executeQuery();
-
-	         while (rs.next()) {
-	        	 Event event = new Event(null, null, null, null, null, null);
-	             event.setEventID(rs.getString("eventId"));
-	             event.setName(rs.getString("name"));
-	             event.setDate(rs.getDate("date"));
-	             event.setLocation(rs.getString("location"));
-	             event.setDescription(rs.getString("description"));
-	             events.add(event);
-	         }
-	         
-	     } catch (SQLException e) {
-	         e.printStackTrace();
-	     }
-
+		ArrayList<Event> events = EventOrganizer.viewOrganizedEvents(email);
 		return events;
 	}
 	
@@ -128,5 +104,10 @@ public class EventOrganizerController {
 	public static void inviteToEvent(String eventID, String email) {
 		InvitationController.sendInvitation(eventID, email);
 	}
+	
+//	karena 2 method ini tidak ada di activity diagram maka saya asumsikan
+//	bahwa 2 method ini berupa method get
+	public static void getGuests();
+	public static void getVendors();
 	
 }

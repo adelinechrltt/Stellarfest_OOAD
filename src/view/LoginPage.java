@@ -20,6 +20,7 @@ public class LoginPage {
 		 Label errorLbl = new Label();
 		 
 		 TextField emailField = new TextField();
+		 
 		 PasswordField pwField = new PasswordField();
 		 
 		 Button loginBtn = new Button();
@@ -71,6 +72,6 @@ public class LoginPage {
 		 
 		 layout.getChildren().addAll(titleLbl, input, errorLbl, loginBtn, register);
 
-		 return new Scene(layout, 300, 200);	
+		 return new Scene(layout, 1600, 900);	
 	}
 }

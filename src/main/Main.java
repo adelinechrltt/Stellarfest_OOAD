@@ -25,11 +25,12 @@ public class Main extends Application {
         primaryStage.setTitle("Stellarfest");
         primaryStage.setResizable(true);
         primaryStage.show();
+        
 
         
         Scene scene = LoginPage.getScene();
 //        Scene scene = RegisterPage.getScene();
-//        Scene scene = ViewMyEventsPage.getScene();
+//        Scene scene = ViewEventsList.getScene();
 //        Scene scene = Home.getScene();
         
         scene.getStylesheets().add(css);

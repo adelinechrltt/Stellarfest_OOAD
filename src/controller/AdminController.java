@@ -3,12 +3,12 @@ package controller;
 import java.util.ArrayList;
 
 import main.Main;
+import model.Admin;
 import model.Event;
 import model.User;
 import util.Connect;
 
 public class AdminController {
-	private static Connect db = Connect.getInstance();
 	
 	public static ArrayList<Event> viewAllEvents(){
 		ArrayList<Event> events = EventController.viewAllEvents();
@@ -16,18 +16,17 @@ public class AdminController {
 	}
 	
 	public static ArrayList<User> viewAllUsers(){
-		ArrayList<User> users = UserController.viewAllUsers();
+		ArrayList<User> users = Admin.viewAllUsers();
 		return users;
 	}
 
 	public static void deleteUser(String userID) {
 		try {
-			UserController.deleteUser(userID);
+			Admin.deleteUser(userID);
 			Main.displayAlert("Info", "Successfully deleted user: " + userID + "!");
 		} catch (Exception e) {
 			Main.displayAlert("ERROR", "Failed to delete user: " + userID);
 		}
-		
 	}
 	
 	public static void deleteEvent(String eventID) {

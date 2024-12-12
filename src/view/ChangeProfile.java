@@ -131,6 +131,6 @@ public class ChangeProfile {
 		 
 		 layout.getChildren().addAll(titleLbl, input, updateBtn, errorLbl);
 
-		 return new Scene(layout);	
+		 return new Scene(layout, 1600, 900);	
 	}
 }

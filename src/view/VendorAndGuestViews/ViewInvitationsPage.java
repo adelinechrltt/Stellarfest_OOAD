@@ -66,21 +66,21 @@ public class ViewInvitationsPage {
 		    TableColumn<Invitation, String> evNameCol = new TableColumn<>("Event Name");
 		    evNameCol.setCellValueFactory(cellData -> {
 		        String evID = cellData.getValue().getEventID();
-		        String name = EventController.getEventByID(evID).getName();
+		        String name = EventController.viewEventDetails(evID).getName();
 		        return new SimpleStringProperty(name);
 		    });
 
 		    TableColumn<Invitation, String> evDateCol = new TableColumn<>("Event Date");
 		    evDateCol.setCellValueFactory(cellData -> {
 		        String evID = cellData.getValue().getEventID();
-		        Date date = EventController.getEventByID(evID).getDate();
+		        Date date = EventController.viewEventDetails(evID).getDate();
 		        return new SimpleStringProperty(date.toString());
 		    });
 		    
 		    TableColumn<Invitation, String> evDescCol = new TableColumn<>("Event Description");
 		    evDescCol.setCellValueFactory(cellData -> {
 		        String evID = cellData.getValue().getEventID();
-		        String desc = EventController.getEventByID(evID).getDescription();
+		        String desc = EventController.viewEventDetails(evID).getDescription();
 		        return new SimpleStringProperty(desc);
 		    });
 		    
@@ -106,6 +106,6 @@ public class ViewInvitationsPage {
 		    layout.getChildren().addAll(subtitleLbl, invitesView);
 		}
 		
-		return new Scene(layout, 300, 200);
+		return new Scene(layout, 1600, 900);
 	}
 }

@@ -60,13 +60,13 @@ public class InviteGuest {
                 Main.displayAlert("Error", "ERROR: You must select at least one guest to invite!");
             } else {
                 for (Guest Guest : selectedGuests) {
-                	EventOrganizerController.inviteToEvent(eventID, Guest.getUserID());
+                	EventOrganizerController.inviteToEvent(eventID, Guest.getEmail());
                 }
             }
 
         });
         
 	    layout.getChildren().addAll(navbar, titleLbl, GuestListView, inviteBtn);
-		return new Scene(layout, 300, 200);
+		return new Scene(layout, 1600, 900);
 	}
 }

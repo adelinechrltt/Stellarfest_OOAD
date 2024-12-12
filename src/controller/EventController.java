@@ -15,8 +15,6 @@ import util.Connect;
 import view.ViewEventsList;
 
 public class EventController {
-
-	private static Connect db = Connect.getInstance();
 	
 	public EventController() {
 		super();
@@ -31,134 +29,30 @@ public class EventController {
 	}
 	
 	public static void createEvent(String name, LocalDate date, String location, String description, String organizerID) {		
-		String query = "INSERT INTO Events\n"
-				+ "(eventid, name, date, location, description, organizerID) "
-				+ "VALUES (?, ?, ?, ?, ?, ?)";
-		
-		PreparedStatement ps;
-
-		try {
-			ps = db.getConnection().prepareStatement(query);
-			ps.setString(1, generateEventID());
-			ps.setString(2, name);
-            ps.setDate(3, Date.valueOf(date));
-            ps.setString(4, location);
-            ps.setString(5, description);
-            ps.setString(6, organizerID);
-            ps.execute();
-            
-            Main.switchScene(ViewEventsList.getScene());
-            Main.displayAlert("Event creation succesful!", "Succesfully created a new event!");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
+		boolean successFlag = Event.createEvent(organizerID, name, date, location, description, organizerID);
+		if(successFlag) {
+			Main.switchScene(ViewEventsList.getScene());
+	        Main.displayAlert("Event creation succesful!", "Succesfully created a new event!");
+		} else Main.displayAlert("ERROR", "Failed to create new event.");
 	}
 	
 	public static ArrayList<model.Event> viewAllEvents(){
-		ArrayList<model.Event> events = new ArrayList<>();
-		String query = "SELECT * FROM Events";
-		PreparedStatement ps;
-		
-		try {
-			ps = db.getConnection().prepareStatement(query);
-			ResultSet rs = ps.executeQuery();
-			
-			while(rs.next()) {
-				Event ev = null;
-				String eventID = rs.getString("eventID");
-				String name = rs.getString("name");
-	        	Date date = rs.getDate("date");
-	        	String location = rs.getString("location");
-	        	String description = rs.getString("description");
-	        	String id = rs.getString("organizerID");
-	        		        	  
-	        	ev = new model.Event(eventID, name, date, location, description, id);
-	        	events.add(ev);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
+		ArrayList<model.Event> events = Event.viewAllEvents();
 		return events;
 	}
 	
 	public static model.Event viewEventDetails(String eventID){
-		model.Event ev = null;
-	    String query = "SELECT * FROM Events "
-	    		+ "WHERE eventid = ?";
-	    PreparedStatement ps;
-	    
-	    try {
-	          ps = db.getConnection().prepareStatement(query);
-	          ps.setString(1, eventID);
-	          ResultSet rs = ps.executeQuery();
-	          
-	          if (rs.next()) {
-	        	  String name = rs.getString("name");
-	        	  Date date = rs.getDate("date");
-	        	  String location = rs.getString("location");
-	        	  String description = rs.getString("description");
-	        	  String id = rs.getString("organizerID");
-	        	  	        	  
-	        	  ev = new model.Event(eventID, name, date, location, description, id);
-	        }
-	       
-	        rs.close();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+		model.Event ev = Event.viewEventDetails(eventID);
 
 	    return ev;
 	}
 	
-	public static Event getEventByID(String evID) {
-		Event ev = null;
-		String query = "SELECT * FROM Events "
-				+ "WHERE eventID = ?";
-		PreparedStatement ps;
-		
-		try {
-			ps = db.getConnection().prepareStatement(query);
-			ps.setString(1, evID);
-			ResultSet rs = ps.executeQuery();
-			if(rs.next()) {
-				ev = new Event(rs.getString("eventID"), rs.getString("name"), rs.getDate("date"), rs.getString("location"), rs.getString("description"), rs.getString("organizerID"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return ev;
-	}
-	
 	public static void updateEventName(String eventID, String name){
-		String query = "UPDATE Events "
-				+ "SET name = ? "
-				+ "WHERE eventid = ?";
-
-		PreparedStatement ps;
-
-		try {
-		    ps = db.getConnection().prepareStatement(query);
-		    ps.setString(1, name); 
-		    ps.setString(2, eventID);
-		    ps.execute();
-		} catch (SQLException e) {
-		    e.printStackTrace();
-		}
+		Event.updateEventName(eventID, name);
 	}
 	
 	public static void deleteEvent(String eventID) {
-		String query = "DELETE FROM Events WHERE eventid = ?";
-
-		PreparedStatement ps;
-
-		try {
-		    ps = db.getConnection().prepareStatement(query);
-		    ps.setString(1, eventID);  
-		    ps.execute();
-		} catch (SQLException e) {
-		    e.printStackTrace();
-		}
+		Event.deleteEvent(eventID);
 
 	}
 	

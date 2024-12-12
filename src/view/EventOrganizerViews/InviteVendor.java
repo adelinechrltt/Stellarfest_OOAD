@@ -1,5 +1,8 @@
 package view.EventOrganizerViews;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import controller.EventOrganizerController;
@@ -17,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.Main;
+import model.Invitation;
 import model.Vendor;
 import view.NavBar;
 
@@ -67,6 +71,6 @@ public class InviteVendor {
         });
         
 	    layout.getChildren().addAll(navbar, titleLbl, vendorListView, inviteBtn);
-		return new Scene(layout, 300, 200);
+		return new Scene(layout, 1600, 900);
 	}
 }

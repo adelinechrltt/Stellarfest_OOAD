@@ -23,7 +23,7 @@ public class RegisterPage {
 		 TextField emailField = new TextField();
 		 TextField usnField = new TextField();
 		 PasswordField pwField = new PasswordField();
-		 
+		 		 
 		 ComboBox roleBox = new ComboBox();
 		 roleBox.getItems().addAll("Event Organizer", "Vendor", "Guest");
 		 
@@ -57,11 +57,13 @@ public class RegisterPage {
 		 registerBtn.setFont(Font.font("Microsoft Sans Serif", FontWeight.BOLD, 21));
 		 registerBtn.setOnAction(e -> {
 			 errorLbl.setText("");
+			 String role = (roleBox.getValue() == null) ? "" : roleBox.getValue().toString();
+			 
 			 UserController.validateRegistration(
 					 emailField.getText(), 
 					 usnField.getText(), 
 					 pwField.getText(), 
-					 roleBox.getValue().toString(),
+					 role,
 					 errorLbl);
 		 });
 		 
@@ -93,6 +95,6 @@ public class RegisterPage {
 		 
 		 layout.getChildren().addAll(titleLbl, input, errorLbl, registerBtn, login);
 
-		 return new Scene(layout, 300, 200); 
+		 return new Scene(layout, 1600, 900); 
 	}
 }

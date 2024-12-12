@@ -25,6 +25,6 @@ public class Home {
 		 greetingLbl.setText("Hello, " + Main.currentUser.getName() + "!");
 		 
 		 layout.getChildren().addAll(navbar, greetingLbl);
-		 return new Scene(layout, 300, 200);	
+		 return new Scene(layout, 1600, 900);	
 	}
 }

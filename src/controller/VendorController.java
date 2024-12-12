@@ -19,50 +19,13 @@ public class VendorController {
 	
 	public static Vendor getVendorByEmail(String email) {
 		Vendor vendor = null;
-		String query = "SELECT * FROM Users\n"
-				+ "WHERE email = ?";
-		PreparedStatement ps;
-		
-		try {
-			ps = db.getConnection().prepareStatement(query);
-			ps.setString(1, email);
-			ResultSet rs = ps.executeQuery();
-			if(rs.next()) {
-				String userID = rs.getString("userID");
-				String name = rs.getString("name");
-				String password = rs.getString("password");
-				vendor = new Vendor(userID, email, name, password);
-			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
+		vendor = Vendor.getVendorByEmail(email);
 		
 		return vendor;
 	}
 	
 	public static ArrayList<Vendor> getAllVendors(){
-		ArrayList<Vendor> vendors = new ArrayList<>();
-		
-        String query = "SELECT * FROM users "
-        		+ "WHERE role = 'Vendor'";
-        PreparedStatement ps;
-
-        try {
-        	ps = db.getConnection().prepareStatement(query);
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-            	String vendorID = rs.getString("UserID");
-            	String vendorEmail = rs.getString("Email");
-            	String vendorName = rs.getString("Name");
-            	String vendorPw = rs.getString("Password");
-            	vendors.add(new Vendor(vendorID, vendorEmail, vendorName, vendorPw));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+		ArrayList<Vendor> vendors = Vendor.getAllVendors();
         return vendors;
 	}
 	
@@ -130,7 +93,7 @@ public class VendorController {
 		ArrayList<Invitation> invites = InvitationController.getInvitationsByEmail(email);
 		for(Invitation inv : invites) {
 			 if(inv.getStatus().equals("Accepted")) {
-				 Event ev = EventController.getEventByID(inv.getEventID());
+				 Event ev = EventController.viewEventDetails(inv.getEventID());
 				 events.add(ev);
 			 }
 		 }

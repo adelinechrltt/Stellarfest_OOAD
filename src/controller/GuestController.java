@@ -12,54 +12,13 @@ import util.Connect;
 
 public class GuestController {
 	
-	private static Connect db = Connect.getInstance();
-	
 	public static Guest getGuestByEmail(String email) {
-		Guest guest = null;
-		String query = "SELECT * FROM Users\n"
-				+ "WHERE email = ?";
-		PreparedStatement ps;
-		
-		try {
-			ps = db.getConnection().prepareStatement(query);
-			ps.setString(1, email);
-			ResultSet rs = ps.executeQuery();
-			if(rs.next()) {
-				String guestID = rs.getString("userID");
-				String name = rs.getString("name");
-				String password = rs.getString("password");
-				guest = new Guest(guestID, email, name, password);
-			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		
+		Guest guest = Guest.getGuestByEmail(email);
 		return guest;
 	}
 	
 	public static ArrayList<Guest> getAllGuests(){
-		ArrayList<Guest> Guests = new ArrayList<>();
-		
-        String query = "SELECT * FROM users "
-        		+ "WHERE role = 'Guest'";
-        PreparedStatement ps;
-
-        try {
-        	ps = db.getConnection().prepareStatement(query);
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-            	String GuestID = rs.getString("UserID");
-            	String GuestEmail = rs.getString("Email");
-            	String GuestName = rs.getString("Name");
-            	String GuestPw = rs.getString("Password");
-            	Guests.add(new Guest(GuestID, GuestEmail, GuestName, GuestPw));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+		ArrayList<Guest> Guests = Guest.getAllGuests();
         return Guests;
 	}
 	
@@ -78,7 +37,7 @@ public class GuestController {
 		ArrayList<Invitation> invites = InvitationController.getInvitationsByEmail(email);
 		for(Invitation inv : invites) {
 			 if(inv.getStatus().equals("Accepted")) {
-				 Event ev = EventController.getEventByID(inv.getEventID());
+				 Event ev = EventController.viewEventDetails(inv.getEventID());
 				 events.add(ev);
 			 }
 		 }

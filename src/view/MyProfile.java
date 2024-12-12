@@ -68,6 +68,6 @@ public class MyProfile {
 		 
 		 layout.getChildren().addAll(navbar, titleLbl, input, changePwBtn);
 
-		 return new Scene(layout, 300, 200);	
+		 return new Scene(layout, 1600, 900);	
 	}
 }

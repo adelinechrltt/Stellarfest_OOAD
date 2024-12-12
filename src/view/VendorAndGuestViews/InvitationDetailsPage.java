@@ -42,7 +42,7 @@ public class InvitationDetailsPage {
 		errorLbl.setStyle("-fx-text-fill: red;");
 		
 		inv = InvitationController.getInvitationByInvID(invID);
-		ev = EventController.getEventByID(inv.getEventID());
+		ev = EventController.viewEventDetails(inv.getEventID());
 
 		GridPane invDetails = new GridPane();
 		invDetails.setAlignment(Pos.CENTER);
@@ -109,19 +109,15 @@ public class InvitationDetailsPage {
 		actionLbl.setText("Actions: ");
 		layout.getChildren().add(actionLbl);
 		
-		Button acceptBtn = new Button();
-		acceptBtn.setText("Accept Invitation");
-		acceptBtn.setOnAction(e -> {
-			InvitationController.acceptInvitation(invID, errorLbl);
-		});
+		if(inv.getStatus().equals("Pending")) {			
+			Button acceptBtn = new Button();
+			acceptBtn.setText("Accept Invitation");
+			acceptBtn.setOnAction(e -> {
+				InvitationController.acceptInvitation(invID, errorLbl);
+			});
+			layout.getChildren().add(acceptBtn);
+		}
 		
-		layout.getChildren().add(acceptBtn);
-		return new Scene(layout, 300, 200);
-
-//		// TODO: Action Button conditional rendering
-//		if(invStatusVal.getText().equals("Pending")) {
-//			
-//			
-//		}
+		return new Scene(layout, 1600, 900);
 	}
 }

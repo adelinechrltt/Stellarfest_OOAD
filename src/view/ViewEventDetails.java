@@ -207,6 +207,6 @@ public class ViewEventDetails {
 	    	 e.printStackTrace();
 	     }
 		 		 
-		 return new Scene(layout, 300, 200);
+		 return new Scene(layout, 1600, 900);
 	}
 }

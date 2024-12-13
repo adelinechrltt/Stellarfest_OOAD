@@ -34,7 +34,7 @@ public class InviteGuest {
 		titleLbl.setText("Invite Guest to Event");
 		titleLbl.setFont(titleFont);
 	    
-        ObservableList<Guest> guests = FXCollections.observableArrayList(GuestController.getUninvitedGuests(eventID));        
+        ObservableList<Guest> guests = FXCollections.observableArrayList(EventOrganizerController.checkAddGuestInput(eventID));        
         ListView<CheckBox> GuestListView = new ListView<>();
         ObservableList<CheckBox> checkBoxList = FXCollections.observableArrayList();
         

@@ -26,8 +26,6 @@ public class Main extends Application {
         primaryStage.setResizable(true);
         primaryStage.show();
         
-
-        
         Scene scene = LoginPage.getScene();
 //        Scene scene = RegisterPage.getScene();
 //        Scene scene = ViewEventsList.getScene();

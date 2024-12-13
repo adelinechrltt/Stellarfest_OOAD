@@ -59,7 +59,7 @@ public class RegisterPage {
 			 errorLbl.setText("");
 			 String role = (roleBox.getValue() == null) ? "" : roleBox.getValue().toString();
 			 
-			 UserController.validateRegistration(
+			 UserController.checkRegisterInput(
 					 emailField.getText(), 
 					 usnField.getText(), 
 					 pwField.getText(), 

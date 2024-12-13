@@ -91,7 +91,6 @@ public class Invitation {
             sentInvite = true;
 		} catch (Exception e) {
 			e.printStackTrace();
-			Main.displayAlert("ERROR", "Failed to create invitation for user: " + userID);
 		}
 		
 		return sentInvite;
@@ -124,7 +123,7 @@ public class Invitation {
 		return inv;
 	}
 	
-	public static ArrayList<Invitation> getInvitationsByEmail(String email){
+	public static ArrayList<Invitation> getInvitations(String email){
 		ArrayList<Invitation> invitations = new ArrayList<>();
 		String query = "SELECT * FROM invitations i JOIN users u ON i.UserID = u.UserID\n"
 				+ "WHERE u.Email = ?";
@@ -198,8 +197,8 @@ public class Invitation {
 	
 	public static ArrayList<String> getAttendingGuestsByEventID(String eventID){
 		ArrayList<String> emails = new ArrayList<>();
-		String query = "SELECT UserID FROM invitations "
-				+ "WHERE EventID = ? AND InvStatus = 'Accepted' AND InvRole = 'Guest'";
+		String query = "SELECT Email FROM Users u JOIN Invitations i ON i.UserID = u.UserID\n"
+				+ "WHERE i.EventID = ? AND i.InvStatus = 'Accepted' AND i.InvRole = 'Vendor'";
 		PreparedStatement ps;
 		
 	    try {
@@ -218,7 +217,8 @@ public class Invitation {
 		return emails;
 	}
 	
-	public static void acceptInvitation(String invID, Label errorLbl) {
+	public static boolean acceptInvitation(String invID, Label errorLbl) {
+		boolean isAccepted = false;
 		String query = "UPDATE invitations\n"
 				+ "SET invStatus = 'Accepted'\n"
 				+ "WHERE invID = ?";
@@ -229,15 +229,12 @@ public class Invitation {
 			ps.setString(1, invID);
 			ps.execute();
 			
-			if(getInvitationByInvId(invID).getStatus().equals("Accepted")) {
-				Main.displayAlert("Info", "Succesfully accepted invitation!");
-				Main.switchScene(ViewInvitationsPage.getScene());
-			} else {
-				errorLbl.setText("ERROR: Failed to accept invitation!");
-				errorLbl.setVisible(true);
-			}
+			isAccepted = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			isAccepted = false;
 		}
+		
+		return isAccepted;
 	}
 }

@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import main.Main;
 import model.Event;
 import model.EventOrganizer;
+import model.Guest;
+import model.Vendor;
 import util.Connect;
 import view.ViewEventsList;
 
@@ -79,9 +81,6 @@ public class EventOrganizerController {
 		}
 		
 		EventController.updateEventName(eventID, name);
-		for(Event event : Main.currentUser.getEventsCreated()) {
-			if(event.getEventID().equals(eventID)) event.setName(name);
-		}
 		
 		Main.displayAlert("Update success!", "Event name succesfully updated.");
 		Main.switchScene(ViewEventsList.getScene());
@@ -105,9 +104,35 @@ public class EventOrganizerController {
 		InvitationController.sendInvitation(eventID, email);
 	}
 	
-//	karena 2 method ini tidak ada di activity diagram maka saya asumsikan
-//	bahwa 2 method ini berupa method get
-	public static void getGuests() {};
-	public static void getVendors() {};
+	// kami asumsikan bahwa checkAddGuestInput() & checkAddVendorInput() berfungsi untuk mengecek apakah guest / vendor
+	// yang ingin diundang ke event X sudah diundang ke event tersebut sebelumnya.
+	
+	// namun karena requirement di word menyatakan bahwa checkbox list yang ditampilkan di view layer harus berupa
+	// kumpulan user yang dipastikan MEMANG BELUM diundang ke event tersebut, maka kami membuat flow checkAddUser() sedikit 
+	// berbeda dari sequence diagram, di mana flow kami:
+	
+	// checkAddUser():
+	// getAllGuests / getAllVendors --> hapus user2 yg sudah diundang sebelumnya --> display list di view layer
+	
+	// method2 check ini juga tidak kami masukkan ke dalam model Event, karena hanya berupa validasi. bukan query SQL ke database
+	public static ArrayList<Guest> checkAddGuestInput(String eventID){
+		ArrayList<Guest> Guests = GuestController.getAllGuests();
+		ArrayList<String> invitedGuestEmails = InvitationController.getInvitedUsersByEventID(eventID);
+		
+	    Guests.removeIf(Guest -> invitedGuestEmails.contains(Guest.getEmail()));
+		
+		if(Guests.isEmpty()) Guests = null;
+		return Guests;
+	}
+	
+	public static ArrayList<Vendor> checkAddVendorInput(String eventID){
+		ArrayList<Vendor> vendors = VendorController.getAllVendors();
+		ArrayList<String> invitedVendorEmails = InvitationController.getInvitedUsersByEventID(eventID);
+		
+	    vendors.removeIf(vendor -> invitedVendorEmails.contains(vendor.getEmail()));
+		
+		if(vendors.isEmpty()) vendors = null;
+		return vendors;
+	}
 	
 }

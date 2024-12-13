@@ -40,7 +40,7 @@ public class ChangeProfile {
 		 updateBtn.setText("Update E-mail");
 		 updateBtn.setFont(Font.font("Microsoft Sans Serif", FontWeight.BOLD, 21));
 		 updateBtn.setOnAction(e -> {
-			 UserController.updateEmail(Main.currentUser.getEmail(), emailField.getText(), errorLbl);
+			 UserController.checkChangeEmail(Main.currentUser.getEmail(), emailField.getText(), errorLbl);
 		 });
 		 
 		 GridPane input = new GridPane();
@@ -78,7 +78,7 @@ public class ChangeProfile {
 		 updateBtn.setText("Update Username");
 		 updateBtn.setFont(Font.font("Microsoft Sans Serif", FontWeight.BOLD, 21));
 		 updateBtn.setOnAction(e -> {
-			 UserController.updateUsn(Main.currentUser.getName(), usnField.getText(), errorLbl);
+			 UserController.checkChangeUsn(Main.currentUser.getName(), usnField.getText(), errorLbl);
 		 });
 		 
 		 GridPane input = new GridPane();
@@ -119,7 +119,7 @@ public class ChangeProfile {
 		 updateBtn.setText("Change Password");
 		 updateBtn.setFont(Font.font("Microsoft Sans Serif", FontWeight.BOLD, 21));
 		 updateBtn.setOnAction(e -> {
-			 UserController.changePassword(Main.currentUser.getEmail(), Main.currentUser.getPassword(), oldPwField.getText(), newPwField.getText(), errorLbl);
+			 UserController.checkChangePassword(Main.currentUser.getEmail(), Main.currentUser.getPassword(), oldPwField.getText(), newPwField.getText(), errorLbl);
 		 });
 		 
 		 GridPane input = new GridPane();

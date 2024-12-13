@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javafx.scene.control.Label;
 import model.Event;
 import model.Guest;
 import model.Invitation;
@@ -12,29 +13,14 @@ import util.Connect;
 
 public class GuestController {
 	
-	public static Guest getGuestByEmail(String email) {
-		Guest guest = Guest.getGuestByEmail(email);
-		return guest;
-	}
-	
 	public static ArrayList<Guest> getAllGuests(){
 		ArrayList<Guest> Guests = Guest.getAllGuests();
         return Guests;
 	}
 	
-	public static ArrayList<Guest> getUninvitedGuests(String eventID){
-		ArrayList<Guest> Guests = getAllGuests();
-		ArrayList<String> invitedGuestIDs = InvitationController.getInvitedUsersByEventID(eventID);
-		
-	    Guests.removeIf(Guest -> invitedGuestIDs.contains(Guest.getUserID()));
-		
-		if(Guests.isEmpty()) Guests = null;
-		return Guests;
-	}
-	
 	public static ArrayList<Event> viewAcceptedEvents (String email){
 		ArrayList<Event> events = new ArrayList<>();
-		ArrayList<Invitation> invites = InvitationController.getInvitationsByEmail(email);
+		ArrayList<Invitation> invites = InvitationController.getInvitations(email);
 		for(Invitation inv : invites) {
 			 if(inv.getStatus().equals("Accepted")) {
 				 Event ev = EventController.viewEventDetails(inv.getEventID());
@@ -42,5 +28,11 @@ public class GuestController {
 			 }
 		 }
 		return events;
+	}
+	
+	// method acceptInvtation ini tidak dimasukkan ke model Vendor / Guest karena berhubungan dengan DB table invitation
+	// sehingga kami prefer agar controller vendor / guest langsung chaining saja ke controller invitation
+	public static void acceptInvitation(String invID, Label errorLbl) {
+		Invitation.acceptInvitation(invID, errorLbl);
 	}
 }

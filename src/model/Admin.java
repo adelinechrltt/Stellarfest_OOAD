@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import controller.EventController;
+import javafx.scene.control.Label;
 import util.Connect;
 
 public class Admin extends User {
@@ -17,7 +19,7 @@ public class Admin extends User {
 		this.role = "Admin";
 	}
 
-	public static ArrayList<User> viewAllUsers(){
+	public static ArrayList<User> getAllUsers(){
 		ArrayList<User> users = new ArrayList<>();
 		
 		// asumsi admin tidak bisa mengakses admin lain sehingga tidak bisa saling delete akun admin
@@ -58,5 +60,15 @@ public class Admin extends User {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static Event viewEventDetails(String eventID){
+		model.Event ev = null;
+		try {
+			ev = EventController.viewEventDetails(eventID);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ev;
 	}
 }

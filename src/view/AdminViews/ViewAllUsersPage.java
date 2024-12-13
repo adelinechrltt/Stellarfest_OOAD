@@ -42,7 +42,7 @@ public class ViewAllUsersPage {
 		 layout.getChildren().addAll(navbar, titleLbl);
 
 		 ArrayList<User> users = new ArrayList<>();
-		 users = AdminController.viewAllUsers();
+		 users = AdminController.getAllUsers();
 		 
 		 if(users==null || users.isEmpty()) {
 			 Label nullDisplay = new Label();

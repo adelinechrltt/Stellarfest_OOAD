@@ -38,7 +38,7 @@ public class InviteVendor {
 		titleLbl.setText("Invite Vendor to Event");
 		titleLbl.setFont(titleFont);
 	    
-        ObservableList<Vendor> vendors = FXCollections.observableArrayList(VendorController.getUninvitedVendors(eventID));        
+        ObservableList<Vendor> vendors = FXCollections.observableArrayList(EventOrganizerController.checkAddVendorInput(eventID));        
         ListView<CheckBox> vendorListView = new ListView<>();
         ObservableList<CheckBox> checkBoxList = FXCollections.observableArrayList();
         

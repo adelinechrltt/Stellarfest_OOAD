@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import main.Main;
 import model.Event;
 import model.Guest;
+import model.User;
 import model.Vendor;
 import util.Connect;
 import view.ViewEventsList;
@@ -54,23 +55,27 @@ public class EventController {
 	
 	public static void deleteEvent(String eventID) {
 		Event.deleteEvent(eventID);
-
 	}
 	
-	public static ArrayList<Vendor> getAttendingVendorsByEventId(String eventID){
+//	asumsi bahwa transaction merupakan typo untuk ubiquitous language event
+// 	sehingga: 
+//	getVendorsByTransactionId --> getVendorsByEventId
+//	getGuestsByTransactionId --> getGuestsByEventId
+	
+	public static ArrayList<Vendor> getVendorsByEventId(String eventID){
 		ArrayList<String> vendorEmails = InvitationController.getAttendingVendorsByEventID(eventID);
 		ArrayList<Vendor> vendors = new ArrayList<>();
 		for (String email : vendorEmails) {
-			vendors.add(VendorController.getVendorByEmail(email));
+			vendors.add((Vendor) UserController.getUserByEmail(email));
 		}
 		return vendors;
 	}
 	
-	public static ArrayList<Guest> getAttendingGuestsByEventId(String eventID){
+	public static ArrayList<Guest> getGuestsByEventId(String eventID){
 		ArrayList<String> guestEmails = InvitationController.getAttendingGuestsByEventID(eventID);
 		ArrayList<Guest> guests = new ArrayList<>();
 		for (String email : guestEmails) {
-			guests.add(GuestController.getGuestByEmail(email));
+			guests.add((Guest) UserController.getUserByEmail(email));
 		}
 		return guests;
 	}

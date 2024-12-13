@@ -58,7 +58,7 @@ public class UserController {
         return true;
 	}
 	
-	public static void validateRegistration(String email, String username, String password, String role, Label errorLbl) {
+	public static void checkRegisterInput(String email, String username, String password, String role, Label errorLbl) {
 		
 			// cek apabila ada input yg kosong
 			if(email.isEmpty() || username.isEmpty() || password.isEmpty() || role.isEmpty()) {
@@ -131,7 +131,12 @@ public class UserController {
 	
 	
 //	update credentials
-	public static void updateEmail(String oldEmail, String newEmail, Label errorLbl) {
+// 	method checkChangeProfile saya pecah menjadi checkChangeEmail, checkChangeUsername, checkChangePassword
+// 	sesuai dengan requirement validasi yang tertera di word, di mana user harus bisa:
+//	1) mengupdate hanya salah satu atribut di waktu tertentu
+// 	2) dicek input, apakah credetial baru sama dengan yang lama atau tidak
+	
+	public static void checkChangeEmail(String oldEmail, String newEmail, Label errorLbl) {
 		if(newEmail.isEmpty()) {
 			errorLbl.setText("ERROR: New e-mail cannot be blank!");
 			errorLbl.setVisible(true);
@@ -147,10 +152,13 @@ public class UserController {
 		boolean isUnique = validateUniqueEmail(newEmail, errorLbl);
 		if(!isUnique) return;
 		
-		User.updateEmail(oldEmail, newEmail);
+		User user = User.getUserByEmail(oldEmail);
+		
+		User.changeProfile(user.getEmail(), newEmail, user.getName(), user.getPassword());       
+        Main.switchScene(MyProfile.getScene());
 	}
 	
-	public static void updateUsn(String oldUsn, String newUsn, Label errorLbl) {
+	public static void checkChangeUsn(String oldUsn, String newUsn, Label errorLbl) {
 		if(newUsn.isEmpty()) {
 			errorLbl.setText("ERROR: New username cannot be blank!");
 			errorLbl.setVisible(true);
@@ -166,10 +174,13 @@ public class UserController {
 		boolean isUnique = validateUniqueEmail(newUsn, errorLbl);
 		if(!isUnique) return;
 		
-		User.updateUsn(oldUsn, newUsn);
+		User user = User.getUserByUsername(oldUsn);
+		
+		User.changeProfile(user.getEmail(), user.getEmail(), newUsn, user.getPassword());       
+		Main.switchScene(MyProfile.getScene());
 	}
 	
-	public static void changePassword(String email, String userPassword, String oldPassword, String newPassword, Label errorLbl) {
+	public static void checkChangePassword(String email, String userPassword, String oldPassword, String newPassword, Label errorLbl) {
 		if(oldPassword.isEmpty() || newPassword.isEmpty()) {
 			errorLbl.setText("ERROR: All fields must be filled!");
 			errorLbl.setVisible(true);
@@ -194,7 +205,27 @@ public class UserController {
 			return;
 		}
 		
-		User.changePassword(email, userPassword, oldPassword, newPassword);
+		User user = User.getUserByEmail(email);
+		User.changeProfile(email, email, user.getName(), newPassword);       
+		
+	}
+	
+	public static void changeProfile(String oldEmail, String newEmail, String usn, String password) {
+		User.changeProfile(oldEmail, newEmail, usn, password);
 		Main.switchScene(MyProfile.getScene());
+	}
+	
+	public static User getUserByEmail(String email) {
+		User user = null;
+		user = User.getUserByEmail(email);
+		
+		return user;
+	}
+	
+	public static User getUserByUsername(String username) {
+		User user = null;
+		user = User.getUserByUsername(username);
+		
+		return user;
 	}
 }

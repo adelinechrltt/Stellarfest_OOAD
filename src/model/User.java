@@ -9,7 +9,7 @@ import main.Main;
 import util.Connect;
 import view.MyProfile;
 
-public abstract class User {
+public class User {
 	
 	private static Connect db = Connect.getInstance();
 	
@@ -179,52 +179,73 @@ public abstract class User {
         }
 	}
 	
-	public static void updateEmail(String oldEmail, String newEmail) {
+	public static void changeProfile(String oldEmail, String newEmail, String usn, String password) {
 		String query = "UPDATE users\n"
-				+ " SET email = ? WHERE email = ?";
+				+ "SET email = ?, name = ?, password = ?\n"
+				+ "WHERE email = ?;\n";
         try {
         	PreparedStatement ps = db.getConnection().prepareStatement(query);
             ps.setString(1, newEmail);
-            ps.setString(2, oldEmail);
+            ps.setString(2, usn);
+            ps.setString(3, password);
+            ps.setString(4, oldEmail);
             ps.executeUpdate();
             
             Main.currentUser.setEmail(newEmail);
-            Main.switchScene(MyProfile.getScene());
         } catch (SQLException e) {
         	e.printStackTrace();
         }
 	}
 	
-	public static void updateUsn(String oldUsn, String newUsn) {
-		String query = "UPDATE users\n"
-				+ " SET name = ? WHERE name = ?";
-        try {
-        	PreparedStatement ps = db.getConnection().prepareStatement(query);
-            ps.setString(1, newUsn);
-            ps.setString(2, oldUsn);
-            ps.executeUpdate();
-            
-            Main.currentUser.setName(newUsn);
-            Main.switchScene(MyProfile.getScene());
-        } catch (SQLException e) {
-        	e.printStackTrace();
-        }
+	public static User getUserByEmail(String email) {
+		User user = null;
+		String query = "SELECT * FROM Users\n"
+				+ "WHERE email = ?";
+		PreparedStatement ps;
+		
+		try {
+			ps = db.getConnection().prepareStatement(query);
+			ps.setString(1, email);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				String guestID = rs.getString("userID");
+				String name = rs.getString("name");
+				String password = rs.getString("password");
+				String role = rs.getString("role");
+				if(role.equals("Event Organizer")) user = new EventOrganizer(guestID, email, name, password);
+				else if(role.equals("Guest")) user = new Guest(guestID, email, name, password);
+				else if(role.equals("Vendor")) user = new Vendor(guestID, email, name, password);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return user;
 	}
 	
-	public static void changePassword(String email, String userPassword, String oldPassword, String newPassword) {
-		String query = "UPDATE users\n"
-				+ " SET password = ? WHERE email = ?";
-        try {
-        	PreparedStatement ps = db.getConnection().prepareStatement(query);
-            ps.setString(1, newPassword);
-            ps.setString(2, email);
-            ps.executeUpdate();
-            
-            Main.currentUser.setPassword(newPassword);
-            Main.switchScene(MyProfile.getScene());
-        } catch (SQLException e) {
-        	e.printStackTrace();
-        }   
+	public static User getUserByUsername(String name) {
+		User user = null;
+		String query = "SELECT * FROM Users\n"
+				+ "WHERE name = ?";
+		PreparedStatement ps;
+		
+		try {
+			ps = db.getConnection().prepareStatement(query);
+			ps.setString(1, name);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				String guestID = rs.getString("userID");
+				String email = rs.getString("email");
+				String password = rs.getString("password");
+				String role = rs.getString("role");
+				if(role.equals("Event Organizer")) user = new EventOrganizer(guestID, email, name, password);
+				else if(role.equals("Guest")) user = new Guest(guestID, email, name, password);
+				else if(role.equals("Vendor")) user = new Vendor(guestID, email, name, password);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return user;
 	}
-	
 }

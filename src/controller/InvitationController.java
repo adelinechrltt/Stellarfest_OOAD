@@ -32,10 +32,7 @@ public class InvitationController {
 	public static void sendInvitation(String eventID, String email) {
 		String invitationID = generateInvID();
 		try {			
-			User user = VendorController.getVendorByEmail(email);
-			if(user==null) user = GuestController.getGuestByEmail(email);
-			if(user==null) System.out.println("a");
-			
+			User user = User.getUserByEmail(email);			
 			boolean sentFlag = Invitation.sendInvitation(invitationID, eventID, email, user.getRole(), user.getUserID());
 			if(sentFlag) {
 				Main.displayAlert("INFO", "All invitations sent! Returning to Events List page.");
@@ -51,13 +48,13 @@ public class InvitationController {
 		return inv;
 	}
 	
-	public static ArrayList<Invitation> getInvitationsByEmail(String email){
-		ArrayList<Invitation> invites = Invitation.getInvitationsByEmail(email);
+	public static ArrayList<Invitation> getInvitations(String email){
+		ArrayList<Invitation> invites = Invitation.getInvitations(email);
 		return invites;
 	};
 	
 	public static ArrayList<Invitation> getPendingInvsByEmail(String email){
-		ArrayList<Invitation> invitations = getInvitationsByEmail(email);
+		ArrayList<Invitation> invitations = getInvitations(email);
 	    invitations.removeIf(invitation -> invitation.getStatus().equals("Accepted"));
 
 		return invitations;
@@ -79,6 +76,13 @@ public class InvitationController {
 	}
 	
 	public static void acceptInvitation(String invID, Label errorLbl) {
-		Invitation.acceptInvitation(invID, errorLbl);
+		boolean accepted = Invitation.acceptInvitation(invID, errorLbl);
+		if(accepted) {
+			Main.displayAlert("Info", "Succesfully accepted invitation!");
+			Main.switchScene(ViewInvitationsPage.getScene());
+		} else {
+			errorLbl.setText("ERROR: Failed to accept invitation!");
+			errorLbl.setVisible(true);
+		}
 	}
 }

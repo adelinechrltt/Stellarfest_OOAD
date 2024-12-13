@@ -21,8 +21,6 @@ public class InvitationDetailsPage {
 	public static model.Event ev;
 	
 	public static Scene getScene(String invID) {
-		System.out.println("AAAAA");
-
 		VBox layout = new VBox(10);
 		layout.setAlignment(Pos.CENTER);
 		HBox navbar = NavBar.getNavbar(Main.currentUser.getRole());

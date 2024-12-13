@@ -66,4 +66,8 @@ public class Guest extends User {
 		
 		return guest;
 	}
+	
+	// method acceptInvtation tidak dimasukkan ke model Vendor / Guest karena berhubungan dengan DB table invitation
+	// sehingga kami prefer agar controller vendor / guest chaining saja ke controller invitation, dan controller invitation
+	// chaining ke model invitation
 }

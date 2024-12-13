@@ -17,26 +17,9 @@ public class VendorController {
 
 	private static Connect db = Connect.getInstance();
 	
-	public static Vendor getVendorByEmail(String email) {
-		Vendor vendor = null;
-		vendor = Vendor.getVendorByEmail(email);
-		
-		return vendor;
-	}
-	
 	public static ArrayList<Vendor> getAllVendors(){
 		ArrayList<Vendor> vendors = Vendor.getAllVendors();
         return vendors;
-	}
-	
-	public static ArrayList<Vendor> getUninvitedVendors(String eventID){
-		ArrayList<Vendor> vendors = getAllVendors();
-		ArrayList<String> invitedVendorIDs = InvitationController.getInvitedUsersByEventID(eventID);
-		
-	    vendors.removeIf(vendor -> invitedVendorIDs.contains(vendor.getUserID()));
-		
-		if(vendors.isEmpty()) vendors = null;
-		return vendors;
 	}
 
 	public static boolean checkManageVendorInput(String name, String description, Label errorLbl) {
@@ -84,13 +67,15 @@ public class VendorController {
 		}
 	}
 	
-	public static void acceptInvitation(String eventID, Label errorLbl) {
-		InvitationController.acceptInvitation(eventID, errorLbl);
+	// method acceptInvtation ini tidak dimasukkan ke model Vendor / Guest karena berhubungan dengan DB table invitation
+	// sehingga kami prefer agar controller vendor / guest langsung chaining saja ke controller invitation
+	public static void acceptInvitation(String invID, Label errorLbl) {
+		Invitation.acceptInvitation(invID, errorLbl);
 	}
 	
 	public static ArrayList<Event> viewAcceptedEvents (String email){
 		ArrayList<Event> events = new ArrayList<>();
-		ArrayList<Invitation> invites = InvitationController.getInvitationsByEmail(email);
+		ArrayList<Invitation> invites = InvitationController.getInvitations(email);
 		for(Invitation inv : invites) {
 			 if(inv.getStatus().equals("Accepted")) {
 				 Event ev = EventController.viewEventDetails(inv.getEventID());

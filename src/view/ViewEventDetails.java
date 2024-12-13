@@ -2,10 +2,8 @@ package view;
 
 import java.util.ArrayList;
 
-import controller.EventController;
+import controller.AdminController;
 import controller.EventOrganizerController;
-import controller.GuestController;
-import controller.VendorController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -21,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.Main;
+import model.Event;
 import model.Guest;
 import model.User;
 import model.Vendor;
@@ -61,7 +60,11 @@ public class ViewEventDetails {
 	     Label evDescLbl = new Label();
 	     evDescLbl.setText("Event Description: ");
 	     
-	     model.Event ev = EventOrganizerController.viewOrganizedEventDetails(eventID);
+	     model.Event ev = null;
+	     
+	     if(Main.currentUser.getRole().equals("Admin")) ev = AdminController.viewEventDetails(eventID);
+	     else if (Main.currentUser.getRole().equals("Event Organizer")) ev = EventOrganizerController.viewOrganizedEventDetails(eventID);
+	     else ev = Event.viewEventDetails(eventID);
 
 	     try {
 	    	 Label evIDVal = new Label();
@@ -98,22 +101,22 @@ public class ViewEventDetails {
 				 layout.getChildren().add(vendorsLbl);
 				 
 				 try {
-					 ObservableList<Vendor> vendorsList = FXCollections.observableArrayList(EventController.getAttendingVendorsByEventId(eventID));
+					 ObservableList<User> vendorsList = FXCollections.observableArrayList(AdminController.getVendorsByEventId(eventID));
 					 
 					 if (vendorsList.isEmpty() || vendorsList == null) {
 						 Label nullVendorsDisplay = new Label();
 						 nullVendorsDisplay.setText("No vendors attending this event!");
 						 layout.getChildren().add(nullVendorsDisplay);
 					 } else {
-						 TableView<Vendor> vendorsView = new TableView<>();
+						 TableView<User> vendorsView = new TableView<>();
 					     
-						 TableColumn<Vendor, String> vendorIdCol = new TableColumn<>("Vendor ID");
+						 TableColumn<User, String> vendorIdCol = new TableColumn<>("Vendor ID");
 						 vendorIdCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
 
-						 TableColumn<Vendor, String> vendorNameCol = new TableColumn<>("Name");
+						 TableColumn<User, String> vendorNameCol = new TableColumn<>("Name");
 						 vendorNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 						
-						 TableColumn<Vendor, String> vendorEmailCol = new TableColumn<>("Email");
+						 TableColumn<User, String> vendorEmailCol = new TableColumn<>("Email");
 						 vendorEmailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
 						
 						 vendorsView.getColumns().addAll(vendorIdCol, vendorNameCol, vendorEmailCol);
@@ -132,22 +135,22 @@ public class ViewEventDetails {
 				 layout.getChildren().add(guestsLbl);
 				 
 				 try {
-					 ObservableList<Guest> guestsList = FXCollections.observableArrayList(EventController.getAttendingGuestsByEventId(eventID));
+					 ObservableList<User> guestsList = FXCollections.observableArrayList(AdminController.getGuestsByEventId(eventID));
 					 
 					 if (guestsList.isEmpty() || guestsList == null) {
 						 Label nullGuestsDisplay = new Label();
 						 nullGuestsDisplay.setText("No guests attending this event!");
 						 layout.getChildren().add(nullGuestsDisplay);
 					 } else {
-						 TableView<Guest> guestsView = new TableView<>();
+						 TableView<User> guestsView = new TableView<>();
 					     
-						 TableColumn<Guest, String> guestIdCol = new TableColumn<>("Guest ID");
+						 TableColumn<User, String> guestIdCol = new TableColumn<>("Guest ID");
 						 guestIdCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
 
-						 TableColumn<Guest, String> guestNameCol = new TableColumn<>("Name");
+						 TableColumn<User, String> guestNameCol = new TableColumn<>("Name");
 						 guestNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 						
-						 TableColumn<Guest, String> guestEmailCol = new TableColumn<>("Email");
+						 TableColumn<User, String> guestEmailCol = new TableColumn<>("Email");
 						 guestEmailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
 						
 						 guestsView.getColumns().addAll(guestIdCol, guestNameCol, guestEmailCol);
@@ -184,7 +187,7 @@ public class ViewEventDetails {
 				 
 				 inviteGuests.setText("Invite Guests");
 				 inviteGuests.setOnAction(e -> {
-					 ArrayList<Guest> guests = GuestController.getUninvitedGuests(eventID);
+					 ArrayList<Guest> guests = EventOrganizerController.checkAddGuestInput(eventID);
 					 
 					 if(guests == null) Main.displayAlert("ERROR", "No guests left to invite for this event!");
 					 else Main.switchScene(InviteGuest.getScene(eventID));
@@ -193,7 +196,7 @@ public class ViewEventDetails {
 				 
 				 inviteVendors.setText("Invite Vendors");
 				 inviteVendors.setOnAction(e -> {
-					 ArrayList<Vendor> vendors = VendorController.getUninvitedVendors(eventID);
+					 ArrayList<Vendor> vendors = EventOrganizerController.checkAddVendorInput(eventID);
 					 
 					 if (vendors == null) Main.displayAlert("ERROR", "No vendors left to invite for this event!");
 					 else Main.switchScene(InviteVendor.getScene(eventID));

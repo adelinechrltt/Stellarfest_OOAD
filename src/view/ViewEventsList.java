@@ -86,15 +86,19 @@ public class ViewEventsList {
 		     viewMyEvents.getColumns().addAll(idCol, nameCol, dateCol, locCol, descCol);
 		     viewMyEvents.setItems(evs);
 		     viewMyEvents.setOnMouseClicked(e -> {
-		    	 TableSelectionModel<model.Event> tsModel = viewMyEvents.getSelectionModel();
-		    	 tsModel.setSelectionMode(SelectionMode.SINGLE);
-		    	 model.Event ev = tsModel.getSelectedItem();
-		    	 tempID = ev.getEventID();
-		    	 
-		    	 clickCount++;
-		    	 if(clickCount == 2) {
-		    		 Main.switchScene(ViewEventDetails.getScene(tempID));
-		    		 clickCount = 0;
+		    	 try {
+			    	 TableSelectionModel<model.Event> tsModel = viewMyEvents.getSelectionModel();
+			    	 tsModel.setSelectionMode(SelectionMode.SINGLE);
+			    	 model.Event ev = tsModel.getSelectedItem();
+			    	 tempID = ev.getEventID();
+			    	 
+			    	 clickCount++;
+			    	 if(clickCount == 2) {
+			    		 Main.switchScene(ViewEventDetails.getScene(tempID));
+			    		 clickCount = 0;
+			    	 } 
+		    	 } catch (Exception error) {
+		    		 error.printStackTrace();
 		    	 }
 		     });
 		     

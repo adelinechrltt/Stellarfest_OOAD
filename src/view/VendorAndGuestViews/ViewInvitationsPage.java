@@ -91,16 +91,20 @@ public class ViewInvitationsPage {
 		    invitesView.setItems(invitations);
 		    
 		    invitesView.setOnMouseClicked(e -> {
-		    	 TableSelectionModel<Invitation> invModel = invitesView.getSelectionModel();
-		    	 invModel.setSelectionMode(SelectionMode.SINGLE);
-		    	 Invitation inv = invModel.getSelectedItem();
-		    	 invID = inv.getInvitationID();
-		    	 
-		    	 clickCount++;
-		    	 if(clickCount == 2) {
-		    		 Main.switchScene(InvitationDetailsPage.getScene(invID));
-		    		 clickCount = 0;
-		    	 }
+		    	try {
+		    		TableSelectionModel<Invitation> invModel = invitesView.getSelectionModel();
+			    	 invModel.setSelectionMode(SelectionMode.SINGLE);
+			    	 Invitation inv = invModel.getSelectedItem();
+			    	 invID = inv.getInvitationID();
+			    	 
+			    	 clickCount++;
+			    	 if(clickCount == 2) {
+			    		 Main.switchScene(InvitationDetailsPage.getScene(invID));
+			    		 clickCount = 0;
+			    	 }
+		    	} catch (Exception error) {
+		    		error.printStackTrace();
+		    	} 
 		     });
 		    
 		    layout.getChildren().addAll(subtitleLbl, invitesView);

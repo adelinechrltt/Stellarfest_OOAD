@@ -1,6 +1,5 @@
 package view.AdminViews;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 import controller.AdminController;
@@ -9,19 +8,14 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableSelectionModel;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.Main;
-import model.Event;
-import model.User;
 import view.NavBar;
 import view.ViewEventDetails;
 
@@ -53,67 +47,61 @@ public class ViewAllEventsPage {
 			 layout.getChildren().add(nullDisplay);
 		 } else {			 
 			 Label subtitleLbl = new Label();
-			 subtitleLbl.setText("Double-click on an entry for more actions.\nCtrl+Click on rows to select multiple entries.");
+			 subtitleLbl.setText("Double-click on an entry for more actions.");
 			 titleLbl.setFont(inputFont);
 
 			 ObservableList<model.Event> evs = FXCollections.observableArrayList(events);
-			 
-			 TableView<model.Event> viewMyEvents = new TableView<>();
+			 ListView<CheckBox> eventsView = new ListView<>();
+			 ObservableList<CheckBox> checkBoxList = FXCollections.observableArrayList();
+
+			 for (model.Event event : evs) {
+			     CheckBox checkBox = new CheckBox("ID: " + event.getEventID() + " | " + event.getName());
+			     checkBox.setUserData(event);
+			     checkBoxList.add(checkBox);
+			 }
+
+			 eventsView.setItems(checkBoxList);
+
+			 eventsView.setOnMouseClicked(e -> {
+				    CheckBox selectedCheckBox = eventsView.getSelectionModel().getSelectedItem();
+				    try {
+				    	model.Event selectedEvent = (model.Event) selectedCheckBox.getUserData(); 
+					    if (selectedEvent != null) {
+					        if (e.getClickCount() == 2) {
+					            try {
+					                String tempID = selectedEvent.getEventID();
+					                Main.switchScene(ViewEventDetails.getScene(tempID));
+					            } catch (Exception error) {
+					                error.printStackTrace();
+					            }
+					        }
+					    }
+				    } catch (Exception error) {
+				    	error.printStackTrace();
+				    }
+			 });
 		     
-			 TableColumn<model.Event, String> idCol = new TableColumn<>("Event ID");
-		     idCol.setCellValueFactory(new PropertyValueFactory<>("eventID"));
+			 Button deleteBtn = new Button();
+			 deleteBtn.setText("Delete Events");
+			 deleteBtn.setOnAction(event -> {
+				 ArrayList<model.Event> selectedEvents = new ArrayList<>();
+				 for (CheckBox checkBox : checkBoxList) {
+					 if (checkBox.isSelected()) {
+				        selectedEvents.add((model.Event) checkBox.getUserData());
+					 }
+				 }
+				 
+				 if (selectedEvents.isEmpty()) {
+					 Main.displayAlert("Error", "ERROR: You must select at least one event to delete!");
+				 } else {
+					 for (model.Event ev : selectedEvents) {
+						 evs.remove(ev);
+						 AdminController.deleteEvent(ev.getEventID());
+					 }
+				 }
+			 });
 		     
-		     TableColumn<model.Event, String> nameCol = new TableColumn<>("Name");
-		     nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-		     
-		     TableColumn<model.Event, Date> dateCol = new TableColumn<>("Date (YYYY-MM-DD)");
-		     dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
-		     
-		     TableColumn<model.Event, String> locCol = new TableColumn<>("Location");
-		     locCol.setCellValueFactory(new PropertyValueFactory<>("location"));
-			 
-		     TableColumn<model.Event, String> descCol = new TableColumn<>("Description");
-		     descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
-		     
-		     viewMyEvents.getColumns().addAll(idCol, nameCol, dateCol, locCol, descCol);
-		     viewMyEvents.setItems(evs);
-		     viewMyEvents.setOnMouseClicked(e -> {
-		    	 TableSelectionModel<model.Event> tsModel = viewMyEvents.getSelectionModel();
-		    	 tsModel.setSelectionMode(SelectionMode.SINGLE);
-		    	 model.Event ev = tsModel.getSelectedItem();
-		    	 tempID = ev.getEventID();
-		    	 
-		    	 clickCount++;
-		    	 if(clickCount == 2) {
-		    		 Main.switchScene(ViewEventDetails.getScene(tempID));
-		    		 clickCount = 0;
-		    	 }
-		     });
-		     
-		     ArrayList<Event> toDelete = new ArrayList<>();
-		     viewMyEvents.setOnMouseClicked(event -> {
-		    	    if (event.getClickCount() == 1 && event.isControlDown()) {
-		    	        TableSelectionModel<model.Event> evModel = viewMyEvents.getSelectionModel();
-		    	        model.Event selected = evModel.getSelectedItem();
-		    	        toDelete.add(selected);
-		    	        System.out.println(selected.getName());
-		    	    }
-		    	});
-		     
-            Button deleteBtn = new Button();
-            deleteBtn.setText("Delete Events");
-            deleteBtn.setOnAction(event -> {
-            	try {            		
-            		for (Event ev : toDelete) {
-            			evs.remove(ev);
-            			AdminController.deleteEvent(ev.getEventID());
-            		}
-            	} catch (Exception e) {
-            		e.printStackTrace();
-            	}
-            });
-		     
-		     layout.getChildren().addAll(subtitleLbl, viewMyEvents, deleteBtn);
+		     layout.getChildren().addAll(subtitleLbl, eventsView, deleteBtn);
 		 }
 	     
 		 return new Scene(layout, 1600, 900);	

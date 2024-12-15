@@ -67,16 +67,20 @@ public class MyProductsPage {
 			productsView.setItems(prodList);
 			
 			productsView.setOnMouseClicked(e -> {
-		    	 TableSelectionModel<Product> prodModel = productsView.getSelectionModel();
-		    	 prodModel.setSelectionMode(SelectionMode.SINGLE);
-		    	 Product prod = prodModel.getSelectedItem();
-		    	 productID = prod.getProductID();
-		    	 
-		    	 clickCount++;
-		    	 if(clickCount == 2) {
-		    		 Main.switchScene(ViewProductDetails.getScene(productID));
-		    		 clickCount = 0;
-		    	 }
+				try {
+					 TableSelectionModel<Product> prodModel = productsView.getSelectionModel();
+			    	 prodModel.setSelectionMode(SelectionMode.SINGLE);
+			    	 Product prod = prodModel.getSelectedItem();
+			    	 productID = prod.getProductID();
+			    	 
+			    	 clickCount++;
+			    	 if(clickCount == 2) {
+			    		 Main.switchScene(ViewProductDetails.getScene(productID));
+			    		 clickCount = 0;
+			    	 }
+				} catch (Exception error) {
+					error.printStackTrace();
+				}
 		     });
 			
 			layout.getChildren().addAll(subtitleLbl, productsView);

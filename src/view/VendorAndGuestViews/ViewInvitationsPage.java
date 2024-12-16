@@ -113,6 +113,6 @@ public class ViewInvitationsPage {
 		    layout.getChildren().addAll(subtitleLbl, invitesView);
 		}
 		
-		return new Scene(layout, 1600, 900);
+		return new Scene(layout, 1200, 600);
 	}
 }

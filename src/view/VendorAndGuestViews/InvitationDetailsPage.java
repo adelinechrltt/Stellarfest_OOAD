@@ -119,6 +119,6 @@ public class InvitationDetailsPage {
 			layout.getChildren().add(acceptBtn);
 		}
 		
-		return new Scene(layout, 1600, 900);
+		return new Scene(layout, 1200, 600);
 	}
 }

@@ -108,6 +108,6 @@ public class ViewAllEventsPage {
 		     layout.getChildren().addAll(subtitleLbl, eventsView, deleteBtn);
 		 }
 	     
-		 return new Scene(layout, 1600, 900);	
+		 return new Scene(layout, 1200, 600);	
 	}
 }

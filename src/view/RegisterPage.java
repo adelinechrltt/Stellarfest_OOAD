@@ -95,6 +95,6 @@ public class RegisterPage {
 		 
 		 layout.getChildren().addAll(titleLbl, input, errorLbl, registerBtn, login);
 
-		 return new Scene(layout, 1600, 900); 
+		 return new Scene(layout, 800, 500); 
 	}
 }

@@ -78,6 +78,6 @@ public class CreateEventPage {
 		 
 		 layout.getChildren().addAll(navbar, titleLbl, input, createEventBtn, errorLbl);
 		 
-		 return new Scene(layout, 1600, 900); 
+		 return new Scene(layout, 1200, 600); 
 	}
 }

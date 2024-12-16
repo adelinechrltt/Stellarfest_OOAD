@@ -65,6 +65,6 @@ public class UpdateEventNamePage {
 		buttons.setAlignment(Pos.CENTER);
 		
 	    layout.getChildren().addAll(navbar, titleLbl, input, buttons, errorLbl);
-		return new Scene(layout, 1600, 900);
+		return new Scene(layout, 1200, 600);
 	}
 }

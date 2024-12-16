@@ -98,6 +98,6 @@ public class MyProductsPage {
 		
 		layout.getChildren().add(addProductBtn);
 		
-		return new Scene(layout, 300, 200);
+		return new Scene(layout, 1200, 600);
 	}
 }

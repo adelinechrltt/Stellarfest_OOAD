@@ -66,6 +66,6 @@ public class CreateProductPage {
 		
 		layout.getChildren().addAll(navbar, titleLbl, input, createProdBtn);
 		
-		return new Scene(layout, 300, 200);
+		return new Scene(layout, 1200, 600);
 	}
 }

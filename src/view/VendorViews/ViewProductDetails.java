@@ -84,6 +84,6 @@ public class ViewProductDetails {
 		buttons.getChildren().addAll(updateBtn, deleteBtn);
 		
 		layout.getChildren().add(buttons);
-		return new Scene(layout, 300, 200);
+		return new Scene(layout, 1200, 600);
 	}
 }

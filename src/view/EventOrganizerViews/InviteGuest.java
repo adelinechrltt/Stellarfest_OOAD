@@ -71,6 +71,6 @@ public class InviteGuest {
         });
         
 	    layout.getChildren().addAll(navbar, titleLbl, GuestListView, inviteBtn);
-		return new Scene(layout, 1600, 900);
+		return new Scene(layout, 1200, 600);
 	}
 }

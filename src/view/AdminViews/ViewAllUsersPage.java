@@ -95,6 +95,6 @@ public class ViewAllUsersPage {
 			layout.getChildren().addAll(subtitleLbl, usersView, deleteBtn);
 		}
 
-		return new Scene(layout, 1600, 900);
+		return new Scene(layout, 1200, 600);
 	}
 }

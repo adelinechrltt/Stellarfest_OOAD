@@ -108,6 +108,6 @@ public class ViewEventsList {
 		     layout.getChildren().addAll(subtitleLbl, viewMyEvents);
 		 }
 	     
-		 return new Scene(layout, 1600, 900);	
+		 return new Scene(layout, 1200, 600);	
 	}
 }

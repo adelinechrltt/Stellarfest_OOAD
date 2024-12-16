@@ -12,14 +12,18 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.Main;
+import util.LoginSession;
 import view.NavBar;
 import view.ViewEventDetails;
 
 public class UpdateEventNamePage {
+	
+	public static LoginSession login = LoginSession.getInstance();
+	
 	public static Scene getScene(String eventID, String name) {
 		VBox layout = new VBox(10);
 		layout.setAlignment(Pos.CENTER);
-		HBox navbar = NavBar.getNavbar(Main.currentUser.getRole());
+		HBox navbar = NavBar.getNavbar(login.getLoggedInUser().getRole());
 		
 		Font titleFont = Font.font("Microsoft Sans Serif", FontWeight.BOLD, 24);
 		Font inputFont = Font.font("Microsoft Sans Serif", FontWeight.MEDIUM, 17);

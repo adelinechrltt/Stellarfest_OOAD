@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
-import model.User;
+import util.LoginSession;
 import view.LoginPage;
 
 public class Main extends Application {
@@ -14,7 +14,7 @@ public class Main extends Application {
 //	public static User currentUser = new EventOrganizer("U3730035", "shawn@gmail.com", "shawn", "123456");
 //	public static User currentUser = new Vendor("U7337645", "herobrine1234@gmail.com", "herobrine1234", "herobrine1234");
 	
-	public static User currentUser = null;
+	public static LoginSession login = LoginSession.getInstance();
 	
 	private static Stage primaryStage;
 	private static String css = Main.class.getResource("app.css").toExternalForm();
@@ -27,9 +27,6 @@ public class Main extends Application {
         primaryStage.show();
         
         Scene scene = LoginPage.getScene();
-//        Scene scene = RegisterPage.getScene();
-//        Scene scene = ViewEventsList.getScene();
-//        Scene scene = Home.getScene();
         
         scene.getStylesheets().add(css);
         primaryStage.setScene(scene);

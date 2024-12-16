@@ -7,9 +7,12 @@ import javafx.scene.control.*;
 import javafx.scene.text.*;
 import javafx.scene.layout.*;
 import main.Main;
+import util.LoginSession;
 
 
 public class ChangeProfile {
+	
+	public static LoginSession login = LoginSession.getInstance();
 	
 	private static Label errorLbl = new Label();
 	private static Label titleLbl = new Label();
@@ -31,7 +34,7 @@ public class ChangeProfile {
 		 
 		 emailLbl.setText("New E-mail: ");
 		 emailLbl.setFont(inputFont);
-		 emailField.setText(Main.currentUser.getEmail());
+		 emailField.setText(login.getLoggedInUser().getEmail());
 		 
 		 errorLbl.setText("");
 	     errorLbl.setVisible(false);
@@ -40,7 +43,7 @@ public class ChangeProfile {
 		 updateBtn.setText("Update E-mail");
 		 updateBtn.setFont(Font.font("Microsoft Sans Serif", FontWeight.BOLD, 21));
 		 updateBtn.setOnAction(e -> {
-			 UserController.checkChangeEmail(Main.currentUser.getEmail(), emailField.getText(), errorLbl);
+			 UserController.checkChangeEmail(login.getLoggedInUser().getEmail(), emailField.getText(), errorLbl);
 		 });
 		 
 		 GridPane input = new GridPane();
@@ -69,7 +72,7 @@ public class ChangeProfile {
 		 usnLbl.setText("New Username: ");
 		 usnLbl.setFont(inputFont);
 		 
-		 usnField.setText(Main.currentUser.getName());
+		 usnField.setText(login.getLoggedInUser().getName());
 		 
 		 errorLbl.setText("");
 	     errorLbl.setVisible(false);
@@ -78,7 +81,7 @@ public class ChangeProfile {
 		 updateBtn.setText("Update Username");
 		 updateBtn.setFont(Font.font("Microsoft Sans Serif", FontWeight.BOLD, 21));
 		 updateBtn.setOnAction(e -> {
-			 UserController.checkChangeUsn(Main.currentUser.getName(), usnField.getText(), errorLbl);
+			 UserController.checkChangeUsn(login.getLoggedInUser().getName(), usnField.getText(), errorLbl);
 		 });
 		 
 		 GridPane input = new GridPane();
@@ -119,7 +122,7 @@ public class ChangeProfile {
 		 updateBtn.setText("Change Password");
 		 updateBtn.setFont(Font.font("Microsoft Sans Serif", FontWeight.BOLD, 21));
 		 updateBtn.setOnAction(e -> {
-			 UserController.checkChangePassword(Main.currentUser.getEmail(), Main.currentUser.getPassword(), oldPwField.getText(), newPwField.getText(), errorLbl);
+			 UserController.checkChangePassword(login.getLoggedInUser().getEmail(), login.getLoggedInUser().getPassword(), oldPwField.getText(), newPwField.getText(), errorLbl);
 		 });
 		 
 		 GridPane input = new GridPane();

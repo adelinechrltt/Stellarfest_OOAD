@@ -25,17 +25,20 @@ import javafx.scene.text.FontWeight;
 import main.Main;
 import model.Event;
 import model.Invitation;
+import util.LoginSession;
 
 public class ViewEventsList {
 	
 	public static String tempID; 
 	private static int clickCount = 0;
 	
+	public static LoginSession login = LoginSession.getInstance();
+	
 	public static Scene getScene() {
 		 VBox layout = new VBox(10);
 		 layout.setAlignment(Pos.CENTER);
 		 
-		 HBox navbar = NavBar.getNavbar(Main.currentUser.getRole());
+		 HBox navbar = NavBar.getNavbar(login.getLoggedInUser().getRole());
 		 
 		 Font titleFont = Font.font("Microsoft Sans Serif", FontWeight.BOLD, 26);
 		 Font inputFont = Font.font("Microsoft Sans Serif", FontWeight.MEDIUM, 17);
@@ -47,12 +50,12 @@ public class ViewEventsList {
 		 layout.getChildren().addAll(navbar, titleLbl);
 
 		 ArrayList<model.Event> events = new ArrayList<>();
-		 if(Main.currentUser.getRole().equals("Event Organizer")) {
-			 events = EventOrganizerController.viewOrganizedEvents(Main.currentUser.getEmail());
+		 if(login.getLoggedInUser().getRole().equals("Event Organizer")) {
+			 events = EventOrganizerController.viewOrganizedEvents(login.getLoggedInUser().getEmail());
 		 } else {
 //			 TODO: Move this to eventscontroller
-			 if(Main.currentUser.getRole().equals("Vendor")) events = VendorController.viewAcceptedEvents(Main.currentUser.getEmail());
-			 else if(Main.currentUser.getRole().equals("Guest")) events = GuestController.viewAcceptedEvents(Main.currentUser.getEmail());
+			 if(login.getLoggedInUser().getRole().equals("Vendor")) events = VendorController.viewAcceptedEvents(login.getLoggedInUser().getEmail());
+			 else if(login.getLoggedInUser().getRole().equals("Guest")) events = GuestController.viewAcceptedEvents(login.getLoggedInUser().getEmail());
 		 }
 		 
 		 if(events==null || events.isEmpty()) {

@@ -23,15 +23,18 @@ import model.Event;
 import model.Guest;
 import model.User;
 import model.Vendor;
+import util.LoginSession;
 import view.EventOrganizerViews.InviteGuest;
 import view.EventOrganizerViews.InviteVendor;
 import view.EventOrganizerViews.UpdateEventNamePage;
 
 public class ViewEventDetails {
+	public static LoginSession login = LoginSession.getInstance();
+	
 	public static Scene getScene(String eventID) {
 		VBox layout = new VBox(10);
 		layout.setAlignment(Pos.CENTER);
-		HBox navbar = NavBar.getNavbar(Main.currentUser.getRole());
+		HBox navbar = NavBar.getNavbar(login.getLoggedInUser().getRole());
 		 
 		 Font titleFont = Font.font("Microsoft Sans Serif", FontWeight.BOLD, 24);
 		 Font inputFont = Font.font("Microsoft Sans Serif", FontWeight.MEDIUM, 17);
@@ -62,8 +65,8 @@ public class ViewEventDetails {
 	     
 	     model.Event ev = null;
 	     
-	     if(Main.currentUser.getRole().equals("Admin")) ev = AdminController.viewEventDetails(eventID);
-	     else if (Main.currentUser.getRole().equals("Event Organizer")) ev = EventOrganizerController.viewOrganizedEventDetails(eventID);
+	     if(login.getLoggedInUser().getRole().equals("Admin")) ev = AdminController.viewEventDetails(eventID);
+	     else if (login.getLoggedInUser().getRole().equals("Event Organizer")) ev = EventOrganizerController.viewOrganizedEventDetails(eventID);
 	     else ev = Event.viewEventDetails(eventID);
 
 	     try {
@@ -93,7 +96,7 @@ public class ViewEventDetails {
 	    	 
 	    	 layout.getChildren().addAll(navbar, manipTitle, eventDetails);
 	    	 
-	    	 if(Main.currentUser.getRole().equals("Event Organizer") || Main.currentUser.getRole().equals("Admin")) {
+	    	 if(login.getLoggedInUser().getRole().equals("Event Organizer") || login.getLoggedInUser().getRole().equals("Admin")) {
 		    	 
 				 Label vendorsLbl = new Label();
 				 vendorsLbl.setText("Attending Vendors: ");
@@ -165,7 +168,7 @@ public class ViewEventDetails {
 				 }
 	    	 }
 	    	 
-	    	 if(Main.currentUser.getRole().equals("Event Organizer") || Main.currentUser.getRole().equals("Admin")) {
+	    	 if(login.getLoggedInUser().getRole().equals("Event Organizer") || login.getLoggedInUser().getRole().equals("Admin")) {
 	    		// buttons
 		    	 Button updateBtn = new Button(), deleteBtn = new Button(), inviteGuests = new Button(), inviteVendors = new Button();
 				 HBox UDBtns = new HBox();
@@ -183,7 +186,7 @@ public class ViewEventDetails {
 				 deleteBtn.setOnAction(e -> {
 					 EventOrganizerController.deleteEvent(eventID);
 				 });
-				 if(Main.currentUser.getRole().equals("Admin")) UDBtns.getChildren().add(deleteBtn);
+				 if(login.getLoggedInUser().getRole().equals("Admin")) UDBtns.getChildren().add(deleteBtn);
 				 
 				 inviteGuests.setText("Invite Guests");
 				 inviteGuests.setOnAction(e -> {

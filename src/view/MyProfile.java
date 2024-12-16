@@ -7,13 +7,16 @@ import javafx.scene.control.*;
 import javafx.scene.text.*;
 import javafx.scene.layout.*;
 import main.Main;
+import util.LoginSession;
 
 public class MyProfile {
+	public static LoginSession login = LoginSession.getInstance();
+	
 	public static Scene getScene() {
 		 VBox layout = new VBox(10);
 		 layout.setAlignment(Pos.CENTER);
 		 
-		 HBox navbar = NavBar.getNavbar(Main.currentUser.getRole());
+		 HBox navbar = NavBar.getNavbar(login.getLoggedInUser().getRole());
 		 
 		 Label titleLbl = new Label();
 		 Label emailLbl = new Label();
@@ -34,7 +37,7 @@ public class MyProfile {
 		 
 		 emailLbl.setText("Email: ");
 		 emailLbl.setFont(inputFont);
-		 email.setText(Main.currentUser.getEmail());
+		 email.setText(login.getLoggedInUser().getEmail());
 		 email.setFont(inputFont);
 		 
 		 updateEmailBtn.setText("\u270F");
@@ -44,7 +47,7 @@ public class MyProfile {
 		 
 		 usnLbl.setText("Username: ");
 		 usnLbl.setFont(inputFont);
-		 usn.setText(Main.currentUser.getName());
+		 usn.setText(login.getLoggedInUser().getName());
 		 usn.setFont(inputFont);
 		 
 		 updateUsnBtn.setText("\u270F");

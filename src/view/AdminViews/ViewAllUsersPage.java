@@ -22,10 +22,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.Main;
 import model.User;
+import util.LoginSession;
 import view.NavBar;
 import view.ViewEventDetails;
 
 public class ViewAllUsersPage {
+	public static LoginSession login = LoginSession.getInstance();
+
 	public static String tempID;
 	private static int clickCount = 0;
 
@@ -33,7 +36,7 @@ public class ViewAllUsersPage {
 		VBox layout = new VBox(10);
 		layout.setAlignment(Pos.CENTER);
 
-		HBox navbar = NavBar.getNavbar(Main.currentUser.getRole());
+		HBox navbar = NavBar.getNavbar(login.getLoggedInUser().getRole());
 
 		Font titleFont = Font.font("Microsoft Sans Serif", FontWeight.BOLD, 26);
 		Font inputFont = Font.font("Microsoft Sans Serif", FontWeight.MEDIUM, 17);

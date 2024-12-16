@@ -5,12 +5,15 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import main.Main;
+import util.LoginSession;
 import view.AdminViews.ViewAllEventsPage;
 import view.AdminViews.ViewAllUsersPage;
 import view.VendorAndGuestViews.ViewInvitationsPage;
 import view.VendorViews.MyProductsPage;
 
-public class NavBar {
+public class NavBar {	
+	public static LoginSession login = LoginSession.getInstance();
+
 	public static HBox getNavbar(String role) {
         HBox navbar = new HBox(10);
         navbar.setAlignment(Pos.CENTER);
@@ -32,7 +35,7 @@ public class NavBar {
         
         EventsBtn.setText("Events");
         EventsBtn.setOnAction(e -> {
-        	if(Main.currentUser.getRole().equals("Event Organizer")) Main.switchScene(ViewEventsList.getScene());
+        	if(login.getLoggedInUser().getRole().equals("Event Organizer")) Main.switchScene(ViewEventsList.getScene());
         	else Main.switchScene(ViewEventsList.getScene());
         });
         
@@ -58,7 +61,7 @@ public class NavBar {
         
         ProductsBtn.setText("Products");
         ProductsBtn.setOnAction(e -> {
-        	Main.switchScene(MyProductsPage.getScene(Main.currentUser.getUserID()));
+        	Main.switchScene(MyProductsPage.getScene(login.getLoggedInUser().getUserID()));
         });
         
         Button AllEventsBtn = new Button();

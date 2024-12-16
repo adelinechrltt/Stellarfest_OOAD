@@ -14,13 +14,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.Main;
+import util.LoginSession;
 import view.NavBar;
 
 public class CreateProductPage {
+	
+	public static LoginSession login = LoginSession.getInstance();
+	
 	public static Scene getScene() {
 		VBox layout = new VBox(10);
 		layout.setAlignment(Pos.CENTER);
-		HBox navbar = NavBar.getNavbar(Main.currentUser.getRole());
+		HBox navbar = NavBar.getNavbar(login.getLoggedInUser().getRole());
 		
 		Font titleFont = Font.font("Microsoft Sans Serif", FontWeight.BOLD, 24);
 		Font inputFont = Font.font("Microsoft Sans Serif", FontWeight.MEDIUM, 17);
@@ -49,7 +53,7 @@ public class CreateProductPage {
 		errorLbl.setVisible(false);
 		
 		createProdBtn.setOnAction(e -> {
-			VendorController.createProduct(Main.currentUser.getUserID(), prodNameField.getText(), prodDescField.getText(), errorLbl);
+			VendorController.createProduct(login.getLoggedInUser().getUserID(), prodNameField.getText(), prodDescField.getText(), errorLbl);
 		});
 		createProdBtn.setText("Create Product");
 		

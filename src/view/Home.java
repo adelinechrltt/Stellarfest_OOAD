@@ -13,16 +13,19 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.Main;
+import util.LoginSession;
 
 public class Home {
+	public static LoginSession login = LoginSession.getInstance();
+	
 	public static Scene getScene() {
 		 VBox layout = new VBox(10);
 		 layout.setAlignment(Pos.CENTER);
 		 
-		 HBox navbar = NavBar.getNavbar(Main.currentUser.getRole());
+		 HBox navbar = NavBar.getNavbar(login.getLoggedInUser().getRole());
 
 		 Label greetingLbl = new Label();
-		 greetingLbl.setText("Hello, " + Main.currentUser.getName() + "!");
+		 greetingLbl.setText("Hello, " + login.getLoggedInUser().getName() + "!");
 		 
 		 layout.getChildren().addAll(navbar, greetingLbl);
 		 return new Scene(layout, 1600, 900);	

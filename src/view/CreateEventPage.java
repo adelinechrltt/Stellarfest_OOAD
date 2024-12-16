@@ -13,13 +13,17 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import main.Main;
 import model.User;
+import util.LoginSession;
 
 public class CreateEventPage {
+	
+	public static LoginSession login = LoginSession.getInstance();
+	
 	public static Scene getScene() {
 		 VBox layout = new VBox(10);
 		 layout.setAlignment(Pos.CENTER);
 		 
-		 HBox navbar = NavBar.getNavbar(Main.currentUser.getRole());
+		 HBox navbar = NavBar.getNavbar(login.getLoggedInUser().getRole());
 		 
 		 Label titleLbl = new Label();
 		 Label evNameLbl = new Label();
@@ -56,7 +60,7 @@ public class CreateEventPage {
 		 errorLbl.setVisible(false);
 		 
 		 createEventBtn.setOnAction(e -> {
-			 EventOrganizerController.createEvent(evNameField.getText(), evDatePicker.getValue(), evLocField.getText(), evDescField.getText(), Main.currentUser.getUserID(), errorLbl);
+			 EventOrganizerController.createEvent(evNameField.getText(), evDatePicker.getValue(), evLocField.getText(), evDescField.getText(), login.getLoggedInUser().getUserID(), errorLbl);
 		 });
 		 
 		 createEventBtn.setText("Create Event");

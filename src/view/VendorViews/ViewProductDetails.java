@@ -13,15 +13,18 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.Main;
 import model.Product;
+import util.LoginSession;
 import view.NavBar;
 
 public class ViewProductDetails {
+	
+	public static LoginSession login = LoginSession.getInstance();
 	private static Product product;
 	
 	public static Scene getScene(String productID) {
 		VBox layout = new VBox(10);
 		layout.setAlignment(Pos.CENTER);
-		HBox navbar = NavBar.getNavbar(Main.currentUser.getRole());
+		HBox navbar = NavBar.getNavbar(login.getLoggedInUser().getRole());
 		
 		Font titleFont = Font.font("Microsoft Sans Serif", FontWeight.BOLD, 26);
 		Font inputFont = Font.font("Microsoft Sans Serif", FontWeight.MEDIUM, 17);
@@ -74,7 +77,7 @@ public class ViewProductDetails {
 		Button deleteBtn = new Button();
 		deleteBtn.setText("Delete Product");
 		deleteBtn.setOnAction(e -> {
-			VendorController.deleteProduct(productID, Main.currentUser.getUserID());
+			VendorController.deleteProduct(productID, login.getLoggedInUser().getUserID());
 		});
 		
 		buttons.setAlignment(Pos.CENTER);

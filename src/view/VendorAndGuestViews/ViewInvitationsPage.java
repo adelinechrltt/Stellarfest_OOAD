@@ -22,10 +22,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.Main;
 import model.Invitation;
+import util.LoginSession;
 import view.NavBar;
 import view.ViewEventDetails;
 
 public class ViewInvitationsPage {
+	
+	public static LoginSession login = LoginSession.getInstance();
 	
 	public static String invID;
 	private static int clickCount = 0;
@@ -33,7 +36,7 @@ public class ViewInvitationsPage {
 	public static Scene getScene() {
 		VBox layout = new VBox(10);
 		layout.setAlignment(Pos.CENTER);
-		HBox navbar = NavBar.getNavbar(Main.currentUser.getRole());
+		HBox navbar = NavBar.getNavbar(login.getLoggedInUser().getRole());
 		
 		Font titleFont = Font.font("Microsoft Sans Serif", FontWeight.BOLD, 24);
 		Font inputFont = Font.font("Microsoft Sans Serif", FontWeight.MEDIUM, 17);
@@ -44,7 +47,7 @@ public class ViewInvitationsPage {
 		
 		layout.getChildren().addAll(navbar, titleLbl);
 
-		ArrayList<Invitation> invites = InvitationController.getPendingInvsByEmail(Main.currentUser.getEmail());
+		ArrayList<Invitation> invites = InvitationController.getPendingInvsByEmail(login.getLoggedInUser().getEmail());
 		if(invites.isEmpty() || invites == null) {
 			Label nullDisplay = new Label();
 			nullDisplay.setText("No invitations found!");

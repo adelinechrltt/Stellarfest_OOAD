@@ -13,13 +13,17 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.Main;
 import model.Product;
+import util.LoginSession;
 import view.NavBar;
 
 public class UpdateProductPage {
+	
+	public static LoginSession login = LoginSession.getInstance();
+	
 	public static Scene getScene(Product pr) {
 		VBox layout = new VBox(10);
 		layout.setAlignment(Pos.CENTER);
-		HBox navbar = NavBar.getNavbar(Main.currentUser.getRole());
+		HBox navbar = NavBar.getNavbar(login.getLoggedInUser().getRole());
 		
 		Font titleFont = Font.font("Microsoft Sans Serif", FontWeight.BOLD, 24);
 		Font inputFont = Font.font("Microsoft Sans Serif", FontWeight.MEDIUM, 17);
@@ -51,7 +55,7 @@ public class UpdateProductPage {
 		errorLbl.setVisible(false);
 		
 		updateProdBtn.setOnAction(e -> {
-			VendorController.updateProduct(Main.currentUser.getUserID(), pr.getProductID(), prodNameField.getText(), prodDescField.getText(), errorLbl);
+			VendorController.updateProduct(login.getLoggedInUser().getUserID(), pr.getProductID(), prodNameField.getText(), prodDescField.getText(), errorLbl);
 		});
 		updateProdBtn.setText("Update Product");
 		

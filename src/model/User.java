@@ -13,6 +13,7 @@ public class User {
 	
 	private static Connect db = Connect.getInstance();
 	
+	
 	protected String UserID;
 	protected String email;
 	protected String name;
@@ -153,7 +154,8 @@ public class User {
 		return registerSuccess;
 	}
 	
-	public static void login(String email, String password) {
+	public static User login(String email, String password) {
+		User user = null;
 		String query = "SELECT * FROM users\n"
         		+ "WHERE email = ? AND password = ?";
         try {
@@ -165,18 +167,20 @@ public class User {
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
             	if(rs.getString("role").equals("Event Organizer")) {
-                    Main.currentUser = new EventOrganizer(rs.getString("userID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
+                    user = new EventOrganizer(rs.getString("userID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
                 } else if (rs.getString("role").equals("Vendor")) {
-                    Main.currentUser = new Vendor(rs.getString("userID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
+                    user = new Vendor(rs.getString("userID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
                 } else if (rs.getString("role").equals("Admin")) {
-                    Main.currentUser = new Admin(rs.getString("userID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
+                    user = new Admin(rs.getString("userID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
                 } else if (rs.getString("role").equals("Guest")) {
-                    Main.currentUser = new Guest(rs.getString("userID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
+                    user = new Guest(rs.getString("userID"), rs.getString("email"), rs.getString("name"), rs.getString("password"));
                 }
             }
         } catch(SQLException e) {
         	e.printStackTrace();
         }
+        
+        return user;
 	}
 	
 	public static void changeProfile(String oldEmail, String newEmail, String usn, String password) {
@@ -189,9 +193,7 @@ public class User {
             ps.setString(2, usn);
             ps.setString(3, password);
             ps.setString(4, oldEmail);
-            ps.executeUpdate();
-            
-            Main.currentUser.setEmail(newEmail);
+            ps.executeUpdate();            
         } catch (SQLException e) {
         	e.printStackTrace();
         }

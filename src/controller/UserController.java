@@ -13,11 +13,14 @@ import model.Guest;
 import model.User;
 import model.Vendor;
 import util.Connect;
+import util.LoginSession;
 import view.Home;
 import view.LoginPage;
 import view.MyProfile;
 
 public class UserController {
+
+	public static LoginSession login = LoginSession.getInstance();
 
 	public UserController() {
 		super();
@@ -124,7 +127,8 @@ public class UserController {
 		boolean accountFound = (validateEmailMatch(email, errorLbl) && validatePwMatch(email, password, errorLbl));
 		if(!accountFound) return;
             
-		User.login(email, password);
+		User user = User.login(email, password);
+		login.setLoggedInUser(user);
         Main.switchScene(Home.getScene());
         
 	}
@@ -212,6 +216,9 @@ public class UserController {
 	
 	public static void changeProfile(String oldEmail, String newEmail, String usn, String password) {
 		User.changeProfile(oldEmail, newEmail, usn, password);
+		login.getLoggedInUser().setEmail(newEmail);
+		login.getLoggedInUser().setName(usn);
+		login.getLoggedInUser().setPassword(password);
 		Main.switchScene(MyProfile.getScene());
 	}
 	

@@ -14,10 +14,13 @@ import model.EventOrganizer;
 import model.Guest;
 import model.Vendor;
 import util.Connect;
+import util.LoginSession;
 import view.ViewEventsList;
 
 public class EventOrganizerController {
 		
+	public static LoginSession login = LoginSession.getInstance();
+	
 	public EventOrganizerController() {
 		super();
 	}
@@ -90,7 +93,7 @@ public class EventOrganizerController {
 		if(!eventID.isEmpty()) {
 			EventController.deleteEvent(eventID);
 			
-			for(Event event : Main.currentUser.getEventsCreated()) {
+			for(Event event : login.getLoggedInUser().getEventsCreated()) {
 				if(event.getEventID().equals(eventID)) event = null;
 				break;
 			}

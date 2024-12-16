@@ -21,6 +21,7 @@ import javafx.scene.text.FontWeight;
 import main.Main;
 import model.Product;
 import util.LoginSession;
+import util.RoutingHelper;
 import view.NavBar;
 import view.ViewEventDetails;
 
@@ -79,7 +80,7 @@ public class MyProductsPage {
 			    	 
 			    	 clickCount++;
 			    	 if(clickCount == 2) {
-			    		 Main.switchScene(ViewProductDetails.getScene(productID));
+			    		 RoutingHelper.showProductDetailsPage(productID);
 			    		 clickCount = 0;
 			    	 }
 				} catch (Exception error) {

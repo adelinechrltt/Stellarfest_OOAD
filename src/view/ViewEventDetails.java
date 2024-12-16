@@ -24,9 +24,9 @@ import model.Guest;
 import model.User;
 import model.Vendor;
 import util.LoginSession;
+import util.RoutingHelper;
 import view.EventOrganizerViews.InviteGuest;
 import view.EventOrganizerViews.InviteVendor;
-import view.EventOrganizerViews.UpdateEventNamePage;
 
 public class ViewEventDetails {
 	public static LoginSession login = LoginSession.getInstance();
@@ -178,7 +178,7 @@ public class ViewEventDetails {
 				 
 				 updateBtn.setText("Update Event Name");
 				 updateBtn.setOnAction(e -> {
-					 Main.switchScene(UpdateEventNamePage.getScene(eventID, evNameVal.getText()));
+					 RoutingHelper.showUpdateEventNamePage(eventID, evNameVal.getText());
 				 });
 				 UDBtns.getChildren().add(updateBtn);
 				 
@@ -193,7 +193,7 @@ public class ViewEventDetails {
 					 ArrayList<Guest> guests = EventOrganizerController.checkAddGuestInput(eventID);
 					 
 					 if(guests == null) Main.displayAlert("ERROR", "No guests left to invite for this event!");
-					 else Main.switchScene(InviteGuest.getScene(eventID));
+					 else RoutingHelper.showInviteGuestsPage(eventID);
 				 });
 				 inviteBtns.getChildren().add(inviteGuests);
 				 
@@ -202,7 +202,7 @@ public class ViewEventDetails {
 					 ArrayList<Vendor> vendors = EventOrganizerController.checkAddVendorInput(eventID);
 					 
 					 if (vendors == null) Main.displayAlert("ERROR", "No vendors left to invite for this event!");
-					 else Main.switchScene(InviteVendor.getScene(eventID));
+					 else RoutingHelper.showInviteVendorsPage(eventID);
 				 });
 				 
 				 inviteBtns.getChildren().add(inviteVendors);

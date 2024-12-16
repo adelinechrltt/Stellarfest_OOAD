@@ -10,6 +10,7 @@ import main.Main;
 import model.Invitation;
 import model.User;
 import util.Connect;
+import util.RoutingHelper;
 import view.ViewEventsList;
 import view.VendorAndGuestViews.ViewInvitationsPage;
 
@@ -36,7 +37,7 @@ public class InvitationController {
 			boolean sentFlag = Invitation.sendInvitation(invitationID, eventID, email, user.getRole(), user.getUserID());
 			if(sentFlag) {
 				Main.displayAlert("INFO", "All invitations sent! Returning to Events List page.");
-				Main.switchScene(ViewEventsList.getScene());
+				RoutingHelper.showEventsListPage();
 			};
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,7 +80,7 @@ public class InvitationController {
 		boolean accepted = Invitation.acceptInvitation(invID, errorLbl);
 		if(accepted) {
 			Main.displayAlert("Info", "Succesfully accepted invitation!");
-			Main.switchScene(ViewInvitationsPage.getScene());
+			RoutingHelper.showInvitationsListPage();
 		} else {
 			errorLbl.setText("ERROR: Failed to accept invitation!");
 			errorLbl.setVisible(true);

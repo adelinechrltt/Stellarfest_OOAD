@@ -15,6 +15,7 @@ import model.Guest;
 import model.Vendor;
 import util.Connect;
 import util.LoginSession;
+import util.RoutingHelper;
 import view.ViewEventsList;
 
 public class EventOrganizerController {
@@ -86,7 +87,7 @@ public class EventOrganizerController {
 		EventController.updateEventName(eventID, name);
 		
 		Main.displayAlert("Update success!", "Event name succesfully updated.");
-		Main.switchScene(ViewEventsList.getScene());
+		RoutingHelper.showEventsListPage();
 	}
 	
 	public static void deleteEvent(String eventID) {
@@ -99,7 +100,7 @@ public class EventOrganizerController {
 			}
 			
 			Main.displayAlert("Delete success!", "Event succesfully deleted.");
-			Main.switchScene(ViewEventsList.getScene());
+			RoutingHelper.showEventsListPage();
 		}
 	}
 	

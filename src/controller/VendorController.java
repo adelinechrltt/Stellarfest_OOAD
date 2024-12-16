@@ -11,6 +11,7 @@ import model.Event;
 import model.Invitation;
 import model.Vendor;
 import util.Connect;
+import util.RoutingHelper;
 import view.VendorViews.MyProductsPage;
 
 public class VendorController {
@@ -42,7 +43,7 @@ public class VendorController {
 		boolean isValid = checkManageVendorInput(name, description, errorLbl);
 		if(isValid) {			
 			ProductController.createProduct(userID, name, description);
-			Main.switchScene(MyProductsPage.getScene(userID));
+			RoutingHelper.showProductsPage(userID);
 			Main.displayAlert("Info", "Succesfully created new product!");
 		}
 	}
@@ -51,7 +52,7 @@ public class VendorController {
 		boolean isValid = checkManageVendorInput(name, description, errorLbl);
 		if(isValid) {
 			ProductController.updateProduct(productID, name, description);
-			Main.switchScene(MyProductsPage.getScene(userID));
+			RoutingHelper.showProductsPage(userID);
 			Main.displayAlert("Info", "Succesfully updated product!");
 		}
 	}
@@ -60,7 +61,7 @@ public class VendorController {
 		try {
 			ProductController.deleteProduct(productID);
 			Main.displayAlert("Info", "Succesfully deleted product!");
-			Main.switchScene(MyProductsPage.getScene(userID));
+			RoutingHelper.showProductsPage(userID);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Main.displayAlert("ERROR", "Failed to delete product!");

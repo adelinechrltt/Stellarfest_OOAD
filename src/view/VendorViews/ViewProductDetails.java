@@ -14,6 +14,7 @@ import javafx.scene.text.FontWeight;
 import main.Main;
 import model.Product;
 import util.LoginSession;
+import util.RoutingHelper;
 import view.NavBar;
 
 public class ViewProductDetails {
@@ -71,7 +72,7 @@ public class ViewProductDetails {
 		Button updateBtn = new Button();
 		updateBtn.setText("Update Product Details");
 		updateBtn.setOnAction(e -> {
-			Main.switchScene(UpdateProductPage.getScene(product));
+			RoutingHelper.showUpdateProductPage(product);
 		});
 		
 		Button deleteBtn = new Button();

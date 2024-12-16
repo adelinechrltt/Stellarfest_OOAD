@@ -11,10 +11,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import main.Main;
 import util.LoginSession;
+import util.RoutingHelper;
 import view.NavBar;
-import view.ViewEventDetails;
 
 public class UpdateEventNamePage {
 	
@@ -52,7 +51,7 @@ public class UpdateEventNamePage {
 		Button backBtn = new Button();
 		backBtn.setText("Back");
 		backBtn.setOnAction(e -> {
-			Main.switchScene(ViewEventDetails.getScene(eventID));
+			RoutingHelper.showEventDetailsPage(eventID);
 		});
 		
 		GridPane input = new GridPane();

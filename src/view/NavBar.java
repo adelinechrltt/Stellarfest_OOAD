@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import main.Main;
 import util.LoginSession;
+import util.RoutingHelper;
 import view.AdminViews.ViewAllEventsPage;
 import view.AdminViews.ViewAllUsersPage;
 import view.VendorAndGuestViews.ViewInvitationsPage;
@@ -30,44 +31,44 @@ public class NavBar {
         
         HomeBtn.setText("Home");
         HomeBtn.setOnAction(e -> {
-        	Main.switchScene(Home.getScene());
+        	RoutingHelper.showHomePage();
         });
         
         EventsBtn.setText("Events");
         EventsBtn.setOnAction(e -> {
         	if(login.getLoggedInUser().getRole().equals("Event Organizer")) Main.switchScene(ViewEventsList.getScene());
-        	else Main.switchScene(ViewEventsList.getScene());
+        	else RoutingHelper.showEventsListPage();
         });
         
         CreateEventBtn.setText("Create Events");
         CreateEventBtn.setOnAction(e -> {
-        	Main.switchScene(CreateEventPage.getScene());
+        	RoutingHelper.showCreateEventPage();
         });
         
         InvitationsBtn.setText("Invitations");
         InvitationsBtn.setOnAction(e -> {
-        	Main.switchScene(ViewInvitationsPage.getScene());
+        	RoutingHelper.showInvitationsListPage();
         });
         
         UsersBtn.setText("Users");
         UsersBtn.setOnAction(e -> {
-        	Main.switchScene(ViewAllUsersPage.getScene());
+        	RoutingHelper.showAllUsersPage();
         });
         
         ProfileBtn.setText("My Profile");
         ProfileBtn.setOnAction(e -> {
-        	Main.switchScene(MyProfile.getScene());
+        	RoutingHelper.showProfilePage();
         });
         
         ProductsBtn.setText("Products");
         ProductsBtn.setOnAction(e -> {
-        	Main.switchScene(MyProductsPage.getScene(login.getLoggedInUser().getUserID()));
+        	RoutingHelper.showProductsPage(login.getLoggedInUser().getUserID());
         });
         
         Button AllEventsBtn = new Button();
         AllEventsBtn.setText("All Events");
         AllEventsBtn.setOnAction(e ->{
-        	Main.switchScene(ViewAllEventsPage.getScene());
+        	RoutingHelper.showAllEventsListPage();
         });
         
         if(role.equals("Event Organizer")) {

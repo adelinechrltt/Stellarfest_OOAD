@@ -14,6 +14,7 @@ import model.User;
 import model.Vendor;
 import util.Connect;
 import util.LoginSession;
+import util.RoutingHelper;
 import view.Home;
 import view.LoginPage;
 import view.MyProfile;
@@ -87,8 +88,8 @@ public class UserController {
 	public static void register(String email, String username, String password, String role) {
 		boolean registerSuccess = User.register(generateUserID(), email, username, password, role);
 		if(registerSuccess) {
-	        Main.switchScene(LoginPage.getScene());
-	        Main.displayAlert("Registration succesful!", "Succesfully registered a new account! Please log-in.");		
+			RoutingHelper.showLoginPage();
+			Main.displayAlert("Registration succesful!", "Succesfully registered a new account! Please log-in.");		
 		} else Main.displayAlert("ERROR", "Unsuccesful registration, please try again.");
 		
 	}
@@ -129,8 +130,7 @@ public class UserController {
             
 		User user = User.login(email, password);
 		login.setLoggedInUser(user);
-        Main.switchScene(Home.getScene());
-        
+		RoutingHelper.showHomePage();
 	}
 	
 	
@@ -159,7 +159,7 @@ public class UserController {
 		User user = User.getUserByEmail(oldEmail);
 		
 		User.changeProfile(user.getEmail(), newEmail, user.getName(), user.getPassword());       
-        Main.switchScene(MyProfile.getScene());
+		RoutingHelper.showProfilePage();
 	}
 	
 	public static void checkChangeUsn(String oldUsn, String newUsn, Label errorLbl) {
@@ -181,7 +181,7 @@ public class UserController {
 		User user = User.getUserByUsername(oldUsn);
 		
 		User.changeProfile(user.getEmail(), user.getEmail(), newUsn, user.getPassword());       
-		Main.switchScene(MyProfile.getScene());
+		RoutingHelper.showProfilePage();
 	}
 	
 	public static void checkChangePassword(String email, String userPassword, String oldPassword, String newPassword, Label errorLbl) {
@@ -219,7 +219,7 @@ public class UserController {
 		login.getLoggedInUser().setEmail(newEmail);
 		login.getLoggedInUser().setName(usn);
 		login.getLoggedInUser().setPassword(password);
-		Main.switchScene(MyProfile.getScene());
+		RoutingHelper.showProfilePage();
 	}
 	
 	public static User getUserByEmail(String email) {

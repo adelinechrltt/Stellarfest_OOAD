@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.text.*;
 import javafx.scene.layout.*;
 import main.Main;
+import util.RoutingHelper;
 
 public class RegisterPage {
 	public static Scene getScene() {
@@ -86,7 +87,7 @@ public class RegisterPage {
 		 loginLbl.setText("Already have an account?");
 		 loginBtn.setText("Log-In");
 		 loginBtn.setOnAction(e -> {
-			 Main.switchScene(LoginPage.getScene());
+			 RoutingHelper.showLoginPage();
 		 });
 		 
 		 HBox login = new HBox();

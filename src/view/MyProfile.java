@@ -8,6 +8,7 @@ import javafx.scene.text.*;
 import javafx.scene.layout.*;
 import main.Main;
 import util.LoginSession;
+import util.RoutingHelper;
 
 public class MyProfile {
 	public static LoginSession login = LoginSession.getInstance();
@@ -42,7 +43,7 @@ public class MyProfile {
 		 
 		 updateEmailBtn.setText("\u270F");
 		 updateEmailBtn.setOnAction(e -> {
-			 Main.switchScene(ChangeProfile.getUpdateEmailScene());
+			 RoutingHelper.showUpdateEmailPage();
 		 });
 		 
 		 usnLbl.setText("Username: ");
@@ -52,12 +53,12 @@ public class MyProfile {
 		 
 		 updateUsnBtn.setText("\u270F");
 		 updateUsnBtn.setOnAction(e -> {
-			 Main.switchScene(ChangeProfile.getUpdateUsnScene());
+			 RoutingHelper.showUpdateUsernamePage();
 		 });
 		 
 		 changePwBtn.setText("Change Password");
 		 changePwBtn.setOnAction(e -> {
-			 Main.switchScene(ChangeProfile.getUpdatePwScene());
+			 RoutingHelper.showUpdatePasswordPage();
 		 });
 		 
 		 GridPane input = new GridPane();

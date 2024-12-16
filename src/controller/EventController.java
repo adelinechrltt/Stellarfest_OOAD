@@ -13,6 +13,7 @@ import model.Guest;
 import model.User;
 import model.Vendor;
 import util.Connect;
+import util.RoutingHelper;
 import view.ViewEventsList;
 
 public class EventController {
@@ -33,7 +34,7 @@ public class EventController {
 		String eventID = generateEventID();
 		boolean successFlag = Event.createEvent(eventID, name, date, location, description, organizerID);
 		if(successFlag) {
-			Main.switchScene(ViewEventsList.getScene());
+			RoutingHelper.showEventsListPage();
 	        Main.displayAlert("Event creation succesful!", "Succesfully created a new event!");
 		} else Main.displayAlert("ERROR", "Failed to create new event.");
 	}

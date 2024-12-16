@@ -23,6 +23,7 @@ import javafx.scene.text.FontWeight;
 import main.Main;
 import model.Invitation;
 import util.LoginSession;
+import util.RoutingHelper;
 import view.NavBar;
 import view.ViewEventDetails;
 
@@ -102,7 +103,7 @@ public class ViewInvitationsPage {
 			    	 
 			    	 clickCount++;
 			    	 if(clickCount == 2) {
-			    		 Main.switchScene(InvitationDetailsPage.getScene(invID));
+			    		 RoutingHelper.showInvitationDetailsPage(invID);
 			    		 clickCount = 0;
 			    	 }
 		    	} catch (Exception error) {

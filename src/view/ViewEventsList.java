@@ -26,6 +26,7 @@ import main.Main;
 import model.Event;
 import model.Invitation;
 import util.LoginSession;
+import util.RoutingHelper;
 
 public class ViewEventsList {
 	
@@ -97,7 +98,7 @@ public class ViewEventsList {
 			    	 
 			    	 clickCount++;
 			    	 if(clickCount == 2) {
-			    		 Main.switchScene(ViewEventDetails.getScene(tempID));
+			    		 RoutingHelper.showEventDetailsPage(tempID);
 			    		 clickCount = 0;
 			    	 } 
 		    	 } catch (Exception error) {

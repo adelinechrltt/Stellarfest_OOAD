@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.Main;
 import util.LoginSession;
+import util.RoutingHelper;
 import view.NavBar;
 import view.ViewEventDetails;
 
@@ -74,7 +75,7 @@ public class ViewAllEventsPage {
 					        if (e.getClickCount() == 2) {
 					            try {
 					                String tempID = selectedEvent.getEventID();
-					                Main.switchScene(ViewEventDetails.getScene(tempID));
+					                RoutingHelper.showEventDetailsPage(tempID);
 					            } catch (Exception error) {
 					                error.printStackTrace();
 					            }

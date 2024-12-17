@@ -9,8 +9,12 @@ import javafx.scene.layout.*;
 import main.Main;
 import util.LoginSession;
 
-
 public class ChangeProfile {
+	
+	// untuk memenuhi kriteria dalam word di mana pengubahan detail profil user dapat dilakukan secara terpisah
+	// tetapi juga sambil mempertahankan logika validasi bahwa suatu data yang ingin diubah harus berbeda dengan data awalnya,
+	// make approach kami adalah untuk saling memisah scene-scene untuk update masing-masing data, sehingga user memang harus 
+	// melakukan pengubahan detail profil secara terpisah
 	
 	public static LoginSession login = LoginSession.getInstance();
 	

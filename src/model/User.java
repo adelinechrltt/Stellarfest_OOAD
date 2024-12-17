@@ -13,13 +13,13 @@ public class User {
 	
 	private static Connect db = Connect.getInstance();
 	
-	
 	protected String UserID;
 	protected String email;
 	protected String name;
 	protected String password;
 	protected String role;
 	
+	// constructor & getter-setter 
 	public User(String userID, String email, String name, String password) {
 		super();
 		UserID = userID;
@@ -68,12 +68,15 @@ public class User {
 		this.role = role;
 	}
 	
-	public void updateEvents(ArrayList<Event> events) {};
-	public ArrayList<Event> getEventsCreated(){return null;};
-	public void updateInvitations(ArrayList<Event> events) {};
+	// berupa template method yang akan digunakan oleh child class dari User
+	public void updateEvents(ArrayList<Event> events) {}; // --> digunakan oleh EventOrganizer
+	public ArrayList<Event> getEventsCreated(){return null;}; // --> digunakan oleh Vendor, Guest, dan EventOrganizer
+	public void updateInvitations(ArrayList<Event> events) {}; // --> digunakan oleh EventOrganizer
 
 	
+	// query methods
 	public static ArrayList<String> getAllEmails() {
+		// method untuk memperoleh email dari semua akun dalam database
 		String query = "SELECT email FROM users";
 		ResultSet rs = null;
 		ArrayList<String> emails = new ArrayList<>();
@@ -92,6 +95,7 @@ public class User {
 	}
 	
 	public static ArrayList<String> getAllNames() {
+		// method untuk memperoleh username dari semua akun dalam database
 		String query = "SELECT name FROM users";
 		ResultSet rs = null;
 		ArrayList<String> names = new ArrayList<>();
@@ -110,6 +114,7 @@ public class User {
 	}
 	
 	public static String getPasswordByEmail(String email) {
+		// method untuk memperoleh password dari suatu akun dalam database yang diperoleh melalui email
 		String query = "SELECT password FROM Users WHERE email = ?";
 		ResultSet rs = null;
 		String password = null;
@@ -131,6 +136,11 @@ public class User {
 	}
 	
 	public static boolean register(String UID, String email, String username, String password, String role) {
+		// method untuk melakukan registrasi user
+		// return boolean untuk menandakan apakah registrasi berhasil atau tidak
+		// --> true: registrasi berhasil
+		// --> false: registrasi gagal
+
 		boolean registerSuccess = false;
 		String query = "INSERT INTO Users\n"
 				+ "(userID, email, name, password, role) VALUES (" + 
@@ -155,6 +165,9 @@ public class User {
 	}
 	
 	public static User login(String email, String password) {
+		// method untuk login
+		// return User yang akan disimpan ke dalam singleton loginSession
+		
 		User user = null;
 		String query = "SELECT * FROM users\n"
         		+ "WHERE email = ? AND password = ?";
@@ -184,6 +197,7 @@ public class User {
 	}
 	
 	public static void changeProfile(String oldEmail, String newEmail, String usn, String password) {
+		// method untuk mengupdate data profil suatu user
 		String query = "UPDATE users\n"
 				+ "SET email = ?, name = ?, password = ?\n"
 				+ "WHERE email = ?;\n";
@@ -200,6 +214,7 @@ public class User {
 	}
 	
 	public static User getUserByEmail(String email) {
+		// method untuk mendapatkan seorang user dari database berdasarkan emailnya
 		User user = null;
 		String query = "SELECT * FROM Users\n"
 				+ "WHERE email = ?";
@@ -226,6 +241,7 @@ public class User {
 	}
 	
 	public static User getUserByUsername(String name) {
+		// method untuk mendapatkan seorang user dari database berdasarkan usernamenya
 		User user = null;
 		String query = "SELECT * FROM Users\n"
 				+ "WHERE name = ?";

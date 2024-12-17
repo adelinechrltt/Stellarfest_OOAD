@@ -20,6 +20,8 @@ public class Event {
 	private String description;
 	private String OrganizerID;
 
+	// constructor & getter-setter
+	
 	public Event(String eventID, String name, Date date, String location, String description, String organizerID) {
 		super();
 		EventID = eventID;
@@ -81,6 +83,10 @@ public class Event {
 	
 	// query methods
 	public static boolean createEvent(String eventID, String name, LocalDate date, String location, String description, String organizerID) {
+		// method untuk membuat event baru
+		// return boolean:
+		// --> true apabila event baru berhasil dibuat dan disimpan ke dalam database
+		// --> false apabila gagal membuat dan menyimpan event baru
 		boolean succesfulCreate = false;
 		
 		String query = "INSERT INTO Events\n"
@@ -107,6 +113,7 @@ public class Event {
 	}
 	
 	public static ArrayList<Event> viewAllEvents(){
+		// method untuk mendapatkan semua event yang tersimpan dalam database
 		ArrayList<model.Event> events = new ArrayList<>();
 		String query = "SELECT * FROM Events";
 		PreparedStatement ps;
@@ -135,6 +142,7 @@ public class Event {
 	}
 	
 	public static Event viewEventDetails(String eventID) {
+		// method untuk menampilkan detail dari suatu event
 		Event ev = null;
 		String query = "SELECT * FROM Events "
 	    		+ "WHERE eventid = ?";
@@ -164,6 +172,7 @@ public class Event {
 	}
 	
 	public static void updateEventName(String eventID, String name) {
+		// method untuk mengubah nama suatu event
 		String query = "UPDATE Events "
 				+ "SET name = ? "
 				+ "WHERE eventid = ?";
@@ -181,6 +190,7 @@ public class Event {
 	}
 	
 	public static void deleteEvent(String eventID) {
+		// method untuk menghapus suatu event berdasarkan eventID
 		String query = "DELETE FROM Events WHERE eventid = ?";
 
 		PreparedStatement ps;

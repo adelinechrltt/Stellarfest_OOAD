@@ -3,6 +3,8 @@ package util;
 import model.User;
 
 public class LoginSession {
+	
+	// singleton untuk menyimpan data user yang sedang logged in
     private static volatile LoginSession instance;
     private static User loggedInUser;
 

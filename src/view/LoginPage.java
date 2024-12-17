@@ -56,8 +56,6 @@ public class LoginPage {
 		 input.add(passwordLbl, 0, 1);
 		 input.add(pwField, 1, 1);
 		 
-		 
-//		 register section
 		 Label registerLbl = new Label();
 		 Button registerBtn = new Button();
 		 

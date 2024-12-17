@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import util.Connect;
 
 public class Product {
-
-	// assume vendor can decide what one product they want to sell in a certain
-	// event
 	
 	private static Connect db = Connect.getInstance();
 	
@@ -59,7 +56,10 @@ public class Product {
 		this.description = description;
 	}
 	
+	// query methods
 	public static void createProduct(String productID, String userID, String name, String desc) {
+		// method untuk membuat suatu produk baru berdasarkan input user
+		// dan menyimpan produk tersebut ke dalam DB
 		String query = "INSERT INTO Products (productID, userID, name, description) \n"
 				+ "VALUES (?, ?, ?, ?)";
 		PreparedStatement ps;
@@ -76,6 +76,7 @@ public class Product {
 	}
 	
 	public static void updateProduct(String productID, String name, String desc) {
+		// method untuk mengubah / mengupdate detail produk 
 		String query = "UPDATE Products\n"
 	    		+ "SET name = ?,\n"
 	    		+ "description = ?\n"
@@ -95,6 +96,7 @@ public class Product {
 	}
 	
 	public static void deleteProduct(String productID) {
+		// method untuk menghapus produk dari DB berdasarkan productID
 		String query = "DELETE FROM Products\n" +
 				"WHERE ProductID = ?";
 		PreparedStatement ps;
@@ -110,6 +112,7 @@ public class Product {
 	}
 	
 	public static Product getProductByID(String prodID) {
+		// method untuk memperoleh suatu product dari DB berdasarkan IDnya
 		Product prod = null;
 		String query = "SELECT * FROM Products\n" 
 				+ "WHERE productID = ?";
@@ -136,6 +139,7 @@ public class Product {
 	}
 	
 	public static ArrayList<Product> getProductsByUserID(String userID){
+		// method untuk mendapatkan semua produk yang dimiliki seorang vendor berdasarkan userID nya
 		ArrayList<Product> products = new ArrayList<>();
 	    
 		String query = "SELECT * FROM Products\n"

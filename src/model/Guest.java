@@ -19,7 +19,9 @@ public class Guest extends User {
 		this.acceptedInvites = new ArrayList<>();
 	}
 	
+	// query methods
 	public static ArrayList<Guest> getAllGuests(){
+		// method untuk mendapatkan semua guest yang tersimpan dalam database
 		ArrayList<Guest> guests = new ArrayList<>();
 		String query = "SELECT * FROM users "
         		+ "WHERE role = 'Guest'";
@@ -45,6 +47,7 @@ public class Guest extends User {
 	}
 	
 	public static Guest getGuestByEmail(String email) {
+		// method untuk mendapatkan suatu guest yang tersimpan dalam DB berdasasarkan email guest tsb
 		Guest guest = null;
 		String query = "SELECT * FROM Users\n"
 				+ "WHERE email = ?";

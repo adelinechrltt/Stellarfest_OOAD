@@ -19,7 +19,7 @@ public class NavBar {
         HBox navbar = new HBox(10);
         navbar.setAlignment(Pos.CENTER);
         navbar.setPadding(new Insets(10));
-        navbar.setStyle("-fx-background-color: #2c3e50;");
+        navbar.setStyle("-fx-background-color: #778899");
 
         Button HomeBtn = new Button();
         Button EventsBtn = new Button();
@@ -71,6 +71,7 @@ public class NavBar {
         	RoutingHelper.showAllEventsListPage();
         });
         
+        // berupa conditional rendering untuk navbar berdasarkan role user yang sedang login
         if(role.equals("Event Organizer")) {
             navbar.getChildren().addAll(HomeBtn, EventsBtn, CreateEventBtn, ProfileBtn);
         } else if (role.equals("Admin")) {

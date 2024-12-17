@@ -54,7 +54,6 @@ public class ViewEventsList {
 		 if(login.getLoggedInUser().getRole().equals("Event Organizer")) {
 			 events = EventOrganizerController.viewOrganizedEvents(login.getLoggedInUser().getEmail());
 		 } else {
-//			 TODO: Move this to eventscontroller
 			 if(login.getLoggedInUser().getRole().equals("Vendor")) events = VendorController.viewAcceptedEvents(login.getLoggedInUser().getEmail());
 			 else if(login.getLoggedInUser().getRole().equals("Guest")) events = GuestController.viewAcceptedEvents(login.getLoggedInUser().getEmail());
 		 }

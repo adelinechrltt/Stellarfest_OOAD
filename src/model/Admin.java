@@ -20,9 +20,13 @@ public class Admin extends User {
 	}
 
 	public static ArrayList<User> getAllUsers(){
+		// method untuk mendapatkan semua user dalam DB
+		// method ini hanya akan dipanggil oleh seorang admin
+		
 		ArrayList<User> users = new ArrayList<>();
 		
-		// asumsi admin tidak bisa mengakses admin lain sehingga tidak bisa saling delete akun admin
+		// asumsi bahwa admin tidak bisa mengakses admin lain
+		// sehingga admin tidak bisa delete akunnya sendiri + saling delete akun admin lain
 		String query = "SELECT * FROM Users\n "
 				+ "WHERE ROLE != 'Admin'";
 		PreparedStatement ps;
@@ -49,6 +53,7 @@ public class Admin extends User {
 	}
 	
 	public static void deleteUser(String userID) {
+		// method untuk delete user berdasarkan userID nya
 		String query = "DELETE FROM Users\n" +
 						"WHERE UserID = ?";
 		PreparedStatement ps;
@@ -63,6 +68,7 @@ public class Admin extends User {
 	}
 	
 	public static Event viewEventDetails(String eventID){
+		// method untuk mendapatkan detail-detail dari suatu event berdasarkan eventID nya
 		model.Event ev = null;
 		try {
 			ev = EventController.viewEventDetails(eventID);

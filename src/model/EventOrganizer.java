@@ -27,7 +27,9 @@ public class EventOrganizer extends User {
 		return eventsCreated;
 	}
 	
+	// query methods
 	public static ArrayList<Event> viewOrganizedEvents(String email){
+		// method untuk mendapatkan daftar event yang telah dibuat oleh seorang event organizer
 		ArrayList<Event> events = new ArrayList<>();
 	    String query = "SELECT * FROM events e JOIN users u ON e.OrganizerID = u.UserID\n"
 	    		+ "WHERE u.Email = ?";

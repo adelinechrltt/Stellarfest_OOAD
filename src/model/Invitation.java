@@ -71,7 +71,8 @@ public class Invitation {
 	}
 	
 	// query methods
-	public static boolean  sendInvitation(String invitationID, String eventID, String email, String role, String userID) {
+	public static boolean sendInvitation(String invitationID, String eventID, String email, String role, String userID) {
+		// method untuk membuat invitation baru berdasarkan input dari user
 		boolean sentInvite = false;
 		
 		String query = "INSERT INTO Invitations"
@@ -97,6 +98,7 @@ public class Invitation {
 	}
 	
 	public static Invitation getInvitationByInvId(String invID) {
+		// method untuk mendapatkan suatu invitation berdasarkan IDnya
 		Invitation inv = null;
 		String query = "Select * FROM invitations\n"
 				+ "WHERE InvID = ?";
@@ -124,6 +126,7 @@ public class Invitation {
 	}
 	
 	public static ArrayList<Invitation> getInvitations(String email){
+		// method untuk memperoleh daftar invitation yang ditujukan pada email tertentu
 		ArrayList<Invitation> invitations = new ArrayList<>();
 		String query = "SELECT * FROM invitations i JOIN users u ON i.UserID = u.UserID\n"
 				+ "WHERE u.Email = ?";
@@ -152,6 +155,8 @@ public class Invitation {
 	}
 
 	public static ArrayList<String> getInvitedUsersByEventID(String eventID) {
+		// method untuk memperoleh daftar user yang diundang untuk menghadiri suatu event
+		// berdasarkan data yang tersimpan dalam tabel invitations
 		ArrayList<String> emails = new ArrayList<>();
 		String query = "SELECT Email FROM Users u JOIN Invitations i on u.UserID = i.UserID\n"
 				+ "WHERE EventID = ?";
@@ -174,6 +179,8 @@ public class Invitation {
 	}
 	
 	public static ArrayList<String> getAttendingVendorsByEventID(String eventID){
+		// method untuk mendapatkan vendor yang menghadiri suatu event 
+		// berdasarkan data yang tersimpan dalam tabel invitations
 		ArrayList<String> emails = new ArrayList<>();
 		String query = "SELECT Email FROM Users u JOIN Invitations i ON i.UserID = u.UserID "
 				+ "WHERE i.EventID = ? AND i.InvStatus = 'Accepted' AND i.InvRole = 'Vendor'";
@@ -196,6 +203,8 @@ public class Invitation {
 	}
 	
 	public static ArrayList<String> getAttendingGuestsByEventID(String eventID){
+		// method untuk mendapatkan guest yang menghadiri suatu event 
+		// berdasarkan data yang tersimpan dalam tabel invitations
 		ArrayList<String> emails = new ArrayList<>();
 		String query = "SELECT Email FROM Users u JOIN Invitations i ON i.UserID = u.UserID\n"
 				+ "WHERE i.EventID = ? AND i.InvStatus = 'Accepted' AND i.InvRole = 'Vendor'";
@@ -218,6 +227,7 @@ public class Invitation {
 	}
 	
 	public static boolean acceptInvitation(String invID, Label errorLbl) {
+		// method bagi guest dan vendor untuk menerima suatu undangan kehadiran di event tertentu
 		boolean isAccepted = false;
 		String query = "UPDATE invitations\n"
 				+ "SET invStatus = 'Accepted'\n"

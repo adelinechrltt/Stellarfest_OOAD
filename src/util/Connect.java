@@ -4,6 +4,8 @@ import java.sql.*;
 
 public class Connect {
 	
+	// singleton untuk establish koneksi aplikasi dengan database
+	
 	private final String USERNAME = "root";
 	private final String PASSWORD = "";
 	private final String DATABASE = "Stellarfest";

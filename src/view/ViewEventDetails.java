@@ -49,7 +49,6 @@ public class ViewEventDetails {
 	     errorLbl.setText("");
 	     errorLbl.setVisible(false);
 		 
-//	     event details
 	     GridPane eventDetails = new GridPane();
 	     
 	     Label evIDLbl = new Label();
@@ -169,7 +168,6 @@ public class ViewEventDetails {
 	    	 }
 	    	 
 	    	 if(login.getLoggedInUser().getRole().equals("Event Organizer") || login.getLoggedInUser().getRole().equals("Admin")) {
-	    		// buttons
 		    	 Button updateBtn = new Button(), deleteBtn = new Button(), inviteGuests = new Button(), inviteVendors = new Button();
 				 HBox UDBtns = new HBox();
 				 UDBtns.setAlignment(Pos.CENTER);

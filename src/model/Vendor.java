@@ -18,8 +18,9 @@ public class Vendor extends User{
 		this.acceptedInvites = new ArrayList<>();
 	}
 	
-	
+	// query methods
 	public static Vendor getVendorByEmail(String email) {
+		// method untuk memperoleh vendor dari DB berdasarkan email ybs.
 		Vendor vend = null;
 		String query = "SELECT * FROM Users\n"
 				+ "WHERE email = ?";
@@ -44,6 +45,7 @@ public class Vendor extends User{
 	}
 	
 	public static ArrayList<Vendor> getAllVendors(){
+		// method untuk memperoleh daftar semua vendor yang tersimpan dalam DB
 		ArrayList<Vendor> vendors = new ArrayList<>();
 		
 		String query = "SELECT * FROM users "

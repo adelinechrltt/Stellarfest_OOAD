@@ -8,12 +8,10 @@ import javafx.stage.Stage;
 import util.LoginSession;
 import view.LoginPage;
 
-public class Main extends Application {
-	
-//	event organizer
-//	public static User currentUser = new EventOrganizer("U3730035", "shawn@gmail.com", "shawn", "123456");
-//	public static User currentUser = new Vendor("U7337645", "herobrine1234@gmail.com", "herobrine1234", "herobrine1234");
-	
+// --> dokumentasi internal yang lengkap berada pada file-file controller serta model
+// --> file-file view juga memiliki dokumentasi, namun tidak selengkap file-file controller dan model
+
+public class Main extends Application {	
 	public static LoginSession login = LoginSession.getInstance();
 	
 	private static Stage primaryStage;
@@ -32,12 +30,14 @@ public class Main extends Application {
         primaryStage.setScene(scene);
     }
     
+    // method untuk mengganti scene di primarystage
     public static void switchScene(Scene scene) {
         scene.getStylesheets().add(css);
     	primaryStage.setScene(scene);
     	primaryStage.show();
     }
     
+    // method untuk menampilkan alert
     public static void displayAlert(String title, String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.initOwner(primaryStage);

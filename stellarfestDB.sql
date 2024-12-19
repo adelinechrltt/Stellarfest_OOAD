@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 11, 2024 at 07:29 PM
+-- Generation Time: Dec 19, 2024 at 06:38 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.7
 
@@ -36,6 +36,14 @@ CREATE TABLE `events` (
   `OrganizerID` varchar(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `events`
+--
+
+INSERT INTO `events` (`EventID`, `Name`, `Date`, `Location`, `Description`, `OrganizerID`) VALUES
+('E4443633', 'Testing123', '2024-12-20', 'AAAAAAAAAHHH(1)', 'AAAAAAAAAHHH(2)', 'U3730035'),
+('E9471165', 'YAYAYA', '2024-12-20', 'lorem ipsum', 'lorem ipsum', 'U3730035');
+
 -- --------------------------------------------------------
 
 --
@@ -50,6 +58,17 @@ CREATE TABLE `invitations` (
   `UserID` varchar(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `invitations`
+--
+
+INSERT INTO `invitations` (`InvID`, `EventID`, `InvStatus`, `InvRole`, `UserID`) VALUES
+('I4369525', 'E4443633', 'Accepted', 'Vendor', 'U4330719'),
+('I4374132', 'E9471165', 'Accepted', 'Guest', 'U7174840'),
+('I6895027', 'E9471165', 'Pending', 'Guest', 'U1411415'),
+('I7292303', 'E4443633', 'Accepted', 'Guest', 'U1411415'),
+('I9163111', 'E9471165', 'Pending', 'Vendor', 'U4330719');
+
 -- --------------------------------------------------------
 
 --
@@ -62,6 +81,14 @@ CREATE TABLE `products` (
   `Name` varchar(50) NOT NULL,
   `Description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`ProductID`, `UserID`, `Name`, `Description`) VALUES
+('P3294019', 'U4330719', 'silly product', ':3'),
+('P3789674', 'U4330719', 'silly product (2)', ':3c');
 
 -- --------------------------------------------------------
 
@@ -82,9 +109,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`Email`, `Name`, `Password`, `Role`, `UserID`) VALUES
-('caelus@gmail.com', 'caelus', '123456', 'Admin', 'U1234567'),
-('shawn@gmail.com', 'Shawnie', '123456', 'Event Organizer', 'U3730035'),
-('adeline@gmail.com', 'adeline', '123456', 'Vendor', 'U4330719');
+('admin', 'admin', 'admin', 'Admin', 'U1234567'),
+('a@gmail.com', 'aaa', 'a123456', 'Guest', 'U1411415'),
+('shawn@gmail.com', 'Shawn', '123456', 'Event Organizer', 'U3730035'),
+('adeline@gmail.com', 'adeline', '123456', 'Vendor', 'U4330719'),
+('hehe@gmail.com', 'silly1234', 'asdfghjkl', 'Guest', 'U7174840');
 
 --
 -- Indexes for dumped tables

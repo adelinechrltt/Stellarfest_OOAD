@@ -167,7 +167,16 @@ public class ViewEventDetails {
 				 }
 	    	 }
 	    	 
-	    	 if(login.getLoggedInUser().getRole().equals("Event Organizer") || login.getLoggedInUser().getRole().equals("Admin")) {
+	    	 if(login.getLoggedInUser().getRole().equals("Admin")) {
+				 Button deleteBtn = new Button();
+	    		 deleteBtn.setText("Delete Event");
+				 deleteBtn.setOnAction(e -> {
+					 AdminController.deleteEvent(eventID);
+				 });
+				 layout.getChildren().add(deleteBtn);
+	    	 }
+	    	 
+	    	 if(login.getLoggedInUser().getRole().equals("Event Organizer")) {
 		    	 Button updateBtn = new Button(), deleteBtn = new Button(), inviteGuests = new Button(), inviteVendors = new Button();
 				 HBox UDBtns = new HBox();
 				 UDBtns.setAlignment(Pos.CENTER);
@@ -179,13 +188,7 @@ public class ViewEventDetails {
 					 RoutingHelper.showUpdateEventNamePage(eventID, evNameVal.getText());
 				 });
 				 UDBtns.getChildren().add(updateBtn);
-				 
-				 deleteBtn.setText("Delete Event");
-				 deleteBtn.setOnAction(e -> {
-					 EventOrganizerController.deleteEvent(eventID);
-				 });
-				 if(login.getLoggedInUser().getRole().equals("Admin")) UDBtns.getChildren().add(deleteBtn);
-				 
+				 				 
 				 inviteGuests.setText("Invite Guests");
 				 inviteGuests.setOnAction(e -> {
 					 ArrayList<Guest> guests = EventOrganizerController.checkAddGuestInput(eventID);

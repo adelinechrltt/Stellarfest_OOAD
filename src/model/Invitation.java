@@ -178,54 +178,6 @@ public class Invitation {
 		return emails;
 	}
 	
-	public static ArrayList<String> getAttendingVendorsByEventID(String eventID){
-		// method untuk mendapatkan vendor yang menghadiri suatu event 
-		// berdasarkan data yang tersimpan dalam tabel invitations
-		ArrayList<String> emails = new ArrayList<>();
-		String query = "SELECT Email FROM Users u JOIN Invitations i ON i.UserID = u.UserID "
-				+ "WHERE i.EventID = ? AND i.InvStatus = 'Accepted' AND i.InvRole = 'Vendor'";
-		PreparedStatement ps;
-		
-	    try {
-	    	
-	    	ps = db.getConnection().prepareStatement(query);
-	        ps.setString(1, eventID);
-	        ResultSet rs = ps.executeQuery();
-	        
-	        while (rs.next()) {
-                emails.add(rs.getString("email"));
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-
-		return emails;
-	}
-	
-	public static ArrayList<String> getAttendingGuestsByEventID(String eventID){
-		// method untuk mendapatkan guest yang menghadiri suatu event 
-		// berdasarkan data yang tersimpan dalam tabel invitations
-		ArrayList<String> emails = new ArrayList<>();
-		String query = "SELECT Email FROM Users u JOIN Invitations i ON i.UserID = u.UserID\n"
-				+ "WHERE i.EventID = ? AND i.InvStatus = 'Accepted' AND i.InvRole = 'Vendor'";
-		PreparedStatement ps;
-		
-	    try {
-	    	
-	    	ps = db.getConnection().prepareStatement(query);
-	        ps.setString(1, eventID);
-	        ResultSet rs = ps.executeQuery();
-	        
-	        while (rs.next()) {
-	            emails.add(rs.getString("email"));
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-
-		return emails;
-	}
-	
 	public static boolean acceptInvitation(String invID, Label errorLbl) {
 		// method bagi guest dan vendor untuk menerima suatu undangan kehadiran di event tertentu
 		boolean isAccepted = false;

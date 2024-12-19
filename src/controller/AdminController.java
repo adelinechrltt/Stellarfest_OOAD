@@ -9,14 +9,13 @@ import model.EventOrganizer;
 import model.Guest;
 import model.User;
 import model.Vendor;
-import util.Connect;
 
 public class AdminController {
 	
 	// method getAllEvents() tidak dibuat lagi karena sudah ada method viewAllEvents
 	public static ArrayList<Event> viewAllEvents(){
 		// method untuk return semua events yang ada dalam database
-		ArrayList<Event> events = EventController.viewAllEvents();
+		ArrayList<Event> events = Admin.viewAllEvents();
 		return events;
 	}
 	
@@ -40,7 +39,7 @@ public class AdminController {
 		// method untuk delete suaut event
 		try {
 			// chain method ke eventController
-			EventController.deleteEvent(eventID);
+			Admin.deleteEvent(eventID);
 			Main.displayAlert("Info", "Successfully deleted event: " + eventID + "!");
 		} catch (Exception e) {
 			Main.displayAlert("ERROR", "Failed to delete event: " + eventID);
@@ -53,28 +52,31 @@ public class AdminController {
 //	getVendorsByTransactionId --> getVendorsByEventId
 //	getGuestsByTransactionId --> getGuestsByEventId
 	
-	public static ArrayList<User> getVendorsByEventId(String eventID){
-		// method untuk mendapatkan semua vendor yang menghadiri suatu event
-		ArrayList<String> vendorEmails = InvitationController.getAttendingVendorsByEventID(eventID);
+	public static ArrayList<Vendor> getVendorsByEventId(String eventID){
+		// method untuk mendapatkan vendor-vendor yang akan menghadiri suatu event
+		// berdasarkan apakah vendor tersebut sudah menerima invitation untuk hadir
+		
+		ArrayList<String> vendorEmails = Admin.getVendorsByEventId(eventID);
 		
 		// karena method di atas return arrayList of emails, maka data masing2 user harus dicari lagi  
 		// dengan method chain ke user controller berdasarkan email yang didapatkan
-		ArrayList<User> vendors = new ArrayList<>();
+		ArrayList<Vendor> vendors = new ArrayList<>();
 		for (String email : vendorEmails) {
-			vendors.add(UserController.getUserByEmail(email));
+			vendors.add((Vendor) UserController.getUserByEmail(email));
 		}
 		return vendors;
 	}
 	
-	public static ArrayList<User> getGuestsByEventId(String eventID){
-		// method untuk mendapatkan semua guest yang menghadiri suatu event
-		ArrayList<String> guestEmails = InvitationController.getAttendingGuestsByEventID(eventID);
+	public static ArrayList<Guest> getGuestsByEventId(String eventID){
+		// method untuk mendapatkan guest-guest yang akan menghadiri suatu event
+		// berdasarkan apakah vendor tersebut sudah menerima invitation untuk hadir
 		
 		// karena method di atas return arrayList of emails, maka data masing2 user harus dicari lagi  
 		// dengan method chain ke user controller berdasarkan email yang didapatkan
-		ArrayList<User> guests = new ArrayList<>();
+		ArrayList<String> guestEmails = Admin.getGuestsByEventId(eventID);
+		ArrayList<Guest> guests = new ArrayList<>();
 		for (String email : guestEmails) {
-			guests.add(UserController.getUserByEmail(email));
+			guests.add((Guest) UserController.getUserByEmail(email));
 		}
 		return guests;
 	}

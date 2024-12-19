@@ -1,12 +1,15 @@
 package view;
 
-import controller.UserController;
-import javafx.geometry.*;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.text.*;
-import javafx.scene.layout.*;
-import main.Main;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import model.User;
 import util.LoginSession;
 import util.RoutingHelper;
 
@@ -14,10 +17,12 @@ public class MyProfile {
 	public static LoginSession login = LoginSession.getInstance();
 	
 	public static Scene getScene() {
+		 User currentUser = login.getLoggedInUser();
+		
 		 VBox layout = new VBox(10);
 		 layout.setAlignment(Pos.CENTER);
 		 
-		 HBox navbar = NavBar.getNavbar(login.getLoggedInUser().getRole());
+		 HBox navbar = NavBar.getNavbar(currentUser.getRole());
 		 
 		 Label titleLbl = new Label();
 		 Label emailLbl = new Label();
@@ -38,7 +43,7 @@ public class MyProfile {
 		 
 		 emailLbl.setText("Email: ");
 		 emailLbl.setFont(inputFont);
-		 email.setText(login.getLoggedInUser().getEmail());
+		 email.setText(currentUser.getEmail());
 		 email.setFont(inputFont);
 		 
 		 updateEmailBtn.setText("\u270F");
@@ -48,7 +53,7 @@ public class MyProfile {
 		 
 		 usnLbl.setText("Username: ");
 		 usnLbl.setFont(inputFont);
-		 usn.setText(login.getLoggedInUser().getName());
+		 usn.setText(currentUser.getName());
 		 usn.setFont(inputFont);
 		 
 		 updateUsnBtn.setText("\u270F");

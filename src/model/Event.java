@@ -188,19 +188,4 @@ public class Event {
 		    e.printStackTrace();
 		}
 	}
-	
-	public static void deleteEvent(String eventID) {
-		// method untuk menghapus suatu event berdasarkan eventID
-		String query = "DELETE FROM Events WHERE eventid = ?";
-
-		PreparedStatement ps;
-
-		try {
-		    ps = db.getConnection().prepareStatement(query);
-		    ps.setString(1, eventID);  
-		    ps.execute();
-		} catch (SQLException e) {
-		    e.printStackTrace();
-		}
-	}
 }

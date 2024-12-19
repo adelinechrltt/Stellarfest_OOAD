@@ -55,9 +55,6 @@ public class ViewAllUsersPage {
 			nullDisplay.setText("No users!");
 			layout.getChildren().add(nullDisplay);
 		} else {
-			Label subtitleLbl = new Label();
-			subtitleLbl.setText("Ctrl+click to select multiple rows.");
-			titleLbl.setFont(inputFont);
 
 			ObservableList<User> usersList = FXCollections.observableArrayList(users);
 			ListView<CheckBox> usersView = new ListView<>();
@@ -73,7 +70,7 @@ public class ViewAllUsersPage {
 			usersView.setItems(checkBoxList);
 
 			Button deleteBtn = new Button();
-			deleteBtn.setText("Delete Events");
+			deleteBtn.setText("Delete Users");
 			deleteBtn.setOnAction(event -> {
 				ArrayList<User> selectedUsers = new ArrayList<>();
 				for (CheckBox checkBox : checkBoxList) {
@@ -92,7 +89,7 @@ public class ViewAllUsersPage {
 				}
 			});
 
-			layout.getChildren().addAll(subtitleLbl, usersView, deleteBtn);
+			layout.getChildren().addAll(usersView, deleteBtn);
 		}
 
 		return new Scene(layout, 1200, 600);

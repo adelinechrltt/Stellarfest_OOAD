@@ -88,16 +88,4 @@ public class InvitationController {
 		ArrayList<String> emails = Invitation.getInvitedUsersByEventID(eventID);
 		return emails;
 	}
-	
-	public static ArrayList<String> getAttendingVendorsByEventID(String eventID){
-		// method untuk mendapatkan semua vendor yang diundang ke dalam suatu event tertentu berdasarkan database invitation
-		ArrayList<String> emails = Invitation.getAttendingVendorsByEventID(eventID);
-		return emails;
-	}
-	
-	public static ArrayList<String> getAttendingGuestsByEventID(String eventID){
-		// method untuk mendapatkan semua guest yang diundang ke dalam suatu event tertentu berdasarkan database invitation
-		ArrayList<String> emails = Invitation.getAttendingGuestsByEventID(eventID);
-		return emails;
-	}
 }

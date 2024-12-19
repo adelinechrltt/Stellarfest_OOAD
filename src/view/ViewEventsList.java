@@ -59,9 +59,13 @@ public class ViewEventsList {
 		 }
 		 
 		 if(events==null || events.isEmpty()) {
-			 Label nullDisplay = new Label();
-			 nullDisplay.setText("No events! Create a new event now.");
-			 layout.getChildren().add(nullDisplay);
+			 Label nullDisplay1 = new Label();
+			 nullDisplay1.setText("No events!");
+			 layout.getChildren().add(nullDisplay1);
+			 
+			 Label nullDisplay2 = new Label();
+			 nullDisplay2.setText("Create an event now.");
+			 if(login.getLoggedInUser().getRole().equals("Event Organizer")) layout.getChildren().add(nullDisplay2);
 		 } else {			 
 			 Label subtitleLbl = new Label();
 			 subtitleLbl.setText("Double-click on an entry for more actions.");

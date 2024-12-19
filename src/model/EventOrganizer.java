@@ -56,4 +56,52 @@ public class EventOrganizer extends User {
 
 		return events;
 	}
+
+	public static ArrayList<String> getVendorsByEventId(String eventID) {
+		// method untuk mendapatkan vendor yang menghadiri suatu event 
+		// berdasarkan data yang tersimpan dalam tabel invitations
+		ArrayList<String> emails = new ArrayList<>();
+		String query = "SELECT Email FROM Users u JOIN Invitations i ON i.UserID = u.UserID "
+				+ "WHERE i.EventID = ? AND i.InvStatus = 'Accepted' AND i.InvRole = 'Vendor'";
+		PreparedStatement ps;
+		
+	    try {
+	    	
+	    	ps = db.getConnection().prepareStatement(query);
+	        ps.setString(1, eventID);
+	        ResultSet rs = ps.executeQuery();
+	        
+	        while (rs.next()) {
+                emails.add(rs.getString("email"));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+		return emails;
+	}
+
+	public static ArrayList<String> getGuestsByEventId(String eventID) {
+		// method untuk mendapatkan guest yang menghadiri suatu event 
+		// berdasarkan data yang tersimpan dalam tabel invitations
+		ArrayList<String> emails = new ArrayList<>();
+		String query = "SELECT Email FROM Users u JOIN Invitations i ON i.UserID = u.UserID\n"
+				+ "WHERE i.EventID = ? AND i.InvStatus = 'Accepted' AND i.InvRole = 'Guest'";
+		PreparedStatement ps;
+		
+	    try {
+	    	
+	    	ps = db.getConnection().prepareStatement(query);
+	        ps.setString(1, eventID);
+	        ResultSet rs = ps.executeQuery();
+	        
+	        while (rs.next()) {
+	            emails.add(rs.getString("email"));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+		return emails;
+	}
 }

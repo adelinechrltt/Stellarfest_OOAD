@@ -116,7 +116,7 @@ public class ChangeProfile {
 		 oldPwLbl.setText("Old Password: ");
 		 oldPwLbl.setFont(inputFont);
 
-		 newPwLbl.setText("Old Password: ");
+		 newPwLbl.setText("New Password: ");
 		 newPwLbl.setFont(inputFont);
 		 
 		 errorLbl.setText("");

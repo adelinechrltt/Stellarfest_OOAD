@@ -59,43 +59,4 @@ public class EventController {
 		// method untuk mengubah nama suatu event
 		Event.updateEventName(eventID, name);
 	}
-	
-	public static void deleteEvent(String eventID) {
-		// method untuk menghapus suatu event
-		Event.deleteEvent(eventID);
-	}
-	
-//	asumsi bahwa transaction merupakan typo untuk ubiquitous language event
-// 	sehingga: 
-//	getVendorsByTransactionId --> getVendorsByEventId
-//	getGuestsByTransactionId --> getGuestsByEventId
-	
-	public static ArrayList<Vendor> getVendorsByEventId(String eventID){
-		// method untuk mendapatkan vendor-vendor yang akan menghadiri suatu event
-		// berdasarkan apakah vendor tersebut sudah menerima invitation untuk hadir
-		
-		ArrayList<String> vendorEmails = InvitationController.getAttendingVendorsByEventID(eventID);
-		
-		// karena method di atas return arrayList of emails, maka data masing2 user harus dicari lagi  
-		// dengan method chain ke user controller berdasarkan email yang didapatkan
-		ArrayList<Vendor> vendors = new ArrayList<>();
-		for (String email : vendorEmails) {
-			vendors.add((Vendor) UserController.getUserByEmail(email));
-		}
-		return vendors;
-	}
-	
-	public static ArrayList<Guest> getGuestsByEventId(String eventID){
-		// method untuk mendapatkan guest-guest yang akan menghadiri suatu event
-		// berdasarkan apakah vendor tersebut sudah menerima invitation untuk hadir
-		
-		// karena method di atas return arrayList of emails, maka data masing2 user harus dicari lagi  
-		// dengan method chain ke user controller berdasarkan email yang didapatkan
-		ArrayList<String> guestEmails = InvitationController.getAttendingGuestsByEventID(eventID);
-		ArrayList<Guest> guests = new ArrayList<>();
-		for (String email : guestEmails) {
-			guests.add((Guest) UserController.getUserByEmail(email));
-		}
-		return guests;
-	}
 }

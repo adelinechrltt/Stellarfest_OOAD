@@ -163,7 +163,7 @@ public class UserController {
 	
 	
 //	update credentials
-// 	method checkChangeProfile saya pecah menjadi checkChangeEmail, checkChangeUsername, checkChangePassword
+// 	method checkChangeProfile kami pecah menjadi checkChangeEmail, checkChangeUsername, checkChangePassword
 // 	sesuai dengan requirement validasi yang tertera di word, di mana user harus bisa:
 //	1) mengupdate hanya salah satu atribut di waktu tertentu
 // 	2) dicek input, apakah credetial baru sama dengan yang lama atau tidak
@@ -191,7 +191,11 @@ public class UserController {
 		
 		// mengganti email dengan memasukkan value email lama dan baru ke dalam method changeProfile 
 		User user = User.getUserByEmail(oldEmail);
-		User.changeProfile(user.getEmail(), newEmail, user.getName(), user.getPassword());       
+		User.changeProfile(user.getEmail(), newEmail, user.getName(), user.getPassword());
+		
+		login.getLoggedInUser().setEmail(newEmail);
+		System.out.println(login.getLoggedInUser().getEmail());
+		
 		RoutingHelper.showProfilePage();
 	}
 	
@@ -218,7 +222,11 @@ public class UserController {
 		
 		// mengganti username dengan memasukkan value username baru ke dalam method changeProfile 
 		User user = User.getUserByUsername(oldUsn);
-		User.changeProfile(user.getEmail(), user.getEmail(), newUsn, user.getPassword());       
+		User.changeProfile(user.getEmail(), user.getEmail(), newUsn, user.getPassword());     
+		
+		login.getLoggedInUser().setName(newUsn);
+		System.out.println(login.getLoggedInUser().getName());
+
 		RoutingHelper.showProfilePage();
 	}
 	
@@ -257,17 +265,19 @@ public class UserController {
 		User user = User.getUserByEmail(email);
 		User.changeProfile(email, email, user.getName(), newPassword);       
 		
+		login.getLoggedInUser().setPassword(newPassword);
+		System.out.println(login.getLoggedInUser().getPassword());
+		
+		RoutingHelper.showProfilePage();
 	}
 	
 	public static void changeProfile(String oldEmail, String newEmail, String usn, String password) {
 		// method untuk memanggil query mengganti detail profil di model
-		User.changeProfile(oldEmail, newEmail, usn, password);
-		
-		// mengganti credential user yang disimpan dalam singleton agar ter-update
-		login.getLoggedInUser().setEmail(newEmail);
-		login.getLoggedInUser().setName(usn);
-		login.getLoggedInUser().setPassword(password);
-		RoutingHelper.showProfilePage();
+//		try {
+			User.changeProfile(oldEmail, newEmail, usn, password);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	public static User getUserByEmail(String email) {
@@ -284,5 +294,9 @@ public class UserController {
 		user = User.getUserByUsername(username);
 		
 		return user;
+	}
+	
+	public static void logout() {
+		login.setLoggedInUser(null);
 	}
 }

@@ -1,9 +1,5 @@
 package controller;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -13,10 +9,8 @@ import model.Event;
 import model.EventOrganizer;
 import model.Guest;
 import model.Vendor;
-import util.Connect;
 import util.LoginSession;
 import util.RoutingHelper;
-import view.ViewEventsList;
 
 public class EventOrganizerController {
 		
@@ -106,24 +100,6 @@ public class EventOrganizerController {
 		RoutingHelper.showEventsListPage();
 	}
 	
-	public static void deleteEvent(String eventID) {
-		// method untuk menghapus event
-		
-		// validasi bahwa eventID tidak kosong
-		if(!eventID.isEmpty()) {
-			EventController.deleteEvent(eventID);
-			
-			// menghapus event ybs dari arrayList milik data user yang disimpan sementara saat sedang login
-			for(Event event : login.getLoggedInUser().getEventsCreated()) {
-				if(event.getEventID().equals(eventID)) event = null;
-				break;
-			}
-			
-			Main.displayAlert("Delete success!", "Event succesfully deleted.");
-			RoutingHelper.showEventsListPage();
-		}
-	}
-	
 	public static void inviteToEvent(String eventID, String email) {
 		// method untuk membuat invitation baru
 		// chain method ke InvitationController
@@ -149,7 +125,7 @@ public class EventOrganizerController {
 		// flow adalah sbg berikut:
 		
 		// 1. mendapatkan data dari semua guest yang ada dalam database
-		ArrayList<Guest> Guests = GuestController.getAllGuests();
+		ArrayList<Guest> Guests = getGuests();
 		
 		// 2. mendapatkan data dari semua invitation untuk suatu event tertentu dalam database
 		ArrayList<String> invitedGuestEmails = InvitationController.getInvitedUsersByEventID(eventID);
@@ -167,7 +143,7 @@ public class EventOrganizerController {
 		// flow adalah sbg berikut:
 		
 		// 1. mendapatkan data dari semua vendor yang ada dalam database
-		ArrayList<Vendor> vendors = VendorController.getAllVendors();
+		ArrayList<Vendor> vendors = getVendors();
 		
 		// 2. mendapatkan data dari semua invitation untuk suatu event tertentu dalam database
 		ArrayList<String> invitedVendorEmails = InvitationController.getInvitedUsersByEventID(eventID);
@@ -178,6 +154,48 @@ public class EventOrganizerController {
 		
 		if(vendors.isEmpty()) vendors = null;
 		return vendors;
+	}
+	
+//	asumsi bahwa transaction merupakan typo untuk ubiquitous language event
+// 	sehingga: 
+//	getVendorsByTransactionId --> getVendorsByEventId
+//	getGuestsByTransactionId --> getGuestsByEventId
+	
+	public static ArrayList<Vendor> getVendorsByEventId(String eventID){
+		// method untuk mendapatkan vendor-vendor yang akan menghadiri suatu event
+		// berdasarkan apakah vendor tersebut sudah menerima invitation untuk hadir
+		
+		ArrayList<String> vendorEmails = EventOrganizer.getVendorsByEventId(eventID);
+		
+		// karena method di atas return arrayList of emails, maka data masing2 user harus dicari lagi  
+		// dengan method chain ke user controller berdasarkan email yang didapatkan
+		ArrayList<Vendor> vendors = new ArrayList<>();
+		for (String email : vendorEmails) {
+			vendors.add((Vendor) UserController.getUserByEmail(email));
+		}
+		return vendors;
+	}
+	
+	public static ArrayList<Guest> getGuestsByEventId(String eventID){
+		// method untuk mendapatkan guest-guest yang akan menghadiri suatu event
+		// berdasarkan apakah vendor tersebut sudah menerima invitation untuk hadir
+		
+		// karena method di atas return arrayList of emails, maka data masing2 user harus dicari lagi  
+		// dengan method chain ke user controller berdasarkan email yang didapatkan
+		ArrayList<String> guestEmails = EventOrganizer.getGuestsByEventId(eventID);
+		ArrayList<Guest> guests = new ArrayList<>();
+		for (String email : guestEmails) {
+			guests.add((Guest) UserController.getUserByEmail(email));
+		}
+		return guests;
+	}
+	
+	public static ArrayList<Vendor> getVendors(){
+		return VendorController.getAllVendors();
+	}
+	
+	public static ArrayList<Guest> getGuests(){
+		return GuestController.getAllGuests();
 	}
 	
 }

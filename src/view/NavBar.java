@@ -1,5 +1,6 @@
 package view;
 
+import controller.UserController;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -28,6 +29,8 @@ public class NavBar {
         Button UsersBtn = new Button();
         Button ProfileBtn = new Button();
         Button ProductsBtn = new Button();
+        Button AllEventsBtn = new Button();
+        Button LogoutBtn = new Button();
         
         HomeBtn.setText("Home");
         HomeBtn.setOnAction(e -> {
@@ -65,21 +68,26 @@ public class NavBar {
         	RoutingHelper.showProductsPage(login.getLoggedInUser().getUserID());
         });
         
-        Button AllEventsBtn = new Button();
         AllEventsBtn.setText("All Events");
         AllEventsBtn.setOnAction(e ->{
         	RoutingHelper.showAllEventsListPage();
         });
         
+        LogoutBtn.setText("Logout");
+        LogoutBtn.setOnAction(e -> {
+        	UserController.logout();
+        	RoutingHelper.showLoginPage();
+        });
+        
         // berupa conditional rendering untuk navbar berdasarkan role user yang sedang login
         if(role.equals("Event Organizer")) {
-            navbar.getChildren().addAll(HomeBtn, EventsBtn, CreateEventBtn, ProfileBtn);
+            navbar.getChildren().addAll(HomeBtn, EventsBtn, CreateEventBtn, ProfileBtn, LogoutBtn);
         } else if (role.equals("Admin")) {
-            navbar.getChildren().addAll(HomeBtn, AllEventsBtn, UsersBtn, ProfileBtn);
+            navbar.getChildren().addAll(HomeBtn, AllEventsBtn, UsersBtn, ProfileBtn, LogoutBtn);
         } else if (role.equals("Vendor")) {
-            navbar.getChildren().addAll(HomeBtn, InvitationsBtn, ProductsBtn, EventsBtn, ProfileBtn);
+            navbar.getChildren().addAll(HomeBtn, InvitationsBtn, ProductsBtn, EventsBtn, ProfileBtn, LogoutBtn);
         }else if (role.equals("Guest")) {
-            navbar.getChildren().addAll(HomeBtn, InvitationsBtn, EventsBtn, ProfileBtn);
+            navbar.getChildren().addAll(HomeBtn, InvitationsBtn, EventsBtn, ProfileBtn, LogoutBtn);
         }
         
         navbar.getChildren().addAll();

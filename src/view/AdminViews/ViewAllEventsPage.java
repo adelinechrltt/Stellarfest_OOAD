@@ -46,7 +46,7 @@ public class ViewAllEventsPage {
 		 ArrayList<model.Event> events = new ArrayList<>();
 		 events = AdminController.viewAllEvents();
 		 
-		 if(events==null || events.isEmpty()) {
+		 if(events.isEmpty()) {
 			 Label nullDisplay = new Label();
 			 nullDisplay.setText("No events!");
 			 layout.getChildren().add(nullDisplay);
@@ -72,17 +72,16 @@ public class ViewAllEventsPage {
 				    try {
 				    	model.Event selectedEvent = (model.Event) selectedCheckBox.getUserData(); 
 					    if (selectedEvent != null) {
+//					    	System.out.println(selectedEvent.getName());
 					        if (e.getClickCount() == 2) {
 					            try {
 					                String tempID = selectedEvent.getEventID();
 					                RoutingHelper.showEventDetailsPage(tempID);
 					            } catch (Exception error) {
-					                error.printStackTrace();
 					            }
 					        }
 					    }
 				    } catch (Exception error) {
-				    	error.printStackTrace();
 				    }
 			 });
 		     
@@ -95,14 +94,15 @@ public class ViewAllEventsPage {
 				        selectedEvents.add((model.Event) checkBox.getUserData());
 					 }
 				 }
+//				 System.out.println(selectedEvents);
 				 
 				 if (selectedEvents.isEmpty()) {
 					 Main.displayAlert("Error", "ERROR: You must select at least one event to delete!");
 				 } else {
 					 for (model.Event ev : selectedEvents) {
-						 evs.remove(ev);
 						 AdminController.deleteEvent(ev.getEventID());
 					 }
+					 RoutingHelper.showAllEventsListPage();
 				 }
 			 });
 		     

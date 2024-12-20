@@ -190,7 +190,8 @@ public class UserController {
 		if(!isUnique) return;
 		
 		// mengganti email dengan memasukkan value email lama dan baru ke dalam method changeProfile 
-		User user = User.getUserByEmail(oldEmail);
+		User user = login.getLoggedInUser();
+		System.out.println(user);
 		User.changeProfile(user.getEmail(), newEmail, user.getName(), user.getPassword());
 		
 		login.getLoggedInUser().setEmail(newEmail);
@@ -221,7 +222,7 @@ public class UserController {
 		if(!isUnique) return;
 		
 		// mengganti username dengan memasukkan value username baru ke dalam method changeProfile 
-		User user = User.getUserByUsername(oldUsn);
+		User user = login.getLoggedInUser();
 		User.changeProfile(user.getEmail(), user.getEmail(), newUsn, user.getPassword());     
 		
 		login.getLoggedInUser().setName(newUsn);
@@ -262,7 +263,7 @@ public class UserController {
 		}
 		
 		// mengganti password dengan memasukkan value password baru ke dalam method changeProfile 
-		User user = User.getUserByEmail(email);
+		User user = login.getLoggedInUser();
 		User.changeProfile(email, email, user.getName(), newPassword);       
 		
 		login.getLoggedInUser().setPassword(newPassword);

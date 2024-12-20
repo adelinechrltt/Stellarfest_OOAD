@@ -64,7 +64,7 @@ public class CreateProductPage {
 		input.add(prodDescLbl, 0, 1);
 		input.add(prodDescField, 1, 1);
 		
-		layout.getChildren().addAll(navbar, titleLbl, input, createProdBtn);
+		layout.getChildren().addAll(navbar, titleLbl, input, createProdBtn, errorLbl);
 		
 		return new Scene(layout, 1200, 600);
 	}

@@ -172,6 +172,7 @@ public class ViewEventDetails {
 	    		 deleteBtn.setText("Delete Event");
 				 deleteBtn.setOnAction(e -> {
 					 AdminController.deleteEvent(eventID);
+					 RoutingHelper.showEventsListPage();
 				 });
 				 layout.getChildren().add(deleteBtn);
 	    	 }

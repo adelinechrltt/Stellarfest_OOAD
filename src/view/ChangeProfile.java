@@ -1,13 +1,19 @@
 package view;
 
 import controller.UserController;
-import javafx.geometry.*;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.text.*;
-import javafx.scene.layout.*;
-import main.Main;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import util.LoginSession;
+import util.RoutingHelper;
 
 public class ChangeProfile {
 	
@@ -21,6 +27,7 @@ public class ChangeProfile {
 	private static Label errorLbl = new Label();
 	private static Label titleLbl = new Label();
 	private static Button updateBtn = new Button();
+	private static Button backBtn = new Button();
 	
 	public static Scene getUpdateEmailScene() {
 		 		 
@@ -44,20 +51,28 @@ public class ChangeProfile {
 	     errorLbl.setVisible(false);
 		 errorLbl.setStyle("-fx-text-fill: red;");
 		 
+		 backBtn.setText("Back to Profile");
+		 backBtn.setOnAction(e -> {
+			 RoutingHelper.showProfilePage();
+		 });
+		 
 		 updateBtn.setText("Update E-mail");
-		 updateBtn.setFont(Font.font("Microsoft Sans Serif", FontWeight.BOLD, 21));
 		 updateBtn.setOnAction(e -> {
 			 UserController.checkChangeEmail(login.getLoggedInUser().getEmail(), emailField.getText(), errorLbl);
 		 });
+		 
+		 HBox buttons = new HBox();
+		 buttons.setAlignment(Pos.CENTER);
+		 buttons.getChildren().addAll(updateBtn, backBtn);
 		 
 		 GridPane input = new GridPane();
 		 input.setAlignment(Pos.CENTER);
 		 input.add(emailLbl, 0, 0);
 		 input.add(emailField, 1, 0);
 		 
-		 layout.getChildren().addAll(titleLbl, input, updateBtn, errorLbl);
+		 layout.getChildren().addAll(titleLbl, input, buttons, errorLbl);
 
-		 return new Scene(layout);	
+		 return new Scene(layout, 1200, 600);	
 	}
 	
 	public static Scene getUpdateUsnScene() {
@@ -82,8 +97,12 @@ public class ChangeProfile {
 	     errorLbl.setVisible(false);
 		 errorLbl.setStyle("-fx-text-fill: red;");
 		 
+		 backBtn.setText("Back to Profile");
+		 backBtn.setOnAction(e -> {
+			 RoutingHelper.showProfilePage();
+		 });
+		 
 		 updateBtn.setText("Update Username");
-		 updateBtn.setFont(Font.font("Microsoft Sans Serif", FontWeight.BOLD, 21));
 		 updateBtn.setOnAction(e -> {
 			 UserController.checkChangeUsn(login.getLoggedInUser().getName(), usnField.getText(), errorLbl);
 		 });
@@ -93,9 +112,13 @@ public class ChangeProfile {
 		 input.add(usnLbl, 0, 0);
 		 input.add(usnField, 1, 0);
 		 
-		 layout.getChildren().addAll(titleLbl, input, updateBtn, errorLbl);
+		 HBox buttons = new HBox();
+		 buttons.setAlignment(Pos.CENTER);
+		 buttons.getChildren().addAll(updateBtn, backBtn);
+		 
+		 layout.getChildren().addAll(titleLbl, input, buttons, errorLbl);
 
-		 return new Scene(layout);	
+		 return new Scene(layout, 1200, 600);	
 	}
 	
 	public static Scene getUpdatePwScene() {
@@ -124,7 +147,6 @@ public class ChangeProfile {
 		 errorLbl.setStyle("-fx-text-fill: red;");
 		 
 		 updateBtn.setText("Change Password");
-		 updateBtn.setFont(Font.font("Microsoft Sans Serif", FontWeight.BOLD, 21));
 		 updateBtn.setOnAction(e -> {
 			 UserController.checkChangePassword(login.getLoggedInUser().getEmail(), login.getLoggedInUser().getPassword(), oldPwField.getText(), newPwField.getText(), errorLbl);
 		 });
@@ -136,7 +158,11 @@ public class ChangeProfile {
 		 input.add(newPwLbl, 0, 1);
 		 input.add(newPwField, 1, 1);
 		 
-		 layout.getChildren().addAll(titleLbl, input, updateBtn, errorLbl);
+		 HBox buttons = new HBox();
+		 buttons.setAlignment(Pos.CENTER);
+		 buttons.getChildren().addAll(updateBtn, backBtn);
+		 
+		 layout.getChildren().addAll(titleLbl, input, buttons, errorLbl);
 
 		 return new Scene(layout, 1200, 600);	
 	}

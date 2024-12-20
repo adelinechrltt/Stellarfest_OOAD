@@ -23,6 +23,7 @@ import javafx.scene.text.FontWeight;
 import main.Main;
 import model.User;
 import util.LoginSession;
+import util.RoutingHelper;
 import view.NavBar;
 import view.ViewEventDetails;
 
@@ -83,9 +84,9 @@ public class ViewAllUsersPage {
 					Main.displayAlert("Error", "ERROR: You must select at least one event to delete!");
 				} else {
 					for (User user : selectedUsers) {
-						selectedUsers.remove(user);
-						AdminController.deleteEvent(user.getUserID());
+						AdminController.deleteUser(user.getUserID());
 					}
+					RoutingHelper.showAllUsersPage();
 				}
 			});
 

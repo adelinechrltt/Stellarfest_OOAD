@@ -56,6 +56,7 @@ public class InviteVendor {
         Button inviteBtn = new Button();
         inviteBtn.setText("Invite Vendors");
         inviteBtn.setOnAction(e -> {
+			 // mendapatkan daftar vendor yang sudah di select berdasarkan checkbox
         	ArrayList<Vendor> selectedVendors = new ArrayList<>();
             for (CheckBox checkBox : checkBoxList) {
                 if (checkBox.isSelected()) {
@@ -63,6 +64,8 @@ public class InviteVendor {
                 }
             }
 
+			 // cek apabila ada vendor yang diselect berdasarkan checkbox
+			 // apabila ada, maka vendor  tersebut akan di-delete
             if (selectedVendors.isEmpty()) {
                 Main.displayAlert("Error", "ERROR: You must select at least one vendor to invite!");
             } else {

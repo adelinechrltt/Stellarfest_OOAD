@@ -80,7 +80,8 @@ public class RegisterPage {
 		 input.add(roleBox, 1, 3);
 		 
 		 
-//		 login section
+//		 bagian untuk komponen2 yg redirect ke login
+		 
 		 Label loginLbl = new Label();
 		 Button loginBtn = new Button();
 		 

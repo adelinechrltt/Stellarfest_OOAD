@@ -64,6 +64,8 @@ public class ViewEventDetails {
 	     
 	     model.Event ev = null;
 	     
+	     // mendapatkan event details berdasarkan role
+	     // tidak berpengaruh ke view tetapi hanya membedakan method dari controller mana yang akan dipanggil
 	     if(login.getLoggedInUser().getRole().equals("Admin")) ev = AdminController.viewEventDetails(eventID);
 	     else if (login.getLoggedInUser().getRole().equals("Event Organizer")) ev = EventOrganizerController.viewOrganizedEventDetails(eventID);
 	     else ev = Event.viewEventDetails(eventID);
@@ -95,6 +97,7 @@ public class ViewEventDetails {
 	    	 
 	    	 layout.getChildren().addAll(navbar, manipTitle, eventDetails);
 	    	 
+	    	 // conditional rendering agar EO dan admin bisa melihat siapa saja yang menghadiri event
 	    	 if(login.getLoggedInUser().getRole().equals("Event Organizer") || login.getLoggedInUser().getRole().equals("Admin")) {
 		    	 
 				 Label vendorsLbl = new Label();
@@ -102,6 +105,7 @@ public class ViewEventDetails {
 				 
 				 layout.getChildren().add(vendorsLbl);
 				 
+				 // mendapatkan daftar vendor yang menghadiri event
 				 try {
 					 ObservableList<User> vendorsList = FXCollections.observableArrayList(AdminController.getVendorsByEventId(eventID));
 					 
@@ -136,6 +140,7 @@ public class ViewEventDetails {
 				 
 				 layout.getChildren().add(guestsLbl);
 				 
+				 // mendapatkan daftar guest yang menghadiri event
 				 try {
 					 ObservableList<User> guestsList = FXCollections.observableArrayList(AdminController.getGuestsByEventId(eventID));
 					 
@@ -167,6 +172,7 @@ public class ViewEventDetails {
 				 }
 	    	 }
 	    	 
+	    	 // apabila user adalah admin maka menampilkan tombol delete
 	    	 if(login.getLoggedInUser().getRole().equals("Admin")) {
 				 Button deleteBtn = new Button();
 	    		 deleteBtn.setText("Delete Event");
@@ -177,6 +183,7 @@ public class ViewEventDetails {
 				 layout.getChildren().add(deleteBtn);
 	    	 }
 	    	 
+	    	 // apabila user adalah event organizer maka menampilkantombol update serta invite
 	    	 if(login.getLoggedInUser().getRole().equals("Event Organizer")) {
 		    	 Button updateBtn = new Button(), deleteBtn = new Button(), inviteGuests = new Button(), inviteVendors = new Button();
 				 HBox UDBtns = new HBox();

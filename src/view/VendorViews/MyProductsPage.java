@@ -72,12 +72,14 @@ public class MyProductsPage {
 			productsView.setItems(prodList);
 			
 			productsView.setOnMouseClicked(e -> {
+		    	// logika untuk double click agar bisa mengakses detail dari masing-masing invitation
 				try {
 					 TableSelectionModel<Product> prodModel = productsView.getSelectionModel();
 			    	 prodModel.setSelectionMode(SelectionMode.SINGLE);
 			    	 Product prod = prodModel.getSelectedItem();
 			    	 productID = prod.getProductID();
 			    	 
+			    	 // cek apabila sudah double click maka routinghelper akan redirect ke page detail
 			    	 clickCount++;
 			    	 if(clickCount == 2) {
 			    		 RoutingHelper.showProductDetailsPage(productID);

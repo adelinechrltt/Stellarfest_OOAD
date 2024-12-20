@@ -66,13 +66,19 @@ public class ViewAllEventsPage {
 			 }
 
 			 eventsView.setItems(checkBoxList);
-
+			 
 			 eventsView.setOnMouseClicked(e -> {
 				    CheckBox selectedCheckBox = eventsView.getSelectionModel().getSelectedItem();
+				    // try-catch untuk select data dari entry tertentu
+				    // dikenakan try catch agar saat user memencet row yang kosong / tidak ada entry, maka program tidak error
 				    try {
 				    	model.Event selectedEvent = (model.Event) selectedCheckBox.getUserData(); 
-					    if (selectedEvent != null) {
-//					    	System.out.println(selectedEvent.getName());
+				    	
+				    	// try-catch untuk logika double click
+				    	// sehingga saat double click user dapat mendapatkan detailed view dari event tsb.
+					    
+				    	if (selectedEvent != null) {
+//					    	System.out.println(selectedEvent.getName()); //--> untuk debugging
 					        if (e.getClickCount() == 2) {
 					            try {
 					                String tempID = selectedEvent.getEventID();
@@ -81,6 +87,7 @@ public class ViewAllEventsPage {
 					            }
 					        }
 					    }
+					    
 				    } catch (Exception error) {
 				    }
 			 });
@@ -88,14 +95,17 @@ public class ViewAllEventsPage {
 			 Button deleteBtn = new Button();
 			 deleteBtn.setText("Delete Events");
 			 deleteBtn.setOnAction(event -> {
+				 // mendapatkan daftar event yang sudah di select berdasarkan checkbox
 				 ArrayList<model.Event> selectedEvents = new ArrayList<>();
 				 for (CheckBox checkBox : checkBoxList) {
 					 if (checkBox.isSelected()) {
 				        selectedEvents.add((model.Event) checkBox.getUserData());
 					 }
 				 }
-//				 System.out.println(selectedEvents);
+//				 System.out.println(selectedEvents); //--> untuk debugging
 				 
+				 // cek apabila ada event yang diselect berdasarkan checkbox
+				 // apabila ada, maka event tersebut akan di-delete
 				 if (selectedEvents.isEmpty()) {
 					 Main.displayAlert("Error", "ERROR: You must select at least one event to delete!");
 				 } else {

@@ -95,12 +95,14 @@ public class ViewInvitationsPage {
 		    invitesView.setItems(invitations);
 		    
 		    invitesView.setOnMouseClicked(e -> {
+		    	// logika untuk double click agar bisa mengakses detail dari masing-masing invitation
 		    	try {
 		    		TableSelectionModel<Invitation> invModel = invitesView.getSelectionModel();
 			    	 invModel.setSelectionMode(SelectionMode.SINGLE);
 			    	 Invitation inv = invModel.getSelectedItem();
 			    	 invID = inv.getInvitationID();
 			    	 
+			    	 // cek apabila sudah double click maka routinghelper akan redirect ke page detail
 			    	 clickCount++;
 			    	 if(clickCount == 2) {
 			    		 RoutingHelper.showInvitationDetailsPage(invID);

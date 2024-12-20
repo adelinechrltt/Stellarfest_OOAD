@@ -53,6 +53,7 @@ public class InviteGuest {
         Button inviteBtn = new Button();
         inviteBtn.setText("Invite Guests");
         inviteBtn.setOnAction(e -> {
+			 // mendapatkan daftar guest yang sudah di select berdasarkan checkbox
         	ArrayList<Guest> selectedGuests = new ArrayList<>();
             for (CheckBox checkBox : checkBoxList) {
                 if (checkBox.isSelected()) {
@@ -60,6 +61,8 @@ public class InviteGuest {
                 }
             }
 
+			 // cek apabila ada guest yang diselect berdasarkan checkbox
+			 // apabila ada, maka guest tersebut akan di-delete
             if (selectedGuests.isEmpty()) {
                 Main.displayAlert("Error", "ERROR: You must select at least one guest to invite!");
             } else {

@@ -93,12 +93,14 @@ public class ViewEventsList {
 		     viewMyEvents.getColumns().addAll(idCol, nameCol, dateCol, locCol, descCol);
 		     viewMyEvents.setItems(evs);
 		     viewMyEvents.setOnMouseClicked(e -> {
+		    	// logika untuk double click agar bisa mengakses detail dari masing-masing event
 		    	 try {
 			    	 TableSelectionModel<model.Event> tsModel = viewMyEvents.getSelectionModel();
 			    	 tsModel.setSelectionMode(SelectionMode.SINGLE);
 			    	 model.Event ev = tsModel.getSelectedItem();
 			    	 tempID = ev.getEventID();
 			    	 
+			    	 // cek apabila sudah double click maka routinghelper akan redirect ke page detail
 			    	 clickCount++;
 			    	 if(clickCount == 2) {
 			    		 RoutingHelper.showEventDetailsPage(tempID);

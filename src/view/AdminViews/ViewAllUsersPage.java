@@ -73,6 +73,7 @@ public class ViewAllUsersPage {
 			Button deleteBtn = new Button();
 			deleteBtn.setText("Delete Users");
 			deleteBtn.setOnAction(event -> {
+				 // mendapatkan daftar user yang sudah di select berdasarkan checkbox
 				ArrayList<User> selectedUsers = new ArrayList<>();
 				for (CheckBox checkBox : checkBoxList) {
 					if (checkBox.isSelected()) {
@@ -80,6 +81,8 @@ public class ViewAllUsersPage {
 					}
 				}
 
+				 // cek apabila ada user yang diselect berdasarkan checkbox
+				 // apabila ada, maka user tersebut akan di-delete
 				if (selectedUsers.isEmpty()) {
 					Main.displayAlert("Error", "ERROR: You must select at least one event to delete!");
 				} else {
